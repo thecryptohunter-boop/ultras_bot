@@ -2,7 +2,10 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.types import FSInputFile
+from aiogram.filters import Command
 from datetime import datetime
+import json
+import random
 import os
 
 TOKEN = "8635821367:AAG8D5xBjdToPUuvrKdqMGUQeVFXKANTQgU"
@@ -92,6 +95,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
