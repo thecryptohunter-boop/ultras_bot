@@ -1,13 +1,14 @@
 import asyncio
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters import Command
+from aiogram import Bot, Dispatcher
+from aiogram.enums import ParseMode
+from aiogram.types import FSInputFile
 from datetime import datetime
-import json
-import random
+import os
 
-TOKEN = "8635821367:AAG8D5xBjdToPUuvrKdqMGUQeVFXKANTQgU"  # токен от BotFather
+BOT_TOKEN = os.getenv("8635821367:AAG8D5xBjdToPUuvrKdqMGUQeVFXKANTQgU")
+CHANNEL_ID = 334306921  # <-- ВСТАВЬ СЮДА ID КАНАЛА
 
-bot = Bot(token=TOKEN)
+bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher()
 
 # Загружаем базы
@@ -56,9 +57,39 @@ async def today_history(message: types.Message):
 async def send_story(message: types.Message):
     await message.answer("Отправь свою историю прямо сюда, а мы опубликуем её анонимно в канале!")
 
+async def today_post():
+    today = datetime.now().strftime("%d.%m")
+
+    text = f"""
+📅 <b>Сегодня в истории ультрас</b>
+
+<b>{today}</b>
+
+В этот день фанаты устроили культовые перфомансы, вошедшие в историю трибун.
+
+⚽ Страсть. Верность. Движ.
+"""
+
+    await bot.send_message(chat_id=CHANNEL_ID, text=text)
+
+
+async def scheduler():
+    while True:
+        now = datetime.now()
+
+        # пост каждый день в 12:00
+        if now.minute % 2 == 0:
+            await today_post()
+            await asyncio.sleep(60)
+
+        await asyncio.sleep(20)
+
+
 async def main():
+    asyncio.create_task(scheduler())
     await dp.start_polling(bot)
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     asyncio.run(main())
+
