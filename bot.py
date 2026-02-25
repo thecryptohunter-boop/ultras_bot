@@ -8,7 +8,7 @@ import json
 import random
 import os
 
-TOKEN = "8635821367:AAG8D5xBjdToPUuvrKdqMGUQeVFXKANTQgU"
+TOKEN = ""
 CHANNEL_ID = -1003585308639  # <-- ВСТАВЬ СЮДА ID КАНАЛА
 
 bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
@@ -95,6 +95,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
