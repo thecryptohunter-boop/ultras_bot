@@ -9,7 +9,7 @@ import random
 import os
 
 TOKEN = "8635821367:AAG8D5xBjdToPUuvrKdqMGUQeVFXKANTQgU"
-CHANNEL_ID = 334306921  # <-- ВСТАВЬ СЮДА ID КАНАЛА
+CHANNEL_ID = -1003585308639  # <-- ВСТАВЬ СЮДА ID КАНАЛА
 
 bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher()
@@ -81,7 +81,7 @@ async def scheduler():
         now = datetime.now()
 
         # пост каждый день в 12:00
-        if now.hour == 12 and now.minute == 0:
+        if now.hour == 15 and now.minute == 25:
             await today_post()
             await asyncio.sleep(60)
 
@@ -95,6 +95,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
