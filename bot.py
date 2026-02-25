@@ -5,7 +5,7 @@ from aiogram.types import FSInputFile
 from datetime import datetime
 import os
 
-TOKEN = os.getenv("8635821367:AAG8D5xBjdToPUuvrKdqMGUQeVFXKANTQgU")
+TOKEN = "8635821367:AAG8D5xBjdToPUuvrKdqMGUQeVFXKANTQgU"
 CHANNEL_ID = 334306921  # <-- ВСТАВЬ СЮДА ID КАНАЛА
 
 bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
@@ -92,5 +92,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
