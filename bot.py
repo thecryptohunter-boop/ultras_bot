@@ -74,7 +74,10 @@ def generate_today_post():
 
 
 """
-
+if len(EVENTS) < 3:
+    print("⚠ В базе меньше 3 событий")
+    return
+    
     for i, event in enumerate(selected_events, 1):
         text += (
             f"{i}️⃣ <b>{event['year']}, {event['club']}</b>\n\n"
@@ -83,7 +86,7 @@ def generate_today_post():
 
     text += (
         "🔥 <i>Страсть. Верность. Движ.\n"
-        "✍🏻 Подпишись если не Кузьмич: @EtVivit</i>\n\n\n\n"
+        "✍🏻 Подпишись если не Кузьмич: @EtVivit</i>\n\n\n"
         "#UltrasToday"
     )
 
@@ -153,6 +156,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
