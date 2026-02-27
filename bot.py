@@ -59,6 +59,7 @@ def generate_today_post():
 
 🔥 Событий на сегодня в базе <b>ET VIVIT</b> не найдено.
 
+
 ⚽ <i>Страсть. Верность. Движ. 
 ✍🏻 Подпишитесь если не Кузьмич: @Et Vivit</i>
 
@@ -78,13 +79,13 @@ def generate_today_post():
 
     for i, event in enumerate(selected_events, 1):
         text += (
-            f"{i}️⃣ <b>{event['year']}, {event['club']}</b>\n"
-            f"⚽ {event['text']}\n\n"
+            f"{i}️⃣ <b>{event['year']}, {event['club']}</b>\n\n"
+            f"⚽ {event['text']}\n\n\n"
         )
 
     text += (
         "🔥 <i>Страсть. Верность. Движ.\n"
-        "✍🏻 Подпишитесь если не Кузьмич: @EtVivit</i>\n\n"
+        "✍🏻 Подпишитесь если не Кузьмич: @Et Vivit</i>\n\n"
         "#UltrasToday"
     )
 
@@ -154,6 +155,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
