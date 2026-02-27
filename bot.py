@@ -64,12 +64,10 @@ def generate_today_post():
 
 #UltrasToday
 """
-if len(EVENTS) < 3:
-    print("⚠ В базе меньше 3 событий")
-    return   
+ 
 
 # Берём максимум 3 события
-    selected_events = events[:3]
+    selected_events = events[:4]
 
     text = f"""
 📅 <b>СЕГОДНЯШНЯЯ ДАТА {today} 🔈 в истории ультрас:</b>
@@ -154,6 +152,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
