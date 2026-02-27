@@ -67,6 +67,7 @@ def generate_today_post():
    
 
 selected = random.sample(EVENTS, 3)
+text = format_events(events)
 
     return f"""
 📅 <b>СЕГОДНЯШЯЯ ДАТА 🔈 в истории ультрас:</b>
@@ -146,6 +147,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
