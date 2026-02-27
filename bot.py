@@ -58,7 +58,7 @@ def generate_today_post():
 
 В этот день происходили события, формировавшие культуру фан-движений Европы и Южной Америки.
 
-⚽ Страсть. Верность. Движ.
+⚽ <i>Страсть. Верность. Движ.</i>
 """
     event = random.choice(events)
 
@@ -67,11 +67,11 @@ def generate_today_post():
 
 <b>{today}</b>
 
-<b>{event['club']}, {event['year']}</b>
+<b>{event['year']}, {event['club']}</b>
 
 {event['text']}
 
-⚽ Страсть. Верность. Движ.
+⚽ <i>Страсть. Верность. Движ.</i>
 """
 
 # ===== АВТОПОСТИНГ В КАНАЛ =====
@@ -138,6 +138,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
