@@ -67,15 +67,15 @@ def generate_today_post():
    
 
 # Берём максимум 3 события
-    selected_events = events[:3]
+    selected_events = events[:4]
 
     text = f"""
 📅 <b>СЕГОДНЯШНЯЯ ДАТА {today} 🔈 в истории ультрас:</b>
 
 
 """
-if len(EVENTS) < 3:
-    print("⚠ В базе меньше 3 событий")
+if len(EVENTS) < 4:
+    print("⚠ В базе меньше 4 событий")
     return
     
     for i, event in enumerate(selected_events, 1):
@@ -156,6 +156,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
