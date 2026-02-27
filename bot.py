@@ -1,78 +1,86 @@
 import asyncio
-from aiogram import Bot, Dispatcher, types
-from aiogram.enums import ParseMode
-from aiogram.types import FSInputFile
-from aiogram.filters import Command
-from datetime import datetime
-import json
-import random
 import os
+import random
+from datetime import datetime
+
+from aiogram import Bot, Dispatcher, F
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.enums import ParseMode
+
+
+# ===== НАСТРОЙКИ =====
 
 TOKEN = os.getenv("TOKEN")
-CHANNEL_ID = -1003585308639  # <-- ВСТАВЬ СЮДА ID КАНАЛА
+'''if not TOKEN:
+    TOKEN = "ТВОЙ_ЛОКАЛЬНЫЙ_ТОКЕН_ДЛЯ_ТЕСТОВ"'''
+
+CHANNEL_ID = -1003585308639  # <-- ID твоего канала
+
+# ===== ЗАГРУЖАЕМ JSON =====
+
+def load_events():
+    with open("events.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+EVENTS = load_events()
+
+# ===== ИНИЦИАЛИЗАЦИЯ =====
 
 bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher()
 
-# Загружаем базы
-with open("history.json", encoding="utf-8") as f:
-    history_db = json.load(f)
 
-with open("ultras.json", encoding="utf-8") as f:
-    ultras_db = json.load(f)
+# ===== КНОПКИ =====
 
-# --- Главное меню ---
-@dp.message(Command("start"))
-async def start(message: types.Message):
-    kb = [
-        [types.KeyboardButton(text="🏟 Ультрас-группировки")],
-        [types.KeyboardButton(text="⚽ Сегодня в истории")],
-        [types.KeyboardButton(text="🕶 Прислать историю")]
-    ]
-    keyboard = types.ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
-    await message.answer("Добро пожаловать в фанатский архив ⚽", reply_markup=keyboard)
+main_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="🏟 Ультрас-группировки")],
+        [KeyboardButton(text="📅 Сегодня в истории")],
+        [KeyboardButton(text="👑 Легенды движения")],
+        [KeyboardButton(text="⚔ Дерби")],
+        [KeyboardButton(text="📰 Новости")],
+    ],
+    resize_keyboard=True
+)
 
-# --- Ультрас-группировки ---
-@dp.message(lambda m: m.text == "🏟 Ультрас-группировки")
-async def ultras(message: types.Message):
-    regions = list(ultras_db.keys())
-    text = "Выбери регион:\n" + "\n".join([f"• {r}" for r in regions])
-    await message.answer(text)
+# ===== ФУНКЦИЯ ГЕНЕРАЦИИ ПОСТА =====
 
-# --- Выбор региона ---
-@dp.message(lambda m: m.text in ultras_db)
-async def region_choice(message: types.Message):
-    region = message.text
-    groups = ultras_db[region]
-    text = "\n".join([f"{g['name']} — {g['info']}" for g in groups])
-    await message.answer(text)
-
-# --- Сегодня в истории ---
-@dp.message(lambda m: m.text == "⚽ Сегодня в истории")
-async def today_history(message: types.Message):
-    today = datetime.now().strftime("%m-%d")
-    events = history_db.get(today, ["Сегодня без крупных фанатских событий."])
-    # Можно выводить случайное событие, чтобы каждый день было динамично
-    await message.answer(random.choice(events))
-
-# --- Анонимная история ---
-@dp.message(lambda m: m.text == "🕶 Прислать историю")
-async def send_story(message: types.Message):
-    await message.answer("Отправь свою историю прямо сюда, а мы опубликуем её анонимно в канале!")
-
-async def today_post():
+def generate_today_post():
     today = datetime.now().strftime("%d.%m")
+    events = EVENTS.get(today)
 
-    text = f"""
+    if not events:
+        return f"""
 📅 <b>Сегодня в истории ультрас</b>
 
 <b>{today}</b>
 
-В этот день фанаты устроили культовые перфомансы, вошедшие в историю трибун.
+В этот день происходили события, формировавшие культуру фан-движений Европы и Южной Америки.
 
 ⚽ Страсть. Верность. Движ.
 """
 
+    event = random.choice(events)
+
+    return f"""
+📅 <b>Сегодня в истории ультрас</b>
+
+<b>{today}</b>
+
+<b>{event['club']}, {event['year']}</b>
+
+{event['text']}
+
+⚽ Страсть. Верность. Движ.
+"""
+
+    return text
+
+
+# ===== АВТОПОСТИНГ В КАНАЛ =====
+
+async def post_today():
+    text = generate_today_post()
     await bot.send_message(chat_id=CHANNEL_ID, text=text)
 
 
@@ -80,13 +88,51 @@ async def scheduler():
     while True:
         now = datetime.now()
 
-        # пост каждый день в 12:00
+        # публикация каждый день в 12:00
         if now.hour == 12 and now.minute == 0:
-            await today_post()
+            await post_today()
             await asyncio.sleep(60)
 
         await asyncio.sleep(20)
 
+
+# ===== ХЕНДЛЕРЫ =====
+
+@dp.message(F.text == "/start")
+async def start_handler(message: Message):
+    await message.answer(
+        "🤖 Ультрас-ассистент активен.\n\nВыбери раздел:",
+        reply_markup=main_kb
+    )
+
+
+@dp.message(F.text == "📅 Сегодня в истории")
+async def today_handler(message: Message):
+    text = generate_today_post()
+    await message.answer(text)
+
+
+@dp.message(F.text == "🏟 Ультрас-группировки")
+async def ultras_handler(message: Message):
+    await message.answer("Раздел в разработке 🔧\nСкоро будет большая база группировок.")
+
+
+@dp.message(F.text == "👑 Легенды движения")
+async def legends_handler(message: Message):
+    await message.answer("Раздел в разработке 🔧\nБудут культовые фигуры фан-сцены.")
+
+
+@dp.message(F.text == "⚔ Дерби")
+async def derby_handler(message: Message):
+    await message.answer("Раздел в разработке 🔧\nИстории главных противостояний.")
+
+
+@dp.message(F.text == "📰 Новости")
+async def news_handler(message: Message):
+    await message.answer("Раздел в разработке 🔧\nФан-новости и движ.")
+
+
+# ===== ЗАПУСК =====
 
 async def main():
     asyncio.create_task(scheduler())
@@ -95,15 +141,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-
-
-
-
-
-
-
-
-
-
-
