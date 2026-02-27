@@ -65,7 +65,7 @@ def generate_today_post():
     return f"""
 📅 <b>Сегодня в истории ультрас</b>
 
-<b>{today}. {event['year']}, {event['club']}</b>
+<b>{today}.{event['year']}, {event['club']}</b>
 
 {event['text']}
 
@@ -136,6 +136,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
