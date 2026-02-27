@@ -52,16 +52,15 @@ def generate_today_post():
 
     if not events:
         return f"""
-📅 <b>СЕГОДНЯШЯЯ ДАТА 🔈 в истории ультрас:</b>
+📅 <b>СЕГОДНЯШНЯЯ ДАТА {today} 🔈 в истории ультрас:</b>
 
-
-<b>{today}</b>
 
 🔥 Событий на сегодня в базе <b>ET VIVIT</b> не найдено.
 
 
 ⚽ <i>Страсть. Верность. Движ. 
-✍🏻 Подпишись если не Кузьмич: 👉 <a href="https://t.me/+_VfXSmo2_yIyZjli">Et Vivit</a></i>\n\n\n
+✍🏻 Подпишись если не Кузьмич: @EtVivit</i>
+
 
 #UltrasToday
 """
@@ -71,9 +70,8 @@ def generate_today_post():
     selected_events = events[:3]
 
     text = f"""
-📅 <b>СЕГОДНЯШНЯЯ ДАТА 🔈 в истории ультрас:</b>
+📅 <b>СЕГОДНЯШНЯЯ ДАТА {today} 🔈 в истории ультрас:</b>
 
-<b>{today}</b>
 
 """
 
@@ -85,7 +83,7 @@ def generate_today_post():
 
     text += (
         "🔥 <i>Страсть. Верность. Движ.\n"
-        "✍🏻 Подпишись если не Кузьмич: 👉 <a href="https://t.me/+_VfXSmo2_yIyZjli">Et Vivit</a></i>\n\n\n"
+        "✍🏻 Подпишись если не Кузьмич: @EtVivit</i>\n\n\n\n"
         "#UltrasToday"
     )
 
@@ -155,6 +153,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
