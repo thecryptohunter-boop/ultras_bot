@@ -20,15 +20,10 @@ CHANNEL_ID = -1003585308639  # <-- ID твоего канала
 # ===== ЗАГРУЖАЕМ JSON =====
 
 def load_events():
-    try:
-        with open("events.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-    except json.JSONDecodeError as e:
-        print("❌ Ошибка JSON:", e)
-        raise
-    except Exception as e:
-        print("❌ Ошибка чтения файла:", e)
-        raise
+    with open("events.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+EVENTS = load_events()
 
 # ===== ИНИЦИАЛИЗАЦИЯ =====
 
@@ -141,6 +136,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
