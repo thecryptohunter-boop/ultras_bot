@@ -72,10 +72,6 @@ def generate_today_post():
 {event['text']}
 
 ⚽ Страсть. Верность. Движ.
-"""
-
-    return text
-
 
 # ===== АВТОПОСТИНГ В КАНАЛ =====
 
@@ -141,3 +137,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
