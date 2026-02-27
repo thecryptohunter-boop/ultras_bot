@@ -54,6 +54,7 @@ def generate_today_post():
         return f"""
 📅 <b>СЕГОДНЯШЯЯ ДАТА 🔈 в истории ультрас:</b>
 
+
 <b>{today}</b>
 
 🔥 Событий на сегодня в базе <b>ET VIVIT</b> не найдено.
@@ -64,6 +65,7 @@ def generate_today_post():
 
     return f"""
 📅 <b>СЕГОДНЯШЯЯ ДАТА 🔈 в истории ультрас:</b>
+
 
 <b>{today}.{event['year']}, {event['club']}</b>
 
@@ -136,6 +138,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
