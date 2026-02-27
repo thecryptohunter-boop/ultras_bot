@@ -61,7 +61,7 @@ def generate_today_post():
 
 
 ⚽ <i>Страсть. Верность. Движ. 
-✍🏻 Подпишись если не Кузьмич: 👉 <a href="https://t.me/+2U1UBvCptN9kOWUy">Et Vivit</a></i>\n\n\n
+✍🏻 Подпишись если не Кузьмич: 👉 <a href="https://t.me/+_VfXSmo2_yIyZjli">Et Vivit</a></i>\n\n\n
 
 #UltrasToday
 """
@@ -85,7 +85,7 @@ def generate_today_post():
 
     text += (
         "🔥 <i>Страсть. Верность. Движ.\n"
-        "✍🏻 Подпишись если не Кузьмич: 👉 <a href="https://t.me/+2U1UBvCptN9kOWUy">Et Vivit</a></i>\n\n\n"
+        "✍🏻 Подпишись если не Кузьмич: 👉 <a href="https://t.me/+_VfXSmo2_yIyZjli">Et Vivit</a></i>\n\n\n"
         "#UltrasToday"
     )
 
@@ -155,6 +155,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
