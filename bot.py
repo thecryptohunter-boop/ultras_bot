@@ -23,7 +23,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def get_today_image():
     weekday = datetime.now().weekday() + 1
-    return os.path.join(BASE_DIR, "images", f"{weekday:02d}.jpg")
+    path = os.path.join(BASE_DIR, "images", f"{weekday:02d}.jpg")
+    print("DEBUG IMAGE PATH:", path)
+    print("FILE EXISTS:", os.path.exists(path))
+    return path
     
 # ===== ЗАГРУЖАЕМ JSON СОБЫТИЯ =====
 
@@ -167,6 +170,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
