@@ -108,7 +108,13 @@ async def post_today():
     await bot.send_photo(
         CHANNEL_ID,
         photo=FSInputFile(image_path),
-        caption=text,
+        caption="📅 Сегодня в истории ультрас",
+        parse_mode="HTML"
+    )
+    await asyncio.sleep(1)
+    await bot.send_message(
+        CHANNEL_ID,
+        text,
         parse_mode="HTML"
     )
 
@@ -170,6 +176,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
