@@ -147,7 +147,7 @@ async def today_handler(message: Message):
     await message.answer(text)
 
 
-@dp.message(F.text == "🏟 Ультрас-группировки")
+'''@dp.message(F.text == "🏟 Ультрас-группировки")
 async def ultras_handler(message: Message):
     await message.answer("Раздел в разработке 🔧\nСкоро будет большая база группировок.")
 
@@ -164,7 +164,7 @@ async def derby_handler(message: Message):
 
 @dp.message(F.text == "📰 Новости")
 async def news_handler(message: Message):
-    await message.answer("Раздел в разработке 🔧\nФан-новости и движ.")
+    await message.answer("Раздел в разработке 🔧\nФан-новости и движ.")'''
 
 
 # ===== ЗАПУСК =====
@@ -176,6 +176,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
