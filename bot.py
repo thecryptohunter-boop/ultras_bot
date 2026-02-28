@@ -78,7 +78,7 @@ def generate_today_post():
  
 
 # Берём максимум 3 событий
-    selected_events = events[:1]
+    selected_events = events[:2]
 
     text = f"""
 📅 <b>СЕГОДНЯШНЯЯ ДАТА {today} 🔈 в истории ультрас:</b>
@@ -108,7 +108,7 @@ async def post_today():
     await bot.send_photo(
         CHANNEL_ID,
         photo=FSInputFile(image_path),
-        text,
+        caption=text,
         parse_mode="HTML"
     )
 
@@ -118,7 +118,7 @@ async def scheduler():
         now = datetime.now()
 
         # публикация каждый день в 12:00
-        if now.minute % 15 == 0:
+        if now.minute % 6 == 0:
             await post_today()
             await asyncio.sleep(60)
 
@@ -170,6 +170,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
