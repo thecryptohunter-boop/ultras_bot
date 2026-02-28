@@ -104,7 +104,7 @@ async def post_today():
     await bot.send_photo(
         CHANNEL_ID,
         photo=FSInputFile(image_path),
-        caption="⬇️ НЕ ПРОСТО ДЕНЬ В КАЛЕНДАРЕ",
+        caption="",
         parse_mode="HTML"
     )
 
@@ -120,7 +120,7 @@ async def scheduler():
         now = datetime.now()
 
         # публикация каждый день в 12:00
-        if now.minute % 15 == 0:
+        if now.minute % 11 == 0:
             await post_today()
             await asyncio.sleep(60)
 
@@ -172,6 +172,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
