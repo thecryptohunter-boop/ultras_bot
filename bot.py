@@ -19,9 +19,11 @@ CHANNEL_ID = -1003585308639  # <-- ID твоего канала
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def get_today_image():
     weekday = datetime.now().weekday() + 1
-    return f"images/{weekday:02d}.jpg"
+    return os.path.join(BASE_DIR, "images", f"{weekday:02d}.jpg")
     
 # ===== ЗАГРУЖАЕМ JSON СОБЫТИЯ =====
 
@@ -165,6 +167,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
