@@ -104,7 +104,7 @@ async def post_today():
     await bot.send_photo(
         CHANNEL_ID,
         photo=FSInputFile(image_path),
-        caption="⬇️ НЕ ПРОСТО ДАТА В КАЛЕНДАРЕ",
+        caption="⬇️ НЕ ПРОСТО ДЕНЬ В КАЛЕНДАРЕ",
         parse_mode="HTML"
     )
     await asyncio.sleep(1)
@@ -172,6 +172,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
