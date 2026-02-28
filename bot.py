@@ -47,8 +47,8 @@ dp = Dispatcher()
 main_kb = ReplyKeyboardMarkup(
     keyboard=[
         [KeyboardButton(text="📅 Сегодня в истории")], 
-     '''[KeyboardButton(text="🏟 Ультрас-группировки")],       
-        [KeyboardButton(text="👑 Легенды движения")],
+        [KeyboardButton(text="🏟 Ультрас-группировки")],       
+     '''[KeyboardButton(text="👑 Легенды движения")],
         [KeyboardButton(text="⚔ Дерби")],
         [KeyboardButton(text="📰 Новости")],'''
     ],
@@ -147,12 +147,12 @@ async def today_handler(message: Message):
     await message.answer(text)
 
 
-'''@dp.message(F.text == "🏟 Ультрас-группировки")
+@dp.message(F.text == "🏟 Ультрас-группировки")
 async def ultras_handler(message: Message):
     await message.answer("Раздел в разработке 🔧\nСкоро будет большая база группировок.")
 
 
-@dp.message(F.text == "👑 Легенды движения")
+'''@dp.message(F.text == "👑 Легенды движения")
 async def legends_handler(message: Message):
     await message.answer("Раздел в разработке 🔧\nБудут культовые фигуры фан-сцены.")
 
@@ -176,6 +176,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
