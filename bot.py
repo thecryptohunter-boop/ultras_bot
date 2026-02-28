@@ -3,7 +3,7 @@ import json
 import os
 import random
 from datetime import datetime
-
+from aiogram.types import FSInputFile
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.enums import ParseMode
@@ -17,7 +17,13 @@ TOKEN = os.getenv("TOKEN")
 
 CHANNEL_ID = -1003585308639  # <-- ID твоего канала
 
-# ===== ЗАГРУЖАЕМ JSON =====
+# ===== ЗАГРУЖАЕМ КАРТИНКИ =====
+
+def get_today_image():
+    weekday = datetime.now().weekday() + 1
+    return f"images/{weekday:02d}.jpg"
+    
+# ===== ЗАГРУЖАЕМ JSON СОБЫТИЯ =====
 
 def load_events():
     with open("events.json", "r", encoding="utf-8") as f:
@@ -66,7 +72,7 @@ def generate_today_post():
 """
  
 
-# Берём максимум 3 события
+# Берём максимум 5 событий
     selected_events = events[:5]
 
     text = f"""
@@ -92,7 +98,15 @@ def generate_today_post():
 
 async def post_today():
     text = generate_today_post()
-    await bot.send_message(chat_id=CHANNEL_ID, text=text)
+
+image_path = get_today_image()
+
+await bot.send_photo(
+    CHANNEL_ID,
+    photo=FSInputFile(image_path),
+    caption=text,
+    parse_mode="HTML"
+)
 
 
 async def scheduler():
@@ -152,6 +166,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
