@@ -107,7 +107,7 @@ async def post_today():
         caption="⬇️ НЕ ПРОСТО ДЕНЬ В КАЛЕНДАРЕ",
         parse_mode="HTML"
     )
-    await asyncio.sleep(1)
+
     await bot.send_message(
         CHANNEL_ID,
         text,
@@ -172,6 +172,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
