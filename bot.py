@@ -78,7 +78,7 @@ def generate_today_post():
  
 
 # Берём максимум 3 событий
-    selected_events = events[:2]
+    selected_events = events[:1]
 
     text = f"""
 📅 <b>СЕГОДНЯШНЯЯ ДАТА {today} 🔈 в истории ультрас:</b>
@@ -170,6 +170,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
