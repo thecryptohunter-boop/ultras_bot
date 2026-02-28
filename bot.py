@@ -108,7 +108,7 @@ async def post_today():
     await bot.send_photo(
         CHANNEL_ID,
         photo=FSInputFile(image_path),
-        caption=text,
+        text,
         parse_mode="HTML"
     )
 
@@ -170,6 +170,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
