@@ -120,7 +120,7 @@ async def scheduler():
         now = datetime.now()
 
         # публикация каждый день в 12:00
-        if now.minute % 11 == 0:
+        if now.minute % 50 == 0:
             await post_today()
             await asyncio.sleep(60)
 
@@ -162,7 +162,13 @@ async def derby_handler(message: Message):
 async def news_handler(message: Message):
     await message.answer("Раздел в разработке 🔧\nФан-новости и движ.")'''
 
+# ===== ПРОВЕРКА ID ФОТО =====
 
+@dp.message(F.photo)
+async def catch_photo(message: Message):
+    file_id = message.photo[-1].file_id
+    await message.reply(f"FILE_ID:\n{file_id}")
+    
 # ===== ЗАПУСК =====
 
 async def main():
@@ -172,6 +178,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
