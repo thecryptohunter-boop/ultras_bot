@@ -98,15 +98,14 @@ def generate_today_post():
 
 async def post_today():
     text = generate_today_post()
+    image_path = get_today_image()
 
-image_path = get_today_image()
-
-await bot.send_photo(
-    CHANNEL_ID,
-    photo=FSInputFile(image_path),
-    caption=text,
-    parse_mode="HTML"
-)
+    await bot.send_photo(
+        CHANNEL_ID,
+        photo=FSInputFile(image_path),
+        caption=text,
+        parse_mode="HTML"
+    )
 
 
 async def scheduler():
@@ -166,6 +165,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
