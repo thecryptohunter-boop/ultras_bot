@@ -99,31 +99,6 @@ def generate_today_post():
 
 # ===== АВТОПОСТИНГ В КАНАЛ =====
 
-async def post_daily_category():
-    post = get_post_for_today()
-    if not post:
-        return
-
-    if post.get("file_id"):
-        await bot.send_photo(
-            CHANNEL_ID,
-            photo=post["file_id"],
-            caption=post["text"],
-            parse_mode="HTML"
-        )
-    else:
-        await bot.send_message(
-            CHANNEL_ID,
-            post["text"],
-            parse_mode="HTML"
-        )
-
-async def scheduler():
-    while True:
-        now = datetime.now()
-
-# ===== АВТОПОСТИНГ В КАНАЛ =====
-
 async def post_today():
     text = generate_today_post()
     image_path = get_today_image()
@@ -244,6 +219,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
