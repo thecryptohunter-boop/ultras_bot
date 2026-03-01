@@ -1,57 +1,50 @@
-import sqlite3
-
-DB_PATH = "data/bot.db"
-
-DEFAULT_IMAGE = None   # сюда можно прописать file_id дефолтной картинки
-DEFAULT_TEXT = None    # сюда можно прописать дефолтный текст
+import json
+import random
+import datetime
+from pathlib import Path
 
 
-def get_category(code: str):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
 
-    cur.execute("""
-        SELECT title, image_file_id, text
-        FROM categories
-        WHERE code = ?
-    """, (code,))
+CATEGORIES_FILE = DATA_DIR / "categories.json"
+CARDS_FILE = DATA_DIR / "cards.json"
 
-    row = cur.fetchone()
-    conn.close()
 
-    if not row:
+def load_json(path: Path):
+    if not path.exists():
+        return {}
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def get_today_categories():
+    categories = load_json(CATEGORIES_FILE)
+    day = datetime.datetime.now().strftime("%A").lower()
+    return categories.get(day, [])
+
+
+def get_random_card(category: str):
+    cards = load_json(CARDS_FILE)
+    items = cards.get(category, [])
+    if not items:
+        return None
+    return random.choice(items)
+
+
+def get_post_for_today():
+    today_categories = get_today_categories()
+    if not today_categories:
+        return None
+
+    category = random.choice(today_categories)
+    card = get_random_card(category)
+
+    if not card:
         return None
 
     return {
-        "title": row[0],
-        "image": row[1] or DEFAULT_IMAGE,
-        "text": row[2] or DEFAULT_TEXT or row[0]
+        "category": category,
+        "text": card.get("text", ""),
+        "file_id": card.get("image")
     }
-
-
-def set_category_image(code: str, file_id: str):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-
-    cur.execute("""
-        UPDATE categories
-        SET image_file_id = ?
-        WHERE code = ?
-    """, (file_id, code))
-
-    conn.commit()
-    conn.close()
-
-
-def set_category_text(code: str, text: str):
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-
-    cur.execute("""
-        UPDATE categories
-        SET text = ?
-        WHERE code = ?
-    """, (text, code))
-
-    conn.commit()
-    conn.close()
