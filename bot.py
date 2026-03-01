@@ -15,7 +15,7 @@ TOKEN = os.getenv("TOKEN")
 '''if not TOKEN:
     TOKEN = "ТВОЙ_ЛОКАЛЬНЫЙ_ТОКЕН_ДЛЯ_ТЕСТОВ"'''
 
-CHANNEL_ID = CHANNEL_ID  # <-- ID твоего канала
+CHANNEL_ID = "CHANNEL_ID"  # <-- ID твоего канала
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
 
@@ -120,7 +120,7 @@ async def scheduler():
         now = datetime.now()
 
         # публикация каждый день в 12:00
-        if now.minute % 50 == 0:
+        if now.minute % 59 == 0:
             await post_today()
             await asyncio.sleep(60)
 
@@ -178,6 +178,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
