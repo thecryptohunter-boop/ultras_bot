@@ -124,6 +124,24 @@ async def scheduler():
 
 # ===== АВТОПОСТИНГ В КАНАЛ =====
 
+async def post_today():
+    text = generate_today_post()
+    image_path = get_today_image()
+
+    await bot.send_photo(
+        CHANNEL_ID,
+        photo=FSInputFile(image_path),
+        caption="",
+        parse_mode="HTML"
+    )
+
+    await bot.send_message(
+        CHANNEL_ID,
+        text,
+        parse_mode="HTML"
+    )
+
+
 async def post_daily_category():
     post = get_post_for_today()
     if not post:
@@ -142,6 +160,8 @@ async def post_daily_category():
             post["text"],
             parse_mode="HTML"
         )
+        
+# ===== SCHEDULER =====
 
 async def scheduler():
     print("SCHEDULER STARTED")
@@ -224,6 +244,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
