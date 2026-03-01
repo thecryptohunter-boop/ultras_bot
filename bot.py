@@ -7,7 +7,7 @@ from aiogram.types import FSInputFile
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.enums import ParseMode
-
+from modules.category_manager import get_category
 
 # ===== НАСТРОЙКИ =====
 
@@ -164,10 +164,17 @@ async def news_handler(message: Message):
 
 # ===== ПРОВЕРКА ID ФОТО =====
 
-@dp.message(F.photo)
-async def catch_photo(message: Message):
+'''@dp.message_handler(content_types=['photo'], state=SetCategoryImage.waiting_photo)
+async def set_category_photo(message: types.Message, state: FSMContext):
+    data = await state.get_data()
+    code = data['code']
+
     file_id = message.photo[-1].file_id
-    await message.reply(f"FILE_ID:\n{file_id}")
+
+    set_category_image(code, file_id)
+
+    await message.answer("Картинка сохранена.")
+    await state.finish()'''
     
 # ===== ЗАПУСК =====
 
@@ -178,6 +185,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
