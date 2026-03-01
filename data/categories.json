@@ -1,0 +1,9 @@
+{
+  "monday": ["motivation", "business"],
+  "tuesday": ["facts"],
+  "wednesday": ["history"],
+  "thursday": ["business"],
+  "friday": ["motivation", "fun"],
+  "saturday": ["fun"],
+  "sunday": ["philosophy"]
+}
