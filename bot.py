@@ -144,6 +144,8 @@ async def post_daily_category():
         )
 
 async def scheduler():
+    print("SCHEDULER STARTED")
+
     last_today_minute = None
     last_category_minute = None
 
@@ -222,6 +224,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
