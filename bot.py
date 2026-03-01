@@ -7,7 +7,7 @@ from aiogram.types import FSInputFile
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.enums import ParseMode
-from modules.category_manager import get_category
+
 from modules.category_manager import get_post_for_today
 
 
@@ -194,6 +194,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
