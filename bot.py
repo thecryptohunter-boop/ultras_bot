@@ -122,20 +122,48 @@ async def scheduler():
     while True:
         now = datetime.now()
 
-        # публикация каждый день в 11:00
-        if now.minute % 2 == 0:
+# ===== АВТОПОСТИНГ В КАНАЛ =====
+
+async def post_daily_category():
+    post = get_post_for_today()
+    if not post:
+        return
+
+    if post.get("file_id"):
+        await bot.send_photo(
+            CHANNEL_ID,
+            photo=post["file_id"],
+            caption=post["text"],
+            parse_mode="HTML"
+        )
+    else:
+        await bot.send_message(
+            CHANNEL_ID,
+            post["text"],
+            parse_mode="HTML"
+        )
+
+async def scheduler():
+    last_today_minute = None
+    last_category_minute = None
+
+    while True:
+        now = datetime.now()
+
+        # тест Today — каждые 2 минуты
+        if now.minute % 2 == 0 and last_today_minute != now.minute:
+            last_today_minute = now.minute
+            print("DEBUG: post_today")
             await post_today()
-            await asyncio.sleep(60)
 
-        await asyncio.sleep(20)
-
-        # пост рубрики каждый день в 16:00
-        if now.minute % 5 == 0:
+        # тест рубрики — каждые 5 минут
+        if now.minute % 5 == 0 and last_category_minute != now.minute:
+            last_category_minute = now.minute
+            print("DEBUG: post_daily_category")
             await post_daily_category()
-            await asyncio.sleep(60)
 
-        await asyncio.sleep(20)
-
+        await asyncio.sleep(15)
+        
 # ===== ХЕНДЛЕРЫ =====
 
 @dp.message(F.text == "/start")
@@ -194,6 +222,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
