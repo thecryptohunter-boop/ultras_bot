@@ -131,9 +131,10 @@ async def scheduler():
 
         # пост рубрики каждый день в 16:00
         if now.minute % 5 == 0:
-        await post_daily_category()
-        await asyncio.sleep(60)
+            await post_daily_category()
+            await asyncio.sleep(60)
 
+        await asyncio.sleep(20)
 
 # ===== ХЕНДЛЕРЫ =====
 
@@ -193,6 +194,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
