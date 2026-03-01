@@ -7,7 +7,9 @@ from aiogram.types import FSInputFile
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.enums import ParseMode
-from modules.category_manager import get_category
+
+from modules.category_manager import get_post_for_today
+
 
 # ===== НАСТРОЙКИ =====
 
@@ -97,34 +99,40 @@ def generate_today_post():
 
 # ===== АВТОПОСТИНГ В КАНАЛ =====
 
-async def post_today():
-    text = generate_today_post()
-    image_path = get_today_image()
+async def post_daily_category():
+    post = get_post_for_today()
+    if not post:
+        return
 
-    await bot.send_photo(
-        CHANNEL_ID,
-        photo=FSInputFile(image_path),
-        caption="",
-        parse_mode="HTML"
-    )
-
-    await bot.send_message(
-        CHANNEL_ID,
-        text,
-        parse_mode="HTML"
-    )
-
+    if post.get("file_id"):
+        await bot.send_photo(
+            CHANNEL_ID,
+            photo=post["file_id"],
+            caption=post["text"],
+            parse_mode="HTML"
+        )
+    else:
+        await bot.send_message(
+            CHANNEL_ID,
+            post["text"],
+            parse_mode="HTML"
+        )
 
 async def scheduler():
     while True:
         now = datetime.now()
 
-        # публикация каждый день в 12:00
-        if now.hour == 12 and now.minute == 0:
+        # публикация каждый день в 11:00
+        if now.hour == 11 and now.minute == 0:
             await post_today()
             await asyncio.sleep(60)
 
         await asyncio.sleep(20)
+
+        # пост рубрики каждый день в 16:00
+        if now.hour == 16 and now.minute == 0:
+        await post_daily_category()
+        await asyncio.sleep(60)
 
 
 # ===== ХЕНДЛЕРЫ =====
@@ -185,6 +193,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
