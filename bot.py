@@ -123,7 +123,7 @@ async def scheduler():
         now = datetime.now()
 
         # публикация каждый день в 11:00
-        if now.minute % 3 == 0:
+        if now.minute % 2 == 0:
             await post_today()
             await asyncio.sleep(60)
 
@@ -194,6 +194,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
