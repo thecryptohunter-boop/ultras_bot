@@ -191,24 +191,19 @@ async def scheduler():
 
     while True:
         now = datetime.now()
-
+        print("DEBUG TIME:", now.strftime("%H:%M:%S"))
+        
         # тест Today — каждые 2 минуты
-        if now.minute % 120 == 0 and last_today_minute != now.minute:
+        if now.minute % 600 == 0 and last_today_minute != now.minute:
             last_today_minute = now.minute
             print("DEBUG: post_today")
             await post_today()
-      
-        # тест пятничного тоста — каждые 3 минуты
+
+        # тест рубрики — каждые 3 минуты
         if now.minute % 3 == 0 and last_category_minute != now.minute:
             last_category_minute = now.minute
             print("DEBUG: post_friday_toast")
             await post_friday_toast()
-        
-        # тест рубрики — каждые 100 минут
-        if now.minute % 100 == 0 and last_category_minute != now.minute:
-            last_category_minute = now.minute
-            print("DEBUG: post_daily_category")
-            await post_daily_category()
 
         await asyncio.sleep(15)
         
@@ -302,6 +297,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
