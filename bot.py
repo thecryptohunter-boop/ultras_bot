@@ -141,7 +141,6 @@ async def post_friday_toast():
     )
         
 # ===== SCHEDULER =====
-scheduler.add_job(post_friday_toast, "interval", minutes=3)
 
 async def scheduler():
     print("SCHEDULER STARTED")
@@ -157,7 +156,13 @@ async def scheduler():
             last_today_minute = now.minute
             print("DEBUG: post_today")
             await post_today()
-     
+
+        # тест рубрики — каждые 5 минут
+        if now.minute % 5 == 0 and last_category_minute != now.minute:
+            last_category_minute = now.minute
+            print("DEBUG: post_daily_category")
+            await post_daily_category()
+
         await asyncio.sleep(15)
         
 
@@ -219,6 +224,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
