@@ -41,3 +41,17 @@ def get_next_item(code):
         "file_id": item.get("file_id"),
         "text": item.get("text")
     }
+
+def add_item(code: str, file_id: str, text: str):
+    data = load_categories()
+
+    if code not in data:
+        return False
+
+    data[code]["items"].append({
+        "file_id": file_id,
+        "text": text
+    })
+
+    save_categories(data)
+    return True
