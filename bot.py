@@ -7,7 +7,6 @@ from aiogram.types import FSInputFile
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.enums import ParseMode
-
 from modules.category_manager import get_next_item
 
 
@@ -96,26 +95,8 @@ def generate_today_post():
     )
 
     return text
-
-# ===== АВТОПОСТИНГ В КАНАЛ =====
-
-async def post_today():
-    text = generate_today_post()
-    image_path = get_today_image()
-
-    await bot.send_photo(
-        CHANNEL_ID,
-        photo=FSInputFile(image_path),
-        caption="",
-        parse_mode="HTML"
-    )
-
-    await bot.send_message(
-        CHANNEL_ID,
-        text,
-        parse_mode="HTML"
-    )
-
+    
+# ===== ФУНКЦИЯ ПЯТНИЦЫ =====
 
 async def post_friday_toast():
     item, status = get_next_item("friday_toast")
@@ -139,6 +120,54 @@ async def post_friday_toast():
         photo=item["photo_id"],
         caption=caption
     )
+
+
+# ===== АВТОПОСТИНГ В КАНАЛ =====
+
+async def post_friday_toast():
+    post = get_next_item("friday_toast")
+
+    if not post:
+        print("DEBUG: friday_toast empty")
+        return
+
+    text = f"<b>{post['title']}</b>\n\n{post['text']}\n\n{post['tag']}"
+
+    if post.get("file_id"):
+        await bot.send_photo(
+            CHANNEL_ID,
+            photo=post["file_id"],
+            caption=text,
+            parse_mode="HTML"
+        )
+    else:
+        await bot.send_message(
+            CHANNEL_ID,
+            text,
+            parse_mode="HTML"
+        )
+
+
+# ===== АВТОПОСТИНГ В КАНАЛ =====
+
+async def post_today():
+    text = generate_today_post()
+    image_path = get_today_image()
+
+    await bot.send_photo(
+        CHANNEL_ID,
+        photo=FSInputFile(image_path),
+        caption="",
+        parse_mode="HTML"
+    )
+
+    await bot.send_message(
+        CHANNEL_ID,
+        text,
+        parse_mode="HTML"
+    )
+
+
         
 # ===== SCHEDULER =====
 
@@ -156,9 +185,15 @@ async def scheduler():
             last_today_minute = now.minute
             print("DEBUG: post_today")
             await post_today()
-
-        # тест рубрики — каждые 5 минут
-        if now.minute % 5 == 0 and last_category_minute != now.minute:
+      
+        # тест пятничного тоста — каждые 3 минуты
+        if now.minute % 3 == 0 and last_category_minute != now.minute:
+            last_category_minute = now.minute
+            print("DEBUG: post_friday_toast")
+            await post_friday_toast()
+        
+        # тест рубрики — каждые 100 минут
+        if now.minute % 100 == 0 and last_category_minute != now.minute:
             last_category_minute = now.minute
             print("DEBUG: post_daily_category")
             await post_daily_category()
@@ -224,6 +259,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
