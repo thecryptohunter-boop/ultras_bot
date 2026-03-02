@@ -1,1 +1,25 @@
-
+{
+  "friday_toast": {
+    "title": "🥃 ПЯТНИЧНЫЙ ТОСТ",
+    "tag": "#Тост",
+    "items": [
+      {
+        "file_id": "",
+        "text": ""
+      },
+      {
+        "file_id": "",
+        "text": ""
+      },
+      {
+        "file_id": "",
+        "text": ""
+      },
+      {
+        "file_id": "",
+        "text": ""
+      }
+    ],
+    "last_index": 0
+  }
+}
