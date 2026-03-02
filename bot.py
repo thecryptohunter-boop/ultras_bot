@@ -157,15 +157,10 @@ async def scheduler():
             last_today_minute = now.minute
             print("DEBUG: post_today")
             await post_today()
-
-     '''# тест рубрики — каждые 5 минут
-        if now.minute % 5 == 0 and last_category_minute != now.minute:
-            last_category_minute = now.minute
-            print("DEBUG: post_daily_category")
-            await post_daily_category()'''
-
+     
         await asyncio.sleep(15)
         
+
 # ===== ХЕНДЛЕРЫ =====
 
 @dp.message(F.text == "/start")
@@ -224,6 +219,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
