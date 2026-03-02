@@ -8,6 +8,14 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.enums import ParseMode
 from modules.category_manager import get_next_item
+from aiogram.fsm.state import StatesGroup, State
+from aiogram.fsm.context import FSMContext
+
+
+
+class AddToast(StatesGroup):
+    waiting_image = State()
+    waiting_text = State()
 
 
 # ===== НАСТРОЙКИ =====
@@ -17,6 +25,10 @@ TOKEN = os.getenv("TOKEN")
     TOKEN = "ТВОЙ_ЛОКАЛЬНЫЙ_ТОКЕН_ДЛЯ_ТЕСТОВ"'''
 
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))  # <-- ID твоего канала
+ADMINS = {334306921}
+
+def is_admin(user_id: int) -> bool:
+    return user_id in ADMINS
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
 
@@ -210,11 +222,28 @@ async def start_handler(message: Message):
         reply_markup=main_kb
     )
 
-
 @dp.message(F.text == "📅 Сегодня в истории")
 async def today_handler(message: Message):
     text = generate_today_post()
     await message.answer(text)
+
+@dp.message(F.text == "/add_toast")
+async def add_toast_start(message: Message, state: FSMContext):
+    if not is_admin(message.from_user.id):
+        return
+
+    await message.answer("🍺 Пришли картинку для ПЯТНИЧНОГО ТОСТА")
+    await state.set_state(AddToast.waiting_image)
+
+# ===== ПРИЕМ КАРТИНКИ - ПОЛУЧАЕМ ID =====
+
+@dp.message(AddToast.waiting_image, F.photo)
+async def add_toast_image(message: Message, state: FSMContext):
+    file_id = message.photo[-1].file_id
+
+    await state.update_data(file_id=file_id)
+    await message.answer("✍️ Теперь пришли текст тоста")
+    await state.set_state(AddToast.waiting_text)
 
 
 '''@dp.message(F.text == "🏟 Ультрас-группировки")
@@ -259,6 +288,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
