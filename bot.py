@@ -8,7 +8,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.enums import ParseMode
 
-from modules.category_manager import get_post_for_today
+from modules.category_manager import get_next_item
 
 
 # ===== НАСТРОЙКИ =====
@@ -117,26 +117,31 @@ async def post_today():
     )
 
 
-async def post_daily_category():
-    post = get_post_for_today()
-    if not post:
+async def post_friday_toast():
+    item, status = get_next_item("friday_toast")
+
+    if status == "empty":
+        await bot.send_message(ADMIN_ID, "❌ В рубрике ПЯТНИЧНЫЙ ТОСТ нет материалов")
         return
 
-    if post.get("file_id"):
-        await bot.send_photo(
-            CHANNEL_ID,
-            photo=post["file_id"],
-            caption=post["text"],
-            parse_mode="HTML"
-        )
-    else:
+    if status == "finished":
         await bot.send_message(
-            CHANNEL_ID,
-            post["text"],
-            parse_mode="HTML"
+            ADMIN_ID,
+            "❗ Закончились материалы в рубрике ПЯТНИЧНЫЙ ТОСТ.\n"
+            "Желаете начать сначала?"
         )
+        return
+
+    caption = f"<b>🥂 ПЯТНИЧНЫЙ ТОСТ 🥂</b>\n\n{item['text']}\n\n#Тост"
+
+    await bot.send_photo(
+        chat_id=CHANNEL_ID,
+        photo=item["photo_id"],
+        caption=caption
+    )
         
 # ===== SCHEDULER =====
+scheduler.add_job(post_friday_toast, "interval", minutes=3)
 
 async def scheduler():
     print("SCHEDULER STARTED")
@@ -153,11 +158,11 @@ async def scheduler():
             print("DEBUG: post_today")
             await post_today()
 
-        # тест рубрики — каждые 5 минут
+     '''# тест рубрики — каждые 5 минут
         if now.minute % 5 == 0 and last_category_minute != now.minute:
             last_category_minute = now.minute
             print("DEBUG: post_daily_category")
-            await post_daily_category()
+            await post_daily_category()'''
 
         await asyncio.sleep(15)
         
@@ -219,6 +224,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
