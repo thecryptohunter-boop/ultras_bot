@@ -17,7 +17,7 @@ TOKEN = os.getenv("TOKEN")
 '''if not TOKEN:
     TOKEN = "ТВОЙ_ЛОКАЛЬНЫЙ_ТОКЕН_ДЛЯ_ТЕСТОВ"'''
 
-CHANNEL_ID = "CHANNEL_ID"  # <-- ID твоего канала
+CHANNEL_ID = int(os.getenv("CHANNEL_ID"))  # <-- ID твоего канала
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
 
@@ -224,6 +224,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
