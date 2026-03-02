@@ -1,50 +1,42 @@
 import json
-import random
-import datetime
 from pathlib import Path
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
-
-CATEGORIES_FILE = DATA_DIR / "categories.json"
-CARDS_FILE = DATA_DIR / "cards.json"
+BASE_PATH = Path("data/categories")
 
 
-def load_json(path: Path):
+def load_category(name: str):
+    path = BASE_PATH / f"{name}.json"
     if not path.exists():
-        return {}
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def get_today_categories():
-    categories = load_json(CATEGORIES_FILE)
-    day = datetime.datetime.now().strftime("%A").lower()
-    return categories.get(day, [])
-
-
-def get_random_card(category: str):
-    cards = load_json(CARDS_FILE)
-    items = cards.get(category, [])
-    if not items:
         return None
-    return random.choice(items)
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
-def get_post_for_today():
-    today_categories = get_today_categories()
-    if not today_categories:
-        return None
+def save_category(name: str, data):
+    path = BASE_PATH / f"{name}.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    category = random.choice(today_categories)
-    card = get_random_card(category)
 
-    if not card:
-        return None
+def get_next_item(name: str):
+    data = load_category(name)
+    if not data or not data["items"]:
+        return None, "empty"
 
-    return {
-        "category": category,
-        "text": card.get("text", ""),
-        "file_id": card.get("image")
-    }
+    idx = data["current_index"]
+
+    if idx >= len(data["items"]):
+        return None, "finished"
+
+    item = data["items"][idx]
+    data["current_index"] += 1
+    save_category(name, data)
+
+    return item, "ok"
+
+
+def reset_category(name: str):
+    data = load_category(name)
+    if not data:
+        return
+    data["current_index"] = 0
+    save_category(name, data)
