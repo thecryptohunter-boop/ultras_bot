@@ -23,9 +23,9 @@ class AddToast(StatesGroup):
 TOKEN = os.getenv("TOKEN")
 '''if not TOKEN:
     TOKEN = "ТВОЙ_ЛОКАЛЬНЫЙ_ТОКЕН_ДЛЯ_ТЕСТОВ"'''
-
+ADMIN_ID = os.getenv("ADMIN_ID")
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))  # <-- ID твоего канала
-ADMINS = {334306921}
+ADMINS = {ADMIN_ID}
 
 def is_admin(user_id: int) -> bool:
     return user_id in ADMINS
@@ -297,6 +297,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
