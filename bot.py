@@ -152,7 +152,7 @@ async def scheduler():
         now = datetime.now()
 
         # тест Today — каждые 2 минуты
-        if now.minute % 2 == 0 and last_today_minute != now.minute:
+        if now.minute % 120 == 0 and last_today_minute != now.minute:
             last_today_minute = now.minute
             print("DEBUG: post_today")
             await post_today()
@@ -224,6 +224,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
