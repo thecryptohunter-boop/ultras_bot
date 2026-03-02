@@ -254,7 +254,7 @@ async def add_toast_text(message: Message, state: FSMContext):
 
     from modules.category_manager import add_item
     add_item("friday_toast", file_id, text)
-
+    print("DEBUG SAVE:", data)
     await message.answer("✅ Тост сохранён в рубрике ПЯТНИЧНЫЙ ТОСТ")
     await state.clear()
 
@@ -301,6 +301,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
