@@ -1,42 +1,43 @@
 import json
-from pathlib import Path
+import os
 
-BASE_PATH = Path("data/categories")
+DATA_PATH = "data/categories.json"
 
 
-def load_category(name: str):
-    path = BASE_PATH / f"{name}.json"
-    if not path.exists():
+def load_categories():
+    if not os.path.exists(DATA_PATH):
+        return {}
+
+    with open(DATA_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save_categories(data):
+    with open(DATA_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+
+def get_next_item(code):
+    data = load_categories()
+    category = data.get(code)
+
+    if not category or not category.get("items"):
         return None
-    return json.loads(path.read_text(encoding="utf-8"))
 
+    idx = category.get("last_index", 0)
 
-def save_category(name: str, data):
-    path = BASE_PATH / f"{name}.json"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    if idx >= len(category["items"]):
+        idx = 0
 
+    item = category["items"][idx]
 
-def get_next_item(name: str):
-    data = load_category(name)
-    if not data or not data["items"]:
-        return None, "empty"
+    category["last_index"] = idx + 1
+    data[code] = category
+    save_categories(data)
 
-    idx = data["current_index"]
-
-    if idx >= len(data["items"]):
-        return None, "finished"
-
-    item = data["items"][idx]
-    data["current_index"] += 1
-    save_category(name, data)
-
-    return item, "ok"
-
-
-def reset_category(name: str):
-    data = load_category(name)
-    if not data:
-        return
-    data["current_index"] = 0
-    save_category(name, data)
+    return {
+        "title": category["title"],
+        "tag": category["tag"],
+        "file_id": item.get("file_id"),
+        "text": item.get("text")
+    }
