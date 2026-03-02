@@ -245,6 +245,19 @@ async def add_toast_image(message: Message, state: FSMContext):
     await message.answer("✍️ Теперь пришли текст тоста")
     await state.set_state(AddToast.waiting_text)
 
+@dp.message(AddToast.waiting_text)
+async def add_toast_text(message: Message, state: FSMContext):
+    data = await state.get_data()
+
+    file_id = data.get("file_id")
+    text = message.text
+
+    from modules.category_manager import add_item
+    add_item("friday_toast", file_id, text)
+
+    await message.answer("✅ Тост сохранён в рубрике ПЯТНИЧНЫЙ ТОСТ")
+    await state.clear()
+
 
 '''@dp.message(F.text == "🏟 Ультрас-группировки")
 async def ultras_handler(message: Message):
@@ -288,6 +301,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
