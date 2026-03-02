@@ -1,9 +1,21 @@
 {
-  "monday": ["motivation", "business"],
-  "tuesday": ["facts"],
-  "wednesday": ["history"],
-  "thursday": ["business"],
-  "friday": ["motivation", "fun"],
-  "saturday": ["fun"],
-  "sunday": ["motivation"]
+  "friday_toast": {
+    "title": "🥃 ПЯТНИЧНЫЙ ТОСТ",
+    "tag": "#Тост",
+    "items": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "За тех, кто не спрашивает — зачем. За тех, кто просто рядом, когда трудно. За тех, с кем можно молчать и всё понимать. Пьём за своих. Остальные подождут."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "За нас!"
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "За нас!"
+      }
+    ],
+    "last_index": 0
+  }
 }
