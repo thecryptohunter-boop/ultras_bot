@@ -108,7 +108,14 @@ def generate_today_post():
     )
 
     return text
-    
+
+
+# ===== Для Админов =====
+
+async def notify_admins(text):
+    for admin_id in ADMINS:
+        await bot.send_message(admin_id, text)
+
 # ===== ФУНКЦИЯ ПЯТНИЦЫ =====
 
 async def post_daily_category():
@@ -131,7 +138,7 @@ async def post_daily_category():
         )
 
 
-# ===== АВТОПОСТИНГ В КАНАЛ =====
+# ===== АВТОПОСТИНГ В КАНАЛ ТОСТ =====
 
 async def post_friday_toast():
     post, status = get_next_item("friday_toast")
@@ -140,8 +147,7 @@ async def post_friday_toast():
         return
 
     if status == "finished":
-        await bot.send_message(
-           ADMINS,
+        await notify_admins(
             "⚠️ Закончились тосты в рубрике ПЯТНИЧНЫЙ ТОСТ.\n"
             "Загрузите новые материалы."
         )
@@ -161,7 +167,7 @@ async def post_friday_toast():
     )
 
 
-# ===== АВТОПОСТИНГ В КАНАЛ =====
+# ===== АВТОПОСТИНГ В КАНАЛ TODAY =====
 
 async def post_today():
     text = generate_today_post()
@@ -298,6 +304,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
