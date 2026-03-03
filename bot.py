@@ -111,6 +111,28 @@ def generate_today_post():
     
 # ===== ФУНКЦИЯ ПЯТНИЦЫ =====
 
+async def post_daily_category():
+    post = get_post_for_today()
+    if not post:
+        return
+
+    if post.get("file_id"):
+        await bot.send_photo(
+            CHANNEL_ID,
+            photo=post["file_id"],
+            caption=post["text"],
+            parse_mode="HTML"
+        )
+    else:
+        await bot.send_message(
+            CHANNEL_ID,
+            post["text"],
+            parse_mode="HTML"
+        )
+
+
+# ===== АВТОПОСТИНГ В КАНАЛ =====
+
 async def post_friday_toast():
     post, status = get_next_item("friday_toast")
 
@@ -137,32 +159,6 @@ async def post_friday_toast():
         caption=text,
         parse_mode="HTML"
     )
-
-
-# ===== АВТОПОСТИНГ В КАНАЛ =====
-
-async def post_friday_toast():
-    post = get_next_item("friday_toast")
-
-    if not post:
-        print("DEBUG: friday_toast empty")
-        return
-
-    text = f"<b>{post['title']}</b>\n\n{post['text']}\n\n{post['tag']}"
-
-    if post.get("file_id"):
-        await bot.send_photo(
-            CHANNEL_ID,
-            photo=post["file_id"],
-            caption=text,
-            parse_mode="HTML"
-        )
-    else:
-        await bot.send_message(
-            CHANNEL_ID,
-            text,
-            parse_mode="HTML"
-        )
 
 
 # ===== АВТОПОСТИНГ В КАНАЛ =====
@@ -302,6 +298,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
