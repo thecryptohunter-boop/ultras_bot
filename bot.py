@@ -201,7 +201,7 @@ async def scheduler():
             await post_today()
 
         # тест рубрики — каждые 3 минуты
-        if now.minute % 600 == 0 and last_category_minute != now.minute:
+        if now.minute % 3 == 0 and last_category_minute != now.minute:
             last_category_minute = now.minute
             print("DEBUG: post_friday_toast")
             await post_friday_toast()
@@ -298,6 +298,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
