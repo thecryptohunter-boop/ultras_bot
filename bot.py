@@ -124,6 +124,10 @@ async def post_friday_toast():
             "Загрузите новые материалы."
         )
         return
+        
+    if status == "stop":
+        return
+    
 
     text = f"<b>{post['title']}</b>\n\n{post['text']}\n\n{post['tag']}"
 
@@ -298,6 +302,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
