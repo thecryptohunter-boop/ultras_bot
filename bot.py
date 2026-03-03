@@ -112,26 +112,26 @@ def generate_today_post():
 # ===== ФУНКЦИЯ ПЯТНИЦЫ =====
 
 async def post_friday_toast():
-    item, status = get_next_item("friday_toast")
+    post, status = get_next_item("friday_toast")
 
     if status == "empty":
-        await bot.send_message(ADMIN_ID, "❌ В рубрике ПЯТНИЧНЫЙ ТОСТ нет материалов")
         return
 
     if status == "finished":
         await bot.send_message(
             ADMIN_ID,
-            "❗ Закончились материалы в рубрике ПЯТНИЧНЫЙ ТОСТ.\n"
-            "Желаете начать сначала?"
+            "⚠️ Закончились тосты в рубрике ПЯТНИЧНЫЙ ТОСТ.\n"
+            "Загрузите новые материалы."
         )
         return
 
-    caption = f"<b>🥂 ПЯТНИЧНЫЙ ТОСТ 🥂</b>\n\n{item['text']}\n\n#Тост"
+    text = f"<b>{post['title']}</b>\n\n{post['text']}\n\n{post['tag']}"
 
     await bot.send_photo(
-        chat_id=CHANNEL_ID,
-        photo=item["photo_id"],
-        caption=caption
+        CHANNEL_ID,
+        photo=post["file_id"],
+        caption=text,
+        parse_mode="HTML"
     )
 
 
@@ -298,6 +298,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
