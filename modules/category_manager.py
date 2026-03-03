@@ -16,18 +16,17 @@ def save_categories(data):
     with open(DATA_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-
 def get_next_item(code):
     data = load_categories()
     category = data.get(code)
 
     if not category or not category.get("items"):
-        return None
+        return None, "empty"
 
     idx = category.get("last_index", 0)
 
     if idx >= len(category["items"]):
-        idx = 0
+        return None, "finished"
 
     item = category["items"][idx]
 
@@ -40,7 +39,7 @@ def get_next_item(code):
         "tag": category["tag"],
         "file_id": item.get("file_id"),
         "text": item.get("text")
-    }
+    }, "ok"
 
 def add_item(code: str, file_id: str, text: str):
     data = load_categories()
