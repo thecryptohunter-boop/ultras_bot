@@ -26,7 +26,11 @@ def get_next_item(code):
     idx = category.get("last_index", 0)
 
     if idx >= len(category["items"]):
-        return None, "finished"
+       if not category.get("finished_notified"):
+           category["finished_notified"] = True
+           save_categories(data)
+           return None, "finished"
+       return None, "stop"
 
     item = category["items"][idx]
 
