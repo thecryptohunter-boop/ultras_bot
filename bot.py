@@ -157,7 +157,7 @@ async def post_friday_toast():
         return
     
 
-    text = f"<b>{post['title']}</b>\n\n{post['text']}\n\n{post['tag']}"
+    text = f"<b>{post['title']}</b>\n\n{post['text']}\n\n\n✍🏻<i>@EtVivit</i>\n\n{post['tag']}"
 
     await bot.send_photo(
         CHANNEL_ID,
@@ -304,6 +304,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
