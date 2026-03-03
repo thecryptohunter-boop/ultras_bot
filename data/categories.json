@@ -5,17 +5,21 @@
     "items": [
       {
         "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
-        "text": " За тех, кто не спрашивает — зачем.\n За тех, кто просто рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n Пьём за своих. Остальные подождут."
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто просто рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n Пьём за своих. Остальные подождут."
       },
       {
         "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
-        "text": " За нас!\n За вас!\n\n За всех!"
+        "text": "2 За нас!\n За вас!\n\n За всех!"
       },
       {
         "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
-        "text": " За нас!\n За вас!\n\n За всех!"
+        "text": "3 За нас!\n За вас!\n\n За всех!"
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICJ2mlswHYqPQQ7f8MnuPvvsCGDmXbAAJGFmsb1kooSWP81alL63vpAQADAgADeQADOgQ",
+        "text": " 4 За нас!\n За вас!\n\n За всех!"
       }
     ],
-    "last_index": 0
+    "last_index": 2
   }
 }
