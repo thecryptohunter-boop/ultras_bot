@@ -141,7 +141,7 @@ async def post_friday_toast():
 
     if status == "finished":
         await bot.send_message(
-           
+           ADMINS,
             "⚠️ Закончились тосты в рубрике ПЯТНИЧНЫЙ ТОСТ.\n"
             "Загрузите новые материалы."
         )
@@ -298,6 +298,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
