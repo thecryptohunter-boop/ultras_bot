@@ -2,10 +2,12 @@
   "friday_toast": {
     "title": "🥃 ПЯТНИЧНЫЙ ТОСТ",
     "tag": "#Тост",
-    "schedule": { "weekdays": [4], "hour": 11, "minute": 34 },
-    "last_index": 0,
+    "day": 4,
+    "hour": 16,
+    "minute": 0,
+    "last_index": -1,
     "finished_notified": false,
-    "items": [
+    "posts": [
       {
         "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
         "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
