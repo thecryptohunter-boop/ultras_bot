@@ -12,9 +12,11 @@ def add_post(category, file_id, text):
 
     save_categories(data)
 
-async def post_category(name):
+
+async def post_category(bot, CHANNEL_ID, ADMINS, name):
 
     data = load_categories()
+
     cat = data[name]
 
     posts = cat["posts"]
@@ -34,6 +36,7 @@ async def post_category(name):
             )
 
             cat["finished_notified"] = True
+
             save_categories(data)
 
         return
