@@ -1,4 +1,4 @@
-from storage import load_categories, save_categories
+from modules.storage import load_categories, save_categories
 
 
 def add_post(category, file_id, text):
