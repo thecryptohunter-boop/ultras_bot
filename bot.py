@@ -15,6 +15,7 @@ from modules.category_manager import (
 )
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
+from aiogram.client.default import DefaultBotProperties
 
 
 
@@ -28,7 +29,7 @@ class AddToast(StatesGroup):
 TOKEN = os.getenv("TOKEN")
 '''if not TOKEN:
     TOKEN = "ТВОЙ_ЛОКАЛЬНЫЙ_ТОКЕН_ДЛЯ_ТЕСТОВ"'''
-'''ADMIN_ID = os.getenv("ADMIN_ID")'''
+
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))  # <-- ID твоего канала
 
 ADMINS = {334306921}
@@ -382,6 +383,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
