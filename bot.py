@@ -7,7 +7,11 @@ from aiogram.types import FSInputFile
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.enums import ParseMode
-from modules.category_manager import get_next_item
+from modules.category_manager import (
+    load_categories,
+    save_categories,
+    get_next_item
+)
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.context import FSMContext
 
@@ -140,30 +144,38 @@ async def post_daily_category():
 
 # ===== АВТОПОСТИНГ В КАНАЛ ТОСТ =====
 
-async def post_friday_toast():
-    post, status = get_next_item("friday_toast")
+async def post_category(code):
+    data = load_categories()
+    category = data.get(code)
+
+    if not category:
+        return
+
+    item, status = get_next_item(code)
 
     if status == "empty":
         return
 
     if status == "finished":
-        await notify_admins(
-            "⚠️ Закончились тосты в рубрике ПЯТНИЧНЫЙ ТОСТ.\n"
-            "Загрузите новые материалы."
+        await bot.send_message(
+            list(ADMINS)[0],
+            f"⚠️ Закончились материалы в рубрике {category['title']}"
         )
         return
-        
+
     if status == "stop":
         return
-    
 
-    text = f"<b>{post['title']}</b>\n\n{post['text']}\n\n\n✍🏻<i>@EtVivit</i>\n\n{post['tag']}"
+    caption = (
+        f"<b>{category['title']}</b>\n\n"
+        f"{item['text']}\n\n"
+        f"{category['tag']}"
+    )
 
     await bot.send_photo(
         CHANNEL_ID,
-        photo=post["file_id"],
-        caption=text,
-        parse_mode="HTML"
+        photo=item["file_id"],
+        caption=caption
     )
 
 
@@ -189,6 +201,28 @@ async def post_today():
 
         
 # ===== SCHEDULER =====
+async def category_scheduler():
+    print("CATEGORY SCHEDULER STARTED")
+
+    last_run = {}
+
+    while True:
+        now = datetime.now()
+        data = load_categories()
+
+        for code, category in data.items():
+            s = category["schedule"]
+
+            if (
+                now.weekday() in s["weekdays"]
+                and now.hour == s["hour"]
+                and now.minute == s["minute"]
+            ):
+                if last_run.get(code) != now.date():
+                    last_run[code] = now.date()
+                    await post_category(code)
+
+        await asyncio.sleep(30)
 
 async def scheduler():
     print("SCHEDULER STARTED")
@@ -207,12 +241,12 @@ async def scheduler():
             await post_today()
 
         # тест рубрики — каждые 3 минуты
-        if now.minute % 1 == 0 and last_category_minute != now.minute:
+    '''if now.minute % 1 == 0 and last_category_minute != now.minute:
             last_category_minute = now.minute
             print("DEBUG: post_friday_toast")
             await post_friday_toast()
 
-        await asyncio.sleep(15)
+        await asyncio.sleep(15)'''
         
 
 # ===== ХЕНДЛЕРЫ =====
@@ -229,38 +263,81 @@ async def today_handler(message: Message):
     text = generate_today_post()
     await message.answer(text)
 
-@dp.message(F.text == "/add_toast")
-async def add_toast_start(message: Message, state: FSMContext):
-    if not is_admin(message.from_user.id):
+@dp.message(Command("rubrics"))
+async def rubrics_help(message: Message):
+    if message.from_user.id not in ADMINS:
         return
 
-    await message.answer("🍺 Пришли картинку для ПЯТНИЧНОГО ТОСТА")
-    await state.set_state(AddToast.waiting_image)
+    text = """
+Команды рубрик:
+
+/add friday_toast
+/add portrait_fan
+/add father_son
+/add retro_fans
+/add back_in_ussr
+/add old_album
+/add graffiti_day
+
+/run <код> — запустить вручную
+/reset <код> — сбросить индекс
+"""
+    await message.answer(text)
+    
+user_states = {}
+
+@dp.message(Command("add"))
+async def add_post(message: Message):
+    if message.from_user.id not in ADMINS:
+        return
+
+    args = message.text.split()
+    if len(args) < 2:
+        await message.answer("Укажи код рубрики")
+        return
+
+    code = args[1]
+    user_states[message.from_user.id] = {
+        "code": code,
+        "step": "photo"
+    }
+
+    await message.answer("Отправь фото")
 
 # ===== ПРИЕМ КАРТИНКИ - ПОЛУЧАЕМ ID =====
 
-@dp.message(AddToast.waiting_image, F.photo)
-async def add_toast_image(message: Message, state: FSMContext):
+@dp.message(F.photo)
+async def receive_photo(message: Message):
+    state = user_states.get(message.from_user.id)
+    if not state or state["step"] != "photo":
+        return
+
     file_id = message.photo[-1].file_id
+    state["file_id"] = file_id
+    state["step"] = "text"
 
-    await state.update_data(file_id=file_id)
-    await message.answer("✍️ Теперь пришли текст тоста")
-    await state.set_state(AddToast.waiting_text)
+    await message.answer("Теперь отправь текст")
 
-@dp.message(AddToast.waiting_text)
-async def add_toast_text(message: Message, state: FSMContext):
-    data = await state.get_data()
+@dp.message()
+async def receive_text(message: Message):
+    state = user_states.get(message.from_user.id)
+    if not state or state["step"] != "text":
+        return
 
-    file_id = data.get("file_id")
-    text = message.text
+    code = state["code"]
+    data = load_categories()
 
-    from modules.category_manager import add_item
-    add_item("friday_toast", file_id, text)
-    print("DEBUG SAVE:", data)
-    await message.answer("✅ Тост сохранён в рубрике ПЯТНИЧНЫЙ ТОСТ")
+    data[code]["items"].append({
+        "file_id": state["file_id"],
+        "text": message.text
+    })
+
+    save_categories(data)
+    user_states.pop(message.from_user.id)
+
+    await message.answer("✅ Добавлено")
     await message.reply(f"FILE_ID:\n{file_id}")
-    await state.clear()
-
+    
 
 '''@dp.message(F.text == "🏟 Ультрас-группировки")
 async def ultras_handler(message: Message):
@@ -304,6 +381,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
