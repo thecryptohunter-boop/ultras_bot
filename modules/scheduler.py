@@ -29,7 +29,7 @@ async def scheduler(post_today, bot, CHANNEL_ID, ADMINS):
         # КАТЕГОРИИ
 
         data = load_categories()
-
+        print("CATEGORIES:", data.keys())
         for code, cat in data.items():
 
             day = cat["day"]
@@ -42,7 +42,7 @@ async def scheduler(post_today, bot, CHANNEL_ID, ADMINS):
             if (
                 day_match
                 and now.hour == cat["hour"]
-                and now.minute == cat["minute"]
+                and abs(now.minute - cat["minute"]) <= 1
             ):
 
                 if last_category.get(code) != now.date():
