@@ -11,3 +11,41 @@ def add_post(category, file_id, text):
     })
 
     save_categories(data)
+
+async def post_category(name):
+
+    data = load_categories()
+    cat = data[name]
+
+    posts = cat["posts"]
+
+    if not posts:
+        return
+
+    index = cat["last_index"] + 1
+
+    if index >= len(posts):
+
+        if not cat["finished_notified"]:
+
+            await bot.send_message(
+                list(ADMINS)[0],
+                f"⚠️ Закончились материалы в рубрике {cat['title']}"
+            )
+
+            cat["finished_notified"] = True
+            save_categories(data)
+
+        return
+
+    post = posts[index]
+
+    await bot.send_photo(
+        CHANNEL_ID,
+        photo=post["file_id"],
+        caption=post["text"]
+    )
+
+    cat["last_index"] = index
+
+    save_categories(data)
