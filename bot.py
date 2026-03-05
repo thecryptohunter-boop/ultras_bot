@@ -27,8 +27,6 @@ class AddToast(StatesGroup):
 # ===== НАСТРОЙКИ =====
 
 TOKEN = os.getenv("TOKEN")
-'''if not TOKEN:
-    TOKEN = "ТВОЙ_ЛОКАЛЬНЫЙ_ТОКЕН_ДЛЯ_ТЕСТОВ"'''
 
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))  # <-- ID твоего канала
 
@@ -36,6 +34,13 @@ ADMINS = {334306921}
 
 def is_admin(user_id: int) -> bool:
     return user_id in ADMINS
+
+# ===== ИНИЦИАЛИЗАЦИЯ =====
+
+bot = Bot(
+    token=TOKEN,
+    default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+)
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
 
@@ -55,11 +60,6 @@ def load_events():
         return json.load(f)
 
 EVENTS = load_events()
-
-# ===== ИНИЦИАЛИЗАЦИЯ =====
-
-bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
-dp = Dispatcher()
 
 
 # ===== КНОПКИ =====
@@ -177,7 +177,8 @@ async def post_category(code):
     await bot.send_photo(
         CHANNEL_ID,
         photo=item["file_id"],
-        caption=caption
+        caption=caption,
+        parse_mode="HTML"
     )
 
 
@@ -203,6 +204,7 @@ async def post_today():
 
         
 # ===== SCHEDULER =====
+
 async def category_scheduler():
     print("CATEGORY SCHEDULER STARTED")
 
@@ -230,7 +232,6 @@ async def scheduler():
     print("SCHEDULER STARTED")
 
     last_today_minute = None
-    last_category_minute = None
 
     while True:
         now = datetime.now()
@@ -241,14 +242,6 @@ async def scheduler():
             last_today_minute = now.minute
             print("DEBUG: post_today")
             await post_today()
-
-        # тест рубрики — каждые 3 минуты
-    '''if now.minute % 1 == 0 and last_category_minute != now.minute:
-            last_category_minute = now.minute
-            print("DEBUG: post_friday_toast")
-            await post_friday_toast()
-
-        await asyncio.sleep(15)'''
         
 
 # ===== ХЕНДЛЕРЫ =====
@@ -338,7 +331,7 @@ async def receive_text(message: Message):
     user_states.pop(message.from_user.id)
 
     await message.answer("✅ Добавлено")
-    await message.reply(f"FILE_ID:\n{file_id}")
+    await message.reply(f"FILE_ID:\n{state['file_id']}")
     
 
 '''@dp.message(F.text == "🏟 Ультрас-группировки")
@@ -378,11 +371,13 @@ async def set_category_photo(message: types.Message, state: FSMContext):
 
 async def main():
     asyncio.create_task(scheduler())
+    asyncio.create_task(category_scheduler())
     await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
