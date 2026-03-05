@@ -49,54 +49,66 @@
   "portrait_fan": {
     "title": "Портрет фаната",
     "tag": "#ПортретФаната",
-    "schedule": { "weekdays": [0], "hour": 15, "minute": 0 },
-    "last_index": 0,
+    "day": 0,
+    "hour": 15,
+    "minute": 0,
+    "last_index": -1,
     "finished_notified": false,
-    "items": []
+    "posts": []
   },
 
   "father_son": {
     "title": "От отца к сыну",
     "tag": "#ОтОтцаКСыну",
-    "schedule": { "weekdays": [3], "hour": 15, "minute": 0 },
-    "last_index": 0,
+    "day": 1,
+    "hour": 15,
+    "minute": 0,
+    "last_index": -1,
     "finished_notified": false,
-    "items": []
+    "posts": []
   },
 
   "retro_fans": {
     "title": "RETRO FANS",
     "tag": "#RetroFans",
-    "schedule": { "weekdays": [1], "hour": 15, "minute": 0 },
-    "last_index": 0,
+    "day": 2,
+    "hour": 16,
+    "minute": 0,
+    "last_index": -1,
     "finished_notified": false,
-    "items": []
+    "posts": []
   },
 
   "back_in_ussr": {
     "title": "BACK IN USSR",
     "tag": "#BackInUSSR",
-    "schedule": { "weekdays": [2], "hour": 15, "minute": 0 },
-    "last_index": 0,
+    "day": 3,
+    "hour": 15,
+    "minute": 0,
+    "last_index": -1,
     "finished_notified": false,
-    "items": []
+    "posts": []
   },
 
   "old_album": {
     "title": "Старый альбом",
     "tag": "#СтарыйАльбом",
-    "schedule": { "weekdays": [5], "hour": 15, "minute": 0 },
-    "last_index": 0,
+    "day": 4,
+    "hour": 15,
+    "minute": 0,
+    "last_index": -1,
     "finished_notified": false,
-    "items": []
+    "posts": []
   },
 
   "graffiti_day": {
     "title": "Граффити дня",
     "tag": "#ГраффитиДня",
-    "schedule": { "weekdays": [0,2,4], "hour": 10, "minute": 0 },
-    "last_index": 0,
+    "day": 1,3,5
+    "hour": 14,
+    "minute": 0,
+    "last_index": -1,
     "finished_notified": false,
-    "items": []
+    "posts": []
   }
 }
