@@ -2,6 +2,9 @@
   "friday_toast": {
     "title": "🥃 ПЯТНИЧНЫЙ ТОСТ",
     "tag": "#Тост",
+    "schedule": { "weekdays": [4], "hour": 09, "minute": 47 },
+    "last_index": 0,
+    "finished_notified": false,
     "items": [
       {
         "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
