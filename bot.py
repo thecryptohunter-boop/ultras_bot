@@ -144,42 +144,35 @@ async def post_daily_category():
         )
 
 
-# ===== АВТОПОСТИНГ В КАНАЛ ТОСТ =====
+# ===== АВТОПОСТИНГ РУБРИКИ =====
 
-async def post_category(code):
+async def post_category(name):
+
     data = load_categories()
-    category = data.get(code)
+    cat = data[name]
 
-    if not category:
+    posts = cat["posts"]
+
+    if not posts:
         return
 
-    item, status = get_next_item(code)
+    index = cat["last_index"] + 1
 
-    if status == "empty":
-        return
+    if index >= len(posts):
+        index = 0
 
-    if status == "finished":
-        await bot.send_message(
-            list(ADMINS)[0],
-            f"⚠️ Закончились материалы в рубрике {category['title']}"
-        )
-        return
-
-    if status == "stop":
-        return
-
-    caption = (
-        f"<b>{category['title']}</b>\n\n"
-        f"{item['text']}\n\n"
-        f"{category['tag']}"
-    )
+    post = posts[index]
 
     await bot.send_photo(
         CHANNEL_ID,
-        photo=item["file_id"],
-        caption=caption,
+        photo=post["file_id"],
+        caption=post["text"],
         parse_mode="HTML"
     )
+
+    cat["last_index"] = index
+
+    save_categories(data)
 
 
 # ===== АВТОПОСТИНГ В КАНАЛ TODAY =====
@@ -206,27 +199,24 @@ async def post_today():
 # ===== SCHEDULER =====
 
 async def category_scheduler():
-    print("CATEGORY SCHEDULER STARTED")
-
-    last_run = {}
 
     while True:
+
         now = datetime.now()
+        weekday = now.weekday()
+
         data = load_categories()
 
-        for code, category in data.items():
-            s = category["schedule"]
+        for name, cat in data.items():
 
             if (
-                now.weekday() in s["weekdays"]
-                and now.hour == s["hour"]
-                and now.minute == s["minute"]
+                cat["day"] == weekday
+                and cat["hour"] == now.hour
+                and cat["minute"] == now.minute
             ):
-                if last_run.get(code) != now.date():
-                    last_run[code] = now.date()
-                    await post_category(code)
+                await post_category(name)
 
-        await asyncio.sleep(30)
+        await asyncio.sleep(60)
 
 async def scheduler():
     print("SCHEDULER STARTED")
@@ -238,7 +228,7 @@ async def scheduler():
   #     print("DEBUG TIME:", now.strftime("%H:%M:%S"))
         
         # тест Today — каждые 2 минуты
-        if now.minute % 60 == 0 and last_today_minute != now.minute:
+        if now.minute % 10 == 0 and last_today_minute != now.minute:
             last_today_minute = now.minute
             print("DEBUG: post_today")
             await post_today()
@@ -246,17 +236,13 @@ async def scheduler():
 
 # ===== ХЕНДЛЕРЫ =====
 
-@dp.message(F.text == "/start")
+@dp.message(Command("start"))
 async def start_handler(message: Message):
     await message.answer(
         "🤖 Ультрас-ассистент активен.\n\nВыбери раздел:",
         reply_markup=main_kb
     )
 
-@dp.message(F.text == "📅 Сегодня в истории")
-async def today_handler(message: Message):
-    text = generate_today_post()
-    await message.answer(text)
 
 @dp.message(Command("rubrics"))
 async def rubrics_help(message: Message):
@@ -278,62 +264,103 @@ async def rubrics_help(message: Message):
 /reset <код> — сбросить индекс
 """
     await message.answer(text)
-    
+
+# ===== КОМАНДА ДОБАВЛЕНИЯ РУБРИК =====
+
 user_states = {}
 
 @dp.message(Command("add"))
-async def add_post(message: Message):
-    if message.from_user.id not in ADMINS:
-        return
+async def add_menu(message: Message):
 
-    args = message.text.split()
-    if len(args) < 2:
-        await message.answer("Укажи код рубрики")
-        return
+    rubrics = [
+        "portrait_fan",
+        "retro_fans",
+        "ussr_back",
+        "old_album",
+        "father_son",
+        "graffiti_day",
+        "friday_toast"
+    ]
 
-    code = args[1]
-    user_states[message.from_user.id] = {
-        "code": code,
+    text = "Выберите рубрику:\n\n"
+
+    for r in rubrics:
+        text += f"/add_{r}\n"
+
+    await message.answer(text)
+
+@dp.message(F.text.startswith("/add_"))
+async def add_rubric(message: Message):
+
+    rubric = message.text.replace("/add_", "")
+
+    upload_state[message.from_user.id] = {
+        "rubric": rubric,
         "step": "photo"
     }
 
-    await message.answer("Отправь фото")
+    await message.answer("Отправьте фото")
 
-# ===== ПРИЕМ КАРТИНКИ - ПОЛУЧАЕМ ID =====
+
+# ===== ПРИЕМ КАРТИНКИ =====
 
 @dp.message(F.photo)
 async def receive_photo(message: Message):
-    state = user_states.get(message.from_user.id)
-    if not state or state["step"] != "photo":
+
+    user = message.from_user.id
+
+    if user not in upload_state:
+        return
+
+    state = upload_state[user]
+
+    if state["step"] != "photo":
         return
 
     file_id = message.photo[-1].file_id
+
     state["file_id"] = file_id
     state["step"] = "text"
 
-    await message.answer("Теперь отправь текст")
+    await message.answer("Теперь отправьте текст")
 
-@dp.message()
+# ===== ПРИЕМ ТЕКСТА =====
+
+@dp.message(F.text)
 async def receive_text(message: Message):
-    state = user_states.get(message.from_user.id)
-    if not state or state["step"] != "text":
+
+    user = message.from_user.id
+
+    if user not in upload_state:
         return
 
-    code = state["code"]
+    state = upload_state[user]
+
+    if state["step"] != "text":
+        return
+
+    rubric = state["rubric"]
+
     data = load_categories()
 
-    data[code]["items"].append({
+    data[rubric]["posts"].append({
         "file_id": state["file_id"],
         "text": message.text
     })
 
     save_categories(data)
-    user_states.pop(message.from_user.id)
 
-    await message.answer("✅ Добавлено")
+    await message.answer("Пост добавлен!")
+
+    del upload_state[user]
     await message.reply(f"FILE_ID:\n{state['file_id']}")
     
 
+@dp.message(F.text == "📅 Сегодня в истории")
+async def today_handler(message: Message):
+    text = generate_today_post()
+    await message.answer(text)
+    
 '''@dp.message(F.text == "🏟 Ультрас-группировки")
 async def ultras_handler(message: Message):
     await message.answer("Раздел в разработке 🔧\nСкоро будет большая база группировок.")
@@ -377,6 +404,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
