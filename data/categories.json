@@ -2,7 +2,7 @@
   "friday_toast": {
     "title": "🥃 ПЯТНИЧНЫЙ ТОСТ",
     "tag": "#Тост",
-    "schedule": { "weekdays": [4], "hour": 9, "minute": 55 },
+    "schedule": { "weekdays": [4], "hour": 11, "minute": 34 },
     "last_index": 0,
     "finished_notified": false,
     "items": [
