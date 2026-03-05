@@ -8,8 +8,8 @@ from aiogram.types import Message, FSInputFile, ReplyKeyboardMarkup, KeyboardBut
 from aiogram.filters import Command
 from aiogram.enums import ParseMode
 
-from scheduler import scheduler
-from admin_commands import register_admin_handlers
+from modules.scheduler import scheduler
+from modules.admin_commands import register_admin_handlers
 
 TOKEN = os.getenv("TOKEN")
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
@@ -197,6 +197,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
