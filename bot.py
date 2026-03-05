@@ -7,6 +7,7 @@ from aiogram.types import FSInputFile
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.enums import ParseMode
+from aiogram.filters import Command
 from modules.category_manager import (
     load_categories,
     save_categories,
@@ -95,7 +96,7 @@ def generate_today_post():
     selected_events = events[:6]
 
     text = f"""
-📅 <b>СЕГОДНЯШНЯЯ ДАТА {today} 🔈 в истории ультрас:</b>
+📅 <b>СЕГОДНЯШНИЙ ДЕНЬ {today} 🔈 в истории ультрас:</b>
 
 
 """  
@@ -235,7 +236,7 @@ async def scheduler():
   #     print("DEBUG TIME:", now.strftime("%H:%M:%S"))
         
         # тест Today — каждые 2 минуты
-        if now.minute % 600 == 0 and last_today_minute != now.minute:
+        if now.minute % 60 == 0 and last_today_minute != now.minute:
             last_today_minute = now.minute
             print("DEBUG: post_today")
             await post_today()
@@ -381,6 +382,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
