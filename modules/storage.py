@@ -12,4 +12,4 @@ def load_categories():
 def save_categories(data):
 
     with open(FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+        json.dump(data, f, ensure_ascii=False, indent=2)
