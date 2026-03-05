@@ -7,7 +7,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message, FSInputFile, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.filters import Command
 from aiogram.enums import ParseMode
-
+from aiogram.client.default import DefaultBotProperties
 from modules.scheduler import scheduler
 from modules.admin_commands import register_admin_handlers
 
@@ -15,9 +15,6 @@ TOKEN = os.getenv("TOKEN")
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
 
 ADMINS = {334306921}
-
-bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
-dp = Dispatcher()
 
 # ===== ИНИЦИАЛИЗАЦИЯ =====
 
@@ -98,14 +95,6 @@ async def notify_admins(text):
     for admin_id in ADMINS:
         await bot.send_message(admin_id, text)
 
-# ===== АВТОПОСТИНГ РУБРИКИ =====
-
-async def main():
-
-    asyncio.create_task(category_scheduler())
-
-    await dp.start_polling(bot)
-
 
 # ===== АВТОПОСТИНГ В КАНАЛ TODAY =====
 
@@ -182,21 +171,23 @@ async def set_category_photo(message: types.Message, state: FSMContext):
     await message.answer("Картинка сохранена.")
     await state.finish()'''
     
-# ===== ЗАПУСК =====
+# ===== АВТОПОСТИНГ РУБРИКИ =====
 
 register_admin_handlers(dp, bot, ADMINS)
 
 async def main():
 
     asyncio.create_task(
-        scheduler(post_today)
+        scheduler(post_today, bot, CHANNEL_ID, ADMINS)
     )
 
     await dp.start_polling(bot)
 
+# ===== ЗАПУСК =====
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
