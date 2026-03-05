@@ -1,49 +1,44 @@
 import json
 import os
+from pathlib import Path
 
-DATA_PATH = "data/categories.json"
+FILE_PATH = Path("data/categories.json")
 
 
 def load_categories():
-    if not os.path.exists(DATA_PATH):
+    if not FILE_PATH.exists():
         return {}
-
-    with open(DATA_PATH, "r", encoding="utf-8") as f:
+    with open(FILE_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
 def save_categories(data):
-    with open(DATA_PATH, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    with open(FILE_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
 
 def get_next_item(code):
     data = load_categories()
     category = data.get(code)
 
-    if not category or not category.get("items"):
+    if not category or not category["items"]:
         return None, "empty"
 
-    idx = category.get("last_index", 0)
+    idx = category["last_index"]
 
     if idx >= len(category["items"]):
-       if not category.get("finished_notified"):
-           category["finished_notified"] = True
-           save_categories(data)
-           return None, "finished"
-       return None, "stop"
+        if not category["finished_notified"]:
+            category["finished_notified"] = True
+            save_categories(data)
+            return None, "finished"
+        return None, "stop"
 
     item = category["items"][idx]
 
-    category["last_index"] = idx + 1
-    data[code] = category
+    category["last_index"] += 1
     save_categories(data)
 
-    return {
-        "title": category["title"],
-        "tag": category["tag"],
-        "file_id": item.get("file_id"),
-        "text": item.get("text")
-    }, "ok"
+    return item, "ok"
 
 def add_item(code: str, file_id: str, text: str):
     data = load_categories()
