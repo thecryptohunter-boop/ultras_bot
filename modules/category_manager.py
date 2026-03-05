@@ -14,7 +14,7 @@ def add_post(category, file_id, text):
 
 
 async def post_category(bot, CHANNEL_ID, ADMINS, name):
-
+    print("POST CATEGORY:", name)
     data = load_categories()
 
     cat = data[name]
