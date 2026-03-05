@@ -5,8 +5,13 @@ FILE = "data/categories.json"
 
 def load_categories():
 
-    with open(FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open("categories.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    except Exception as e:
+        print("JSON ERROR:", e)
+        return {}
 
 
 def save_categories(data):
