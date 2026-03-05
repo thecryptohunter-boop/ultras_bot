@@ -36,15 +36,62 @@
         "text": " 8 За нас!\n За вас!\n\n За всех!"
       },
       {
-        "file_id": "AgACAgIAAxkBAAICY2mnOpidakCLCUjpEu46LRSyLSg-AAICEWsb1kowSSynx0r1ar-rAQADAgADeAADOgQ",
-        "text": " 9 За нас!\n За вас!\n\n За всех!"
-      },
-      {
         "file_id": "AgACAgIAAxkBAAICammnOz_IyeGhf9NaaNboGF5AQxWDAAILEWsb1kowSY_5THthOGiQAQADAgADeQADOgQ",
         "text": " 10 За нас!\n За вас!\n\n За всех!"
-      }
-    ],
+      }]
+  },
+
+  "portrait_fan": {
+    "title": "Портрет фаната",
+    "tag": "#ПортретФаната",
+    "schedule": { "weekdays": [0], "hour": 15, "minute": 0 },
     "last_index": 0,
-    "finished_notified": false
-    }
+    "finished_notified": false,
+    "items": []
+  },
+
+  "father_son": {
+    "title": "От отца к сыну",
+    "tag": "#ОтОтцаКСыну",
+    "schedule": { "weekdays": [3], "hour": 15, "minute": 0 },
+    "last_index": 0,
+    "finished_notified": false,
+    "items": []
+  },
+
+  "retro_fans": {
+    "title": "RETRO FANS",
+    "tag": "#RetroFans",
+    "schedule": { "weekdays": [1], "hour": 15, "minute": 0 },
+    "last_index": 0,
+    "finished_notified": false,
+    "items": []
+  },
+
+  "back_in_ussr": {
+    "title": "BACK IN USSR",
+    "tag": "#BackInUSSR",
+    "schedule": { "weekdays": [2], "hour": 15, "minute": 0 },
+    "last_index": 0,
+    "finished_notified": false,
+    "items": []
+  },
+
+  "old_album": {
+    "title": "Старый альбом",
+    "tag": "#СтарыйАльбом",
+    "schedule": { "weekdays": [5], "hour": 15, "minute": 0 },
+    "last_index": 0,
+    "finished_notified": false,
+    "items": []
+  },
+
+  "graffiti_day": {
+    "title": "Граффити дня",
+    "tag": "#ГраффитиДня",
+    "schedule": { "weekdays": [0,2,4], "hour": 10, "minute": 0 },
+    "last_index": 0,
+    "finished_notified": false,
+    "items": []
+  }
 }
