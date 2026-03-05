@@ -1,11 +1,11 @@
 import asyncio
 from datetime import datetime
 
-from modules.category_manager import post_category
 from modules.storage import load_categories
+from modules.category_manager import post_category
 
 
-async def scheduler(post_today):
+async def scheduler(post_today, bot, CHANNEL_ID, ADMINS):
 
     print("SCHEDULER STARTED")
 
@@ -17,11 +17,13 @@ async def scheduler(post_today):
         now = datetime.now()
 
         # TODAY
+
         if now.hour == 9 and now.minute == 0:
 
             if last_today != now.date():
 
                 last_today = now.date()
+
                 await post_today()
 
         # РУБРИКИ
@@ -40,6 +42,6 @@ async def scheduler(post_today):
 
                     last_category[code] = now.date()
 
-                    await post_category(code)
+                    await post_category(bot, CHANNEL_ID, ADMINS, code)
 
         await asyncio.sleep(30)
