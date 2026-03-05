@@ -30,6 +30,7 @@ async def scheduler(post_today, bot, CHANNEL_ID, ADMINS):
 
         data = load_categories()
         print("CATEGORIES:", data.keys())
+        print("TIME:", now.hour, now.minute, "weekday:", now.weekday())
         for code, cat in data.items():
 
             day = cat["day"]
