@@ -41,6 +41,8 @@ bot = Bot(
     token=TOKEN,
     default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
+dp = Dispatcher()
+
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
 
@@ -404,6 +406,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
