@@ -18,7 +18,7 @@ async def scheduler(post_today, bot, CHANNEL_ID, ADMINS):
 
         # TODAY
 
-        if now.hour == 17 and now.minute == 30:
+        if now.hour == 18 and now.minute == 45:
 
             if last_today != now.date():
 
@@ -26,30 +26,24 @@ async def scheduler(post_today, bot, CHANNEL_ID, ADMINS):
 
                 await post_today()
 
-        # РУБРИКИ
+        # КАТЕГОРИИ
 
         data = load_categories()
 
         for code, cat in data.items():
 
             day = cat["day"]
-     
+
             if isinstance(day, list):
                 day_match = now.weekday() in day
-            else:   
+            else:
                 day_match = now.weekday() == day
+
             if (
                 day_match
                 and now.hour == cat["hour"]
                 and now.minute == cat["minute"]
             ):
-
-
-if isinstance(day, list):
-    day_match = now.weekday() in day
-else:
-    day_match = now.weekday() == day
-
 
                 if last_category.get(code) != now.date():
 
