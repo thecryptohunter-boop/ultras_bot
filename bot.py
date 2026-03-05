@@ -30,7 +30,7 @@ TOKEN = os.getenv("TOKEN")
 
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))  # <-- ID твоего канала
 
-ADMINS = {334306921}
+ADMINS = {}
 
 def is_admin(user_id: int) -> bool:
     return user_id in ADMINS
@@ -406,6 +406,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
