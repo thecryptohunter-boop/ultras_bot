@@ -1,27 +1,45 @@
 import asyncio
 from datetime import datetime
 
-from storage import load_categories
 from category_manager import post_category
+from storage import load_categories
 
 
-async def category_scheduler():
+async def scheduler(post_today):
+
+    print("SCHEDULER STARTED")
+
+    last_today = None
+    last_category = {}
 
     while True:
 
         now = datetime.now()
-        weekday = now.weekday()
+
+        # TODAY
+        if now.hour == 9 and now.minute == 0:
+
+            if last_today != now.date():
+
+                last_today = now.date()
+                await post_today()
+
+        # РУБРИКИ
 
         data = load_categories()
 
-        for name, cat in data.items():
+        for code, cat in data.items():
 
             if (
-                cat["day"] == weekday
-                and cat["hour"] == now.hour
-                and cat["minute"] == now.minute
+                now.weekday() == cat["day"]
+                and now.hour == cat["hour"]
+                and now.minute == cat["minute"]
             ):
 
-                await post_category(name)
+                if last_category.get(code) != now.date():
 
-        await asyncio.sleep(60)
+                    last_category[code] = now.date()
+
+                    await post_category(code)
+
+        await asyncio.sleep(30)
