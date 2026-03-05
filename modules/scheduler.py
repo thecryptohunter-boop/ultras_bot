@@ -1,8 +1,8 @@
 import asyncio
 from datetime import datetime
 
-from category_manager import post_category
-from storage import load_categories
+from modules.category_manager import post_category
+from modules.storage import load_categories
 
 
 async def scheduler(post_today):
