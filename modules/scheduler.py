@@ -3,12 +3,9 @@ from datetime import datetime
 
 from modules.storage import load_categories
 from modules.category_manager import post_category
+from zoneinfo import ZoneInfo
 
-import pytz
-
-tz = pytz.timezone("Europe/Berlin")
-
-now = datetime.now(tz)
+now = datetime.now(ZoneInfo("Europe/Moscow"))
 
 async def scheduler(post_today, bot, CHANNEL_ID, ADMINS):
 
