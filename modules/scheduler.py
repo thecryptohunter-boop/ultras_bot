@@ -4,6 +4,7 @@ from datetime import datetime
 from modules.storage import load_categories
 from modules.category_manager import post_category
 from zoneinfo import ZoneInfo
+from modules.config import TOKEN, CHANNEL_ID, ADMINS
 
 now = datetime.now(ZoneInfo("Europe/Moscow"))
 
