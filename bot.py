@@ -10,11 +10,7 @@ from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 from modules.scheduler import scheduler
 from modules.admin_commands import register_admin_handlers
-
-TOKEN = os.getenv("TOKEN")
-CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
-
-ADMINS = {334306921}
+from modules.config import TOKEN, CHANNEL_ID, ADMINS
 
 # ===== ИНИЦИАЛИЗАЦИЯ =====
 
@@ -187,6 +183,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
