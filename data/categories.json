@@ -50,44 +50,76 @@
     "title": "✊🧨 ПОРТРЕТ ФАНАТА",
     "tag": "#PortraitFan",
     "day": 0,
-    "hour": 15,
-    "minute": 0,
+    "hour": 14,
+    "minute": 58,
     "last_index": -1,
     "finished_notified": false,
-    "posts": []
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
   },
 
   "father_son": {
     "title": "👨‍👦 ОТ ОТЦА К СЫНУ",
     "tag": "#FatherToSon",
     "day": 0,
-    "hour": 17,
-    "minute": 55,
+    "hour": 14,
+    "minute": 59,
     "last_index": -1,
     "finished_notified": false,
-    "posts": []
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
   },
 
   "retro_fans": {
     "title": "📼 RETRO FANS",
     "tag": "#RetroFans",
-    "day": 2,
-    "hour": 18,
+    "day": 0,
+    "hour": 15,
     "minute": 0,
     "last_index": -1,
     "finished_notified": false,
-    "posts": []
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
   },
 
   "back_in_ussr": {
     "title": "🚩 BACK IN USSR",
     "tag": "#BackInUSSR",
-    "day": 3,
+    "day": 0,
     "hour": 15,
     "minute": 0,
     "last_index": -1,
     "finished_notified": false,
-    "posts": []
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
   },
 
   "old_album": {
@@ -98,17 +130,33 @@
     "minute": 0,
     "last_index": -1,
     "finished_notified": false,
-    "posts": []
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
   },
 
   "graffiti_day": {
     "title": "🎨 ГРАФФИТИ ДНЯ",
     "tag": "#Graffiti",
     "day": [0,2,4],
-    "hour": 17,
-    "minute": 54,
+    "hour": 15,
+    "minute": 59,
     "last_index": -1,
     "finished_notified": false,
-    "posts": []
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIC42muziyFR7rM2eSj2-7UYcrnukJEAAL_Fmsbsax5Sen6qDek71i8AQADAgADeQADOgQ",
+        "text": "Очень правильно!"
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "Верно!"
+      }]
   }
 }
