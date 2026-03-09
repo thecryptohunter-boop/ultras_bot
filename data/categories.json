@@ -60,9 +60,9 @@
   "father_son": {
     "title": "👨‍👦 ОТ ОТЦА К СЫНУ",
     "tag": "#FatherToSon",
-    "day": 1,
-    "hour": 15,
-    "minute": 0,
+    "day": 0,
+    "hour": 17,
+    "minute": 55,
     "last_index": -1,
     "finished_notified": false,
     "posts": []
@@ -105,8 +105,8 @@
     "title": "🎨 ГРАФФИТИ ДНЯ",
     "tag": "#Graffiti",
     "day": [0,2,4],
-    "hour": 11,
-    "minute": 0,
+    "hour": 17,
+    "minute": 54,
     "last_index": -1,
     "finished_notified": false,
     "posts": []
