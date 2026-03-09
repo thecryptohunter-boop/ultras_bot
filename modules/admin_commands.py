@@ -16,7 +16,7 @@ def register_admin_handlers(dp, bot, ADMINS):
         if message.from_user.id not in ADMINS:
             return
 
-        text = """
+        text = 
 ⚙️ <b>АДМИН ПАНЕЛЬ</b>
 
 Добавление постов:
@@ -37,7 +37,7 @@ def register_admin_handlers(dp, bot, ADMINS):
 /setindex <код> <номер>
 /reload — перечитать JSON
 /stats — статистика
-"""
+
 
         await message.answer(text)
 
