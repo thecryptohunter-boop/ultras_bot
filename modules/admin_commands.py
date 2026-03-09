@@ -75,6 +75,4 @@ def register_admin_handlers(dp, bot, ADMINS):
 
         user_states.pop(message.from_user.id)
 
-        await message.answer("✅ Пост добавлен")
-        file_id = message.photo[-1].file_id
-        await message.reply(f"FILE_ID:\n{file_id}")
+        await message.answer("✅ Пост добавлен, \n{file_id}")
