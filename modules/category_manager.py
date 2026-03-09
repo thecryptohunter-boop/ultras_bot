@@ -46,7 +46,7 @@ async def post_category(bot, CHANNEL_ID, ADMINS, name):
     await bot.send_photo(
         CHANNEL_ID,
         photo=post["file_id"],
-        caption=post["text"]
+        caption = f"{cat['title']}\n\n{post['text']}\n\n{cat['tag']}"
     )
 
     cat["last_index"] = index
