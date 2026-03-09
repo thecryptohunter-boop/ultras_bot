@@ -52,7 +52,7 @@ def register_admin_handlers(dp, bot, ADMINS):
         state["step"] = "text"
 
         await message.answer("Теперь отправь текст")
-
+        await message.reply(f"FILE_ID:\n{file_id}")
 
     @dp.message()
     async def receive_text(message: Message):
@@ -75,4 +75,4 @@ def register_admin_handlers(dp, bot, ADMINS):
 
         user_states.pop(message.from_user.id)
 
-        await message.answer("✅ Пост добавлен, \n{file_id}")
+        await message.answer("✅ Пост добавлен")
