@@ -21,7 +21,7 @@ async def scheduler(post_today, bot, CHANNEL_ID, ADMINS):
 
         # TODAY
 
-        if now.hour == 16 and now.minute == 25:
+        if now.hour == 8 and now.minute == 30:
 
             if last_today != now.date():
 
