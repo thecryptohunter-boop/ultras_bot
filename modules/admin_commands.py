@@ -83,7 +83,7 @@ def register_admin_handlers(dp, bot, ADMINS):
 
     # ===== ПОЛУЧЕНИЕ ТЕКСТА =====
 
-    @dp.message()
+    @dp.message(lambda m: m.text)
     async def receive_text(message: Message):
 
         state = user_states.get(message.from_user.id)
