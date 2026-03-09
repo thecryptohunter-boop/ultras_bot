@@ -6,7 +6,6 @@ from modules.category_manager import post_category
 from zoneinfo import ZoneInfo
 from modules.config import TOKEN, CHANNEL_ID, ADMINS
 
-now = datetime.now(ZoneInfo("Europe/Moscow"))
 
 async def scheduler(post_today, bot, CHANNEL_ID, ADMINS):
 
