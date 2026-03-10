@@ -16,7 +16,11 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
         if message.from_user.id not in ADMINS:
             return
+        data = load_categories()
 
+        for code in data:
+            text += f"/add {code}\n"
+            
         text = """
 ⚙️ <b>АДМИН ПАНЕЛЬ</b>
 
@@ -67,7 +71,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
     # ===== ПОЛУЧЕНИЕ ФОТО =====
 
-    @dp.message(lambda m: m.photo)
+    @dp.message(lambda m: m.photo and not m.text)
     async def receive_photo(message: Message):
 
         state = user_states.get(message.from_user.id)
@@ -85,7 +89,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
     # ===== ПОЛУЧЕНИЕ ТЕКСТА =====
 
-    @dp.message(lambda m: m.text)
+    @dp.message(lambda m: m.text and not m.text.startswith("/"))
     async def receive_text(message: Message):
 
         state = user_states.get(message.from_user.id)
@@ -202,13 +206,15 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
             text += f"Опубликовано: {index + 1}\n\n"
 
         await message.answer(text)
- 
+    
+    # ===== RUN ===== 
     
     @dp.message(Command("run"))
     async def run_category(message: Message):
 
         if message.from_user.id not in ADMINS:
             return
+
         data = load_categories()
 
         if code not in data:
@@ -228,3 +234,4 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
             await message.answer(f"✅ Рубрика {code} опубликована")
         except Exception as e:
             await message.answer(f"Ошибка: {e}")  
+        print("RUN CATEGORY:", code)
