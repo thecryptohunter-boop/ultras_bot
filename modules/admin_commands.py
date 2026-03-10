@@ -19,26 +19,26 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
         data = load_categories()
 
-    text = """
-⚙️ <b>АДМИН ПАНЕЛЬ</b>
+        text = """
+    ⚙️ <b>АДМИН ПАНЕЛЬ</b>
 
-Добавление постов:
-"""
+    Добавление постов:
+    """
 
         for code in data:
             text += f"/add {code}\n"
 
         text += """
 
-Управление:
+    Управление:
 
-/preview friday_toast - предпросмотр
-/run friday_toast — пост сейчас
-/runall — запустить все сразу
-/setindex friday_toast 3
-/reload — перечитать JSON
-/stats — статистика
-"""
+    /preview friday_toast - предпросмотр
+    /run friday_toast — пост сейчас
+    /runall — запустить все сразу
+    /setindex friday_toast 3
+    /reload — перечитать JSON
+    /stats — статистика
+    """
 
         await message.answer(text)
 
