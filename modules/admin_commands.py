@@ -2,6 +2,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 from modules.category_manager import add_post
 from modules.storage import load_categories, save_categories
+from modules.category_manager import post_category
 
 user_states = {}
 
@@ -33,6 +34,7 @@ def register_admin_handlers(dp, bot, ADMINS):
 
 Управление:
 
+/preview friday_toast
 /run friday_toast — пост сейчас
 /setindex friday_toast 3
 /reload — перечитать JSON
@@ -134,10 +136,50 @@ def register_admin_handlers(dp, bot, ADMINS):
         if message.from_user.id not in ADMINS:
             return
 
-        load_categories()
+        await message.answer("♻️ JSON перечитан")
+   
+    # ===== PREVIEW =====
+    
+    @dp.message(Command("preview"))
+    async def preview_post(message: Message):
 
-        await message.answer("♻️ JSON перезагружен")
+        if message.from_user.id not in ADMINS:
+            return
 
+        args = message.text.split()
+
+        if len(args) < 2:
+            await message.answer("Пример:\n/preview friday_toast")
+            return
+
+        code = args[1]
+
+        data = load_categories()
+
+        if code not in data:
+            await message.answer("Нет такой рубрики")
+            return
+
+        cat = data[code]
+
+        posts = cat["posts"]
+
+        index = cat["last_index"] + 1
+
+        if index >= len(posts):
+            await message.answer("⚠️ Постов больше нет")
+            return
+
+        post = posts[index]
+
+        caption = f"{cat['title']}\n\n{post['text']}\n\n{cat['tag']}"
+
+        await bot.send_photo(
+            message.chat.id,
+            photo=post["file_id"],
+            caption=caption
+        )
+    
     # ===== СТАТИСТИКА =====
 
     @dp.message(Command("stats"))
@@ -160,4 +202,22 @@ def register_admin_handlers(dp, bot, ADMINS):
             text += f"Опубликовано: {index + 1}\n\n"
 
         await message.answer(text)
-       
+     @dp.message(Command("run"))
+     async def run_category(message: Message):
+
+         if message.from_user.id not in ADMINS:
+             return
+
+         args = message.text.split()
+
+         if len(args) < 2:
+             await message.answer("Пример:\n/run friday_toast")
+             return
+
+         code = args[1]
+
+         try:
+             await post_category(bot, CHANNEL_ID, ADMINS, code)
+             await message.answer(f"✅ Рубрика {code} опубликована")
+         except Exception as e:
+             await message.answer(f"Ошибка: {e}")  
