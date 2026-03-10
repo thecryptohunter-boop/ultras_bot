@@ -234,4 +234,4 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
             await message.answer(f"✅ Рубрика {code} опубликована")
         except Exception as e:
             await message.answer(f"Ошибка: {e}")  
-    print("RUN CATEGORY:", code)
+ 
