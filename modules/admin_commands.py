@@ -7,7 +7,7 @@ from modules.category_manager import post_category
 user_states = {}
 
 
-def register_admin_handlers(dp, bot, ADMINS):
+def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
     # ===== АДМИН МЕНЮ =====
 
