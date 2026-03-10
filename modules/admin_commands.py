@@ -195,17 +195,24 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
         for code, cat in data.items():
 
             total = len(cat["posts"])
-            index = cat["last_index"]
+            index = cat.get("last_index", -1)
 
             text += f"{cat['title']}\n"
             text += f"Постов: {total}\n"
             text += f"Опубликовано: {index + 1}\n\n"
 
         await message.answer(text)
+ 
+    
     @dp.message(Command("run"))
     async def run_category(message: Message):
 
         if message.from_user.id not in ADMINS:
+            return
+        data = load_categories()
+
+        if code not in data:
+            await message.answer("Нет такой рубрики")
             return
 
         args = message.text.split()
