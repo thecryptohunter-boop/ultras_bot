@@ -20,7 +20,7 @@ bot = Bot(
 )
 dp = Dispatcher()
 
-register_admin_handlers(dp, bot, ADMINS)
+register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID)
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
 
@@ -184,6 +184,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
