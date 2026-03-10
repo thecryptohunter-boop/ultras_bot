@@ -1,6 +1,6 @@
 {
   "friday_toast": {
-    "title": "🥃 ПЯТНИЧНЫЙ ТОСТ",
+    "title": "🥃 <b>ПЯТНИЧНЫЙ ТОСТ</b>",
     "tag": "#Тост",
     "day": 3,
     "hour": 19,
@@ -47,7 +47,7 @@
   },
 
   "portrait_fan": {
-    "title": "✊🧨 ПОРТРЕТ ФАНАТА",
+    "title": "✊🧨 <b>ПОРТРЕТ ФАНАТА</b>",
     "tag": "#PortraitFan",
     "day": 0,
     "hour": 14,
@@ -66,7 +66,7 @@
   },
 
   "father_son": {
-    "title": "👨‍👦 ОТ ОТЦА К СЫНУ",
+    "title": "👨‍👦 <b>ОТ ОТЦА К СЫНУ</b>",
     "tag": "#FatherToSon",
     "day": 0,
     "hour": 14,
@@ -85,7 +85,7 @@
   },
 
   "retro_fans": {
-    "title": "📼 RETRO FANS",
+    "title": "📼 <b>RETRO FANS</b>",
     "tag": "#RetroFans",
     "day": 0,
     "hour": 15,
@@ -104,7 +104,7 @@
   },
 
   "back_in_ussr": {
-    "title": "🚩 BACK IN USSR",
+    "title": "🚩 <b>BACK IN USSR</b>",
     "tag": "#BackInUSSR",
     "day": 0,
     "hour": 15,
@@ -123,7 +123,7 @@
   },
 
   "old_album": {
-    "title": "📷 СТАРЫЙ АЛЬБОМ",
+    "title": "📷 <b>СТАРЫЙ АЛЬБОМ</b>",
     "tag": "#OldAlbum",
     "day": 5,
     "hour": 15,
@@ -142,7 +142,7 @@
   },
 
   "graffiti_day": {
-    "title": "🎨 ГРАФФИТИ ДНЯ",
+    "title": "🎨 <b>ГРАФФИТИ ДНЯ</b>",
     "tag": "#Graffiti",
     "day": [0,2,4],
     "hour": 19,
@@ -166,7 +166,7 @@
     "day": [1,5],
     "hour": 10,
     "minute": 20,
-    "last_index": 0,
+    "last_index": -1,
     "finished_notified": false,
     "posts": [
       {
