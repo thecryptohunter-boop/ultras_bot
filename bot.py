@@ -20,6 +20,7 @@ bot = Bot(
 )
 dp = Dispatcher()
 
+register_admin_handlers(dp, bot, ADMINS)
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
 
@@ -169,7 +170,7 @@ async def set_category_photo(message: types.Message, state: FSMContext):
     
 # ===== АВТОПОСТИНГ РУБРИКИ =====
 
-register_admin_handlers(dp, bot, ADMINS)
+
 
 async def main():
 
@@ -183,6 +184,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
