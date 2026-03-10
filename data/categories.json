@@ -158,5 +158,43 @@
         "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
         "text": "Верно!"
       }]
+  },
+
+  "legends": {
+    "title": "👑 <b>Легенды футбола</b>",
+    "tag": "#legends",
+    "day": [1,5],
+    "hour": 10,
+    "minute": 20,
+    "last_index": 0,
+    "finished_notified": false,
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIC42muziyFR7rM2eSj2-7UYcrnukJEAAL_Fmsbsax5Sen6qDek71i8AQADAgADeQADOgQ",
+        "text": "Очень правильно!"
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "Верно!\n\n<b>Ура</b>!"
+      }]
+  },
+
+  "stadiums": {
+    "title": "🏟 <b>Стадионы Мира</b>",
+    "tag": "#stadiums",
+    "day": [1,5],
+    "hour": 10,
+    "minute": 21,
+    "last_index": -1,
+    "finished_notified": false,
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIC42muziyFR7rM2eSj2-7UYcrnukJEAAL_Fmsbsax5Sen6qDek71i8AQADAgADeQADOgQ",
+        "text": "Очень правильно!"
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "Верно!"
+      }]
   }
 }
