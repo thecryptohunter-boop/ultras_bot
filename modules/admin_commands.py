@@ -16,35 +16,30 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
         if message.from_user.id not in ADMINS:
             return
+
         data = load_categories()
 
-        for code in data:
-            text += f"/add {code}\n"
-            
-        text = """
+    text = """
 ⚙️ <b>АДМИН ПАНЕЛЬ</b>
 
 Добавление постов:
+"""
 
-/add friday_toast
-/add portrait_fan
-/add father_son
-/add retro_fans
-/add back_in_ussr
-/add old_album
-/add graffiti_day
-/add legends
-/add stadiums
+        for code in data:
+            text += f"/add {code}\n"
+
+        text += """
 
 Управление:
 
 /preview friday_toast - предпросмотр
 /run friday_toast — пост сейчас
 /runall — запустить все сразу
-/setindex friday_toast 3 (пример)
+/setindex friday_toast 3
 /reload — перечитать JSON
 /stats — статистика
 """
+
         await message.answer(text)
 
     # ===== ДОБАВЛЕНИЕ ПОСТА =====
@@ -169,7 +164,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
         posts = cat["posts"]
 
-        index = cat["last_index"] + 1
+        index = cat.get("last_index", -1) + 1
 
         if index >= len(posts):
             await message.answer("⚠️ Постов больше нет")
