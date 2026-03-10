@@ -38,9 +38,10 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
 Управление:
 
-/preview friday_toast
+/preview friday_toast - предпросмотр
 /run friday_toast — пост сейчас
-/setindex friday_toast 3
+/runall — запустить все сразу
+/setindex friday_toast 3 (пример)
 /reload — перечитать JSON
 /stats — статистика
 """
