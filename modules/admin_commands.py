@@ -89,7 +89,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
     # ===== ПОЛУЧЕНИЕ ТЕКСТА =====
 
-    @dp.message(lambda m: m.text and not m.text.startswith("/"))
+    @dp.message(lambda m: m.from_user.id in user_states and m.text)
     async def receive_text(message: Message):
 
         state = user_states.get(message.from_user.id)
@@ -236,4 +236,18 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
             await message.answer(f"✅ Рубрика {code} опубликована")
         except Exception as e:
             await message.answer(f"Ошибка: {e}")
- 
+
+    # ===== RUN ALL CATS ===== 
+    
+    @dp.message(Command("runall"))
+    async def run_all(message: Message):
+
+        if message.from_user.id not in ADMINS:
+            return
+
+        data = load_categories()
+
+        for code in data:
+            await post_category(bot, CHANNEL_ID, ADMINS, code)
+
+        await message.answer("✅ Все рубрики опубликованы")
