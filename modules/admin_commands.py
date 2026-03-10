@@ -202,22 +202,22 @@ def register_admin_handlers(dp, bot, ADMINS):
             text += f"Опубликовано: {index + 1}\n\n"
 
         await message.answer(text)
-     @dp.message(Command("run"))
-     async def run_category(message: Message):
+    @dp.message(Command("run"))
+    async def run_category(message: Message):
 
-         if message.from_user.id not in ADMINS:
-             return
+        if message.from_user.id not in ADMINS:
+            return
 
-         args = message.text.split()
+        args = message.text.split()
 
-         if len(args) < 2:
-             await message.answer("Пример:\n/run friday_toast")
-             return
+        if len(args) < 2:
+            await message.answer("Пример:\n/run friday_toast")
+            return
 
-         code = args[1]
+        code = args[1]
 
-         try:
-             await post_category(bot, CHANNEL_ID, ADMINS, code)
-             await message.answer(f"✅ Рубрика {code} опубликована")
-         except Exception as e:
-             await message.answer(f"Ошибка: {e}")  
+        try:
+            await post_category(bot, CHANNEL_ID, ADMINS, code)
+            await message.answer(f"✅ Рубрика {code} опубликована")
+        except Exception as e:
+            await message.answer(f"Ошибка: {e}")  
