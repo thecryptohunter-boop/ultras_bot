@@ -215,23 +215,25 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
         if message.from_user.id not in ADMINS:
             return
 
-        data = load_categories()
-
-        if code not in data:
-            await message.answer("Нет такой рубрики")
-            return
-
         args = message.text.split()
 
         if len(args) < 2:
-            await message.answer("Пример:\n/run friday_toast")
+            await message.answer(
+                "Пример использования:\n/run friday_toast"
+            )
             return
 
         code = args[1]
+
+        data = load_categories()
+
+        if code not in data:
+            await message.answer("❌ Нет такой рубрики")
+            return
 
         try:
             await post_category(bot, CHANNEL_ID, ADMINS, code)
             await message.answer(f"✅ Рубрика {code} опубликована")
         except Exception as e:
-            await message.answer(f"Ошибка: {e}")  
+            await message.answer(f"Ошибка: {e}")
  
