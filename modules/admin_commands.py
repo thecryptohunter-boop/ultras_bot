@@ -152,7 +152,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
             await message.answer("✅ Пост добавлен")
 
-    # ===== CALLBACK HANDLER =====
+        # ===== CALLBACK HANDLER =====
 
     @dp.callback_query()
     async def callback_router(callback: CallbackQuery):
@@ -162,85 +162,28 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
         data = callback.data
 
-        elif action == "reload":
-
-            load_categories()
-        
-            await callback.message.answer("♻️ JSON перечитан")
-
-        elif action == "delete":
-        
-            index = cat.get("last_index", -1) + 1
-        
-            if index >= len(cat["posts"]):
-        
-                await callback.message.answer("⚠️ Постов больше нет")
-        
-            else:
-        
-                post = cat["posts"][index]
-        
-                user_states[callback.from_user.id] = {
-                    "action": "delete",
-                    "code": code,
-                    "index": index
-                }
-        
-                await bot.send_photo(
-                    callback.message.chat.id,
-                    photo=post["file_id"],
-                    caption=f"Удалить этот пост?\n\n{post['text']}"
-                )
-        
-                keyboard = InlineKeyboardMarkup(
-                    inline_keyboard=[
-                        [
-                            InlineKeyboardButton(
-                                text="❌ Удалить",
-                                callback_data="confirm_delete"
-                            )
-                        ]
-                    ]
-                )
-        
-                await callback.message.answer(
-                    "Подтвердить удаление?",
-                    reply_markup=keyboard
-                )
-
-
-    
-    @dp.callback_query(lambda c: c.data == "confirm_delete")
-    async def confirm_delete(callback: CallbackQuery):
-    
-        state = user_states.get(callback.from_user.id)
-    
-        if not state or state.get("action") != "delete":
-            return
-    
-        code = state["code"]
-        index = state["index"]
-    
-        data = load_categories()
-    
-        data[code]["posts"].pop(index)
-    
-        save_categories(data)
-    
-        user_states.pop(callback.from_user.id)
-    
-        await callback.message.answer("🗑 Пост удалён")
-    
-        await callback.answer()
-
-        
-        # ===== МЕНЮ =====
+        # ===== ГЛАВНОЕ МЕНЮ =====
 
         if data.startswith("menu:"):
 
             action = data.split(":")[1]
 
-            if action == "stats":
+            if action == "reload":
+
+                load_categories()
+
+                await callback.message.answer("♻️ JSON перечитан")
+
+            elif action == "runall":
+
+                categories = load_categories()
+
+                for code in categories:
+                    await post_category(bot, CHANNEL_ID, ADMINS, code)
+
+                await callback.message.answer("✅ Все рубрики опубликованы")
+
+            elif action == "stats":
 
                 categories = load_categories()
 
@@ -257,15 +200,6 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
                 await callback.message.answer(text)
 
-            elif action == "runall":
-
-                categories = load_categories()
-
-                for code in categories:
-                    await post_category(bot, CHANNEL_ID, ADMINS, code)
-
-                await callback.message.answer("✅ Все рубрики опубликованы")
-
             else:
 
                 await callback.message.answer(
@@ -276,9 +210,10 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
             await callback.answer()
             return
 
-        # ===== РАБОТА С РУБРИКАМИ =====
+        # ===== РУБРИКИ =====
 
         if ":" not in data:
+            await callback.answer()
             return
 
         action, code = data.split(":")
@@ -371,9 +306,71 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
             await callback.message.answer("🔢 Введи новый индекс")
 
+        # ===== DELETE =====
+
+        elif action == "delete":
+
+            index = cat.get("last_index", -1) + 1
+
+            if index >= len(cat["posts"]):
+
+                await callback.message.answer("⚠️ Постов больше нет")
+
+            else:
+
+                post = cat["posts"][index]
+
+                user_states[callback.from_user.id] = {
+                    "action": "delete",
+                    "code": code,
+                    "index": index
+                }
+
+                await bot.send_photo(
+                    callback.message.chat.id,
+                    photo=post["file_id"],
+                    caption=f"Удалить этот пост?\n\n{post['text']}"
+                )
+
+                keyboard = InlineKeyboardMarkup(
+                    inline_keyboard=[
+                        [
+                            InlineKeyboardButton(
+                                text="❌ Удалить",
+                                callback_data="confirm_delete"
+                            )
+                        ]
+                    ]
+                )
+
+                await callback.message.answer(
+                    "Подтвердить удаление?",
+                    reply_markup=keyboard
+                )
+
         await callback.answer()
+ 
+    # ===== CONFIRM DELETE =====
 
+    @dp.callback_query(lambda c: c.data == "confirm_delete")
+    async def confirm_delete(callback: CallbackQuery):
 
-        await message.answer("♻️ JSON перечитан")
-   
-   
+        state = user_states.get(callback.from_user.id)
+
+        if not state or state.get("action") != "delete":
+            return
+
+        code = state["code"]
+        index = state["index"]
+
+        data = load_categories()
+
+        data[code]["posts"].pop(index)
+
+        save_categories(data)
+
+        user_states.pop(callback.from_user.id)
+
+        await callback.message.answer("🗑 Пост удалён")
+
+        await callback.answer()
