@@ -11,6 +11,7 @@ from aiogram.client.default import DefaultBotProperties
 from modules.scheduler import scheduler
 from modules.admin_commands import register_admin_handlers
 from modules.config import TOKEN, CHANNEL_ID, ADMINS
+from modules import json_manager
 
 # ===== ИНИЦИАЛИЗАЦИЯ =====
 
@@ -19,6 +20,7 @@ bot = Bot(
     default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
 dp = Dispatcher()
+dp.include_router(json_manager.router)
 
 register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID)
 
@@ -184,6 +186,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
 
 
