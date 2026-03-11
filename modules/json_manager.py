@@ -1,9 +1,16 @@
+import os
+
 from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import (
+    Message,
+    CallbackQuery,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    FSInputFile
+)
 from aiogram.filters import Command
-from aiogram.types import FSInputFile
+
 from modules.config import ADMINS
-from aiogram import Bot
 
 router = Router()
 
@@ -64,49 +71,64 @@ async def json_menu(message: Message):
 # ===== CALLBACK HANDLER =====
 
 @router.callback_query(F.data.startswith("json_"))
-async def json_callbacks(callback: CallbackQuery, bot: Bot):
+async def json_callbacks(callback: CallbackQuery, bot):
 
     if callback.from_user.id not in ADMINS:
         return
 
     data = callback.data
 
-
     # ===== DOWNLOAD CATEGORIES =====
 
     if data == "json_download_categories":
-    
+
+        if not os.path.exists(CATEGORIES_PATH):
+
+            await callback.message.answer("❌ Файл categories.json не найден")
+            await callback.answer()
+            return
+
         file = FSInputFile(CATEGORIES_PATH)
-    
+
         await bot.send_document(
             callback.message.chat.id,
             document=file
         )
-    
+
         await callback.message.answer("✅ Файл categories.json скачан")
-    
+
         await callback.answer()
+
+        return
 
 
     # ===== DOWNLOAD EVENTS =====
 
-    elif data == "json_download_events":
-    
+    if data == "json_download_events":
+
+        if not os.path.exists(EVENTS_PATH):
+
+            await callback.message.answer("❌ Файл events.json не найден")
+            await callback.answer()
+            return
+
         file = FSInputFile(EVENTS_PATH)
-    
+
         await bot.send_document(
             callback.message.chat.id,
             document=file
         )
-    
+
         await callback.message.answer("✅ Файл events.json скачан")
-    
+
         await callback.answer()
+
+        return
 
 
     # ===== UPLOAD CATEGORIES =====
 
-    elif data == "json_upload_categories":
+    if data == "json_upload_categories":
 
         user_states[callback.from_user.id] = "upload_categories"
 
@@ -116,10 +138,12 @@ async def json_callbacks(callback: CallbackQuery, bot: Bot):
 
         await callback.answer()
 
+        return
+
 
     # ===== UPLOAD EVENTS =====
 
-    elif data == "json_upload_events":
+    if data == "json_upload_events":
 
         user_states[callback.from_user.id] = "upload_events"
 
@@ -129,12 +153,13 @@ async def json_callbacks(callback: CallbackQuery, bot: Bot):
 
         await callback.answer()
 
+        return
 
 
-# ===== FILE UPLOAD HANDLER =====
+# ===== FILE UPLOAD =====
 
 @router.message(F.document)
-async def upload_json(message: Message, bot: Bot):
+async def upload_json(message: Message, bot):
 
     if message.from_user.id not in ADMINS:
         return
@@ -145,15 +170,15 @@ async def upload_json(message: Message, bot: Bot):
         return
 
     doc = message.document
-    await message.answer("📥 Файл сохранён на сервере")
 
-    # ===== UPLOAD CATEGORIES =====
+
+    # ===== CATEGORIES =====
 
     if state == "upload_categories":
 
         if doc.file_name != "categories.json":
 
-            await message.answer("❌ Нужен файл categories.json")
+            await message.answer("❌ Нужно отправить файл categories.json")
             return
 
         file = await bot.get_file(doc.file_id)
@@ -163,16 +188,16 @@ async def upload_json(message: Message, bot: Bot):
             CATEGORIES_PATH
         )
 
-        await message.answer("✅ categories.json обновлён")
+        await message.answer("✅ categories.json загружен на сервер")
 
 
-    # ===== UPLOAD EVENTS =====
+    # ===== EVENTS =====
 
     elif state == "upload_events":
 
         if doc.file_name != "events.json":
 
-            await message.answer("❌ Нужен файл events.json")
+            await message.answer("❌ Нужно отправить файл events.json")
             return
 
         file = await bot.get_file(doc.file_id)
@@ -182,7 +207,7 @@ async def upload_json(message: Message, bot: Bot):
             EVENTS_PATH
         )
 
-        await message.answer("✅ events.json обновлён")
+        await message.answer("✅ events.json загружен на сервер")
 
 
     user_states.pop(message.from_user.id, None)
