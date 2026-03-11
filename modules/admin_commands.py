@@ -156,11 +156,38 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
     @dp.callback_query()
     async def callback_router(callback: CallbackQuery):
-
+    
         if callback.from_user.id not in ADMINS:
             return
-
+    
         data = callback.data
+    
+        # ===== DELETE CONFIRM =====
+    
+        if data == "confirm_delete":
+    
+            state = user_states.get(callback.from_user.id)
+    
+            if not state or state.get("action") != "delete":
+                await callback.answer()
+                return
+    
+            code = state["code"]
+            index = state["index"]
+    
+            categories = load_categories()
+    
+            categories[code]["posts"].pop(index)
+    
+            save_categories(categories)
+    
+            user_states.pop(callback.from_user.id)
+    
+            await callback.message.answer("🗑 Пост удалён")
+    
+            await callback.answer()
+    
+            return
 
         # ===== ГЛАВНОЕ МЕНЮ =====
 
@@ -349,28 +376,6 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
                 )
 
         await callback.answer()
- 
-    # ===== CONFIRM DELETE =====
-
-    @dp.callback_query(lambda c: c.data == "confirm_delete")
-    async def confirm_delete(callback: CallbackQuery):
-
-        state = user_states.get(callback.from_user.id)
-
-        if not state or state.get("action") != "delete":
-            return
-
-        code = state["code"]
-        index = state["index"]
-
-        data = load_categories()
-
-        data[code]["posts"].pop(index)
-
-        save_categories(data)
-
-        user_states.pop(callback.from_user.id)
-
         await callback.message.answer("🗑 Пост удалён")
 
         await callback.answer()
