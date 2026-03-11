@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
-
+from aiogram.types import FSInputFile
 from modules.config import ADMINS
 from aiogram import Bot
 
@@ -74,26 +74,26 @@ async def json_callbacks(callback: CallbackQuery, bot: Bot):
 
     # ===== DOWNLOAD CATEGORIES =====
 
-    if data == "json_download_categories":
+    file = FSInputFile(CATEGORIES_PATH)
 
-        await bot.send_document(
-            callback.message.chat.id,
-            document=CATEGORIES_PATH
-        )
-
-        await callback.answer()
+    await bot.send_document(
+        callback.message.chat.id,
+        document=file
+    )
+    
+    await callback.message.answer("✅ Файл categories.json скачан")
 
 
     # ===== DOWNLOAD EVENTS =====
 
-    elif data == "json_download_events":
-
-        await bot.send_document(
-            callback.message.chat.id,
-            document=EVENTS_PATH
-        )
-
-        await callback.answer()
+    file = FSInputFile(CATEGORIES_PATH)
+    
+    await bot.send_document(
+        callback.message.chat.id,
+        document=file
+    )
+    
+    await callback.message.answer("✅ Файл categories.json скачан")
 
 
     # ===== UPLOAD CATEGORIES =====
@@ -137,7 +137,7 @@ async def upload_json(message: Message, bot: Bot):
         return
 
     doc = message.document
-
+    await message.answer("📥 Файл сохранён на сервере")
 
     # ===== UPLOAD CATEGORIES =====
 
