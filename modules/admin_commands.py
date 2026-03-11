@@ -248,7 +248,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
                 post = cat["posts"][index]
 
-                caption = f"{cat['title']}\n\n{post['text']}\n\n{cat['tag']}"
+                caption = f"{cat['title']}\n\n{post['text']}\n\n\n{cat['tag']}"
 
                 await bot.send_photo(
                     callback.message.chat.id,
