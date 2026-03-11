@@ -3,6 +3,8 @@ from aiogram.types import Message
 from modules.category_manager import add_post
 from modules.storage import load_categories, save_categories
 from modules.category_manager import post_category
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import CallbackQuery
 
 user_states = {}
 
@@ -42,28 +44,37 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
         await message.answer(text)
 
+  # ===== INLINE BUTTONS =====
+    
+    def categories_menu(action):
+
+    data = load_categories()
+
+    buttons = []
+
+    for code in data:
+        buttons.append(
+            [InlineKeyboardButton(
+                text=code,
+                callback_data=f"{action}:{code}"
+            )]
+        )
+
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+    
     # ===== ДОБАВЛЕНИЕ ПОСТА =====
 
     @dp.message(Command("add"))
-    async def add_start(message: Message):
+async def add_menu(message: Message):
 
-        if message.from_user.id not in ADMINS:
-            return
+    if message.from_user.id not in ADMINS:
+        return
 
-        args = message.text.split()
-
-        if len(args) < 2:
-            await message.answer("Укажи код рубрики")
-            return
-
-        code = args[1]
-
-        user_states[message.from_user.id] = {
-            "code": code,
-            "step": "photo"
-        }
-
-        await message.answer("📷 Отправь фото")
+    await message.answer(
+        "Выбери рубрику:",
+        reply_markup=categories_menu("add")
+    )
 
     # ===== ПОЛУЧЕНИЕ ФОТО =====
 
@@ -93,6 +104,24 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
         if not state or state["step"] != "text":
             return
 
+        # EDIT MODE
+        if state.get("action") == "edit":
+        
+            data = load_categories()
+        
+            code = state["code"]
+            index = state["index"]
+        
+            data[code]["posts"][index]["text"] = message.text
+        
+            save_categories(data)
+        
+            user_states.pop(message.from_user.id)
+        
+            await message.answer("✅ Пост обновлён")
+        
+            return
+            
         code = state["code"]
         file_id = state["file_id"]
         text = message.text
@@ -138,47 +167,66 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
         await message.answer("♻️ JSON перечитан")
    
-    # ===== PREVIEW =====
-    
-    @dp.message(Command("preview"))
-    async def preview_post(message: Message):
+    # ===== EDIT =====
 
+    @dp.message(Command("edit"))
+    async def edit_post(message: Message):
+    
         if message.from_user.id not in ADMINS:
             return
-
+    
         args = message.text.split()
-
+    
         if len(args) < 2:
-            await message.answer("Пример:\n/preview friday_toast")
+            await message.answer("Пример:\n/edit friday_toast")
             return
-
+    
         code = args[1]
-
+    
         data = load_categories()
-
+    
         if code not in data:
             await message.answer("Нет такой рубрики")
             return
-
+    
         cat = data[code]
-
-        posts = cat["posts"]
-
+    
         index = cat.get("last_index", -1) + 1
-
-        if index >= len(posts):
+    
+        if index >= len(cat["posts"]):
             await message.answer("⚠️ Постов больше нет")
             return
-
-        post = posts[index]
-
-        caption = f"{cat['title']}\n\n{post['text']}\n\n{cat['tag']}"
-
+    
+        post = cat["posts"][index]
+    
+        user_states[message.from_user.id] = {
+            "action": "edit",
+            "code": code,
+            "index": index
+        }
+    
         await bot.send_photo(
             message.chat.id,
             photo=post["file_id"],
-            caption=caption
+            caption=f"Редактируем пост:\n\n{post['text']}"
         )
+    
+        await message.answer("✏️ Отправь новый текст")
+    
+    
+    
+    # ===== PREVIEW =====
+    
+    @dp.message(Command("preview"))
+async def preview_menu(message: Message):
+
+    if message.from_user.id not in ADMINS:
+        return
+
+    await message.answer(
+        "Выбери рубрику:",
+        reply_markup=categories_menu("preview")
+    )
     
     # ===== СТАТИСТИКА =====
 
@@ -206,32 +254,15 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
     # ===== RUN ===== 
     
     @dp.message(Command("run"))
-    async def run_category(message: Message):
+    async def run_menu(message: Message):
 
-        if message.from_user.id not in ADMINS:
-            return
+    if message.from_user.id not in ADMINS:
+        return
 
-        args = message.text.split()
-
-        if len(args) < 2:
-            await message.answer(
-                "Пример использования:\n/run friday_toast"
-            )
-            return
-
-        code = args[1]
-
-        data = load_categories()
-
-        if code not in data:
-            await message.answer("❌ Нет такой рубрики")
-            return
-
-        try:
-            await post_category(bot, CHANNEL_ID, ADMINS, code)
-            await message.answer(f"✅ Рубрика {code} опубликована")
-        except Exception as e:
-            await message.answer(f"Ошибка: {e}")
+    await message.answer(
+        "Выбери рубрику:",
+        reply_markup=categories_menu("run")
+    )
 
     # ===== RUN ALL CATS ===== 
     
@@ -247,3 +278,46 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
             await post_category(bot, CHANNEL_ID, ADMINS, code)
 
         await message.answer("✅ Все рубрики опубликованы")
+
+    @dp.callback_query()
+    async def category_action(callback: CallbackQuery):
+
+        action, code = callback.data.split(":")
+    
+        if action == "run":
+    
+            await post_category(bot, CHANNEL_ID, ADMINS, code)
+    
+            await callback.message.answer(f"✅ {code} опубликован")
+    
+        elif action == "preview":
+    
+            data = load_categories()
+            cat = data[code]
+    
+            index = cat.get("last_index", -1) + 1
+    
+            if index >= len(cat["posts"]):
+                await callback.message.answer("⚠️ Постов больше нет")
+                return
+    
+            post = cat["posts"][index]
+    
+            caption = f"{cat['title']}\n\n{post['text']}\n\n{cat['tag']}"
+    
+            await bot.send_photo(
+                callback.message.chat.id,
+                photo=post["file_id"],
+                caption=caption
+            )
+    
+        elif action == "add":
+    
+            user_states[callback.from_user.id] = {
+                "code": code,
+                "step": "photo"
+            }
+    
+            await callback.message.answer("📷 Отправь фото")
+    
+        await callback.answer()
