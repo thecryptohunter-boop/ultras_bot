@@ -375,7 +375,5 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
                     reply_markup=keyboard
                 )
 
-        await callback.answer()
-        await callback.message.answer("🗑 Пост удалён")
 
         await callback.answer()
