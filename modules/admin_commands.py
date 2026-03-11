@@ -7,7 +7,7 @@ from modules.storage import load_categories, save_categories
 
 user_states = {}
 
-
+print("ADMIN MODULE LOADED")
 def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
     # ===== ГЛАВНАЯ АДМИН ПАНЕЛЬ =====
