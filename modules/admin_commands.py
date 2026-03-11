@@ -297,13 +297,6 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
         await callback.answer()
 
-    # ===== РЕЛОАД JSON =====
-
-    @dp.message(Command("reload"))
-    async def reload_json(message: Message):
-
-        if message.from_user.id not in ADMINS:
-            return
 
         await message.answer("♻️ JSON перечитан")
    
