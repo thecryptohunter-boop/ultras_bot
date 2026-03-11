@@ -160,7 +160,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
         if callback.from_user.id not in ADMINS:
             return
 
-
+        data = callback.data
 
         elif action == "reload":
 
@@ -207,7 +207,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
                     "Подтвердить удаление?",
                     reply_markup=keyboard
                 )
-          data = callback.data
+
 
     
     @dp.callback_query(lambda c: c.data == "confirm_delete")
