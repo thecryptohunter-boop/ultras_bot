@@ -74,26 +74,34 @@ async def json_callbacks(callback: CallbackQuery, bot: Bot):
 
     # ===== DOWNLOAD CATEGORIES =====
 
-    file = FSInputFile(CATEGORIES_PATH)
-
-    await bot.send_document(
-        callback.message.chat.id,
-        document=file
-    )
+    if data == "json_download_categories":
     
-    await callback.message.answer("✅ Файл categories.json скачан")
+        file = FSInputFile(CATEGORIES_PATH)
+    
+        await bot.send_document(
+            callback.message.chat.id,
+            document=file
+        )
+    
+        await callback.message.answer("✅ Файл categories.json скачан")
+    
+        await callback.answer()
 
 
     # ===== DOWNLOAD EVENTS =====
 
-    file = FSInputFile(CATEGORIES_PATH)
+    elif data == "json_download_events":
     
-    await bot.send_document(
-        callback.message.chat.id,
-        document=file
-    )
+        file = FSInputFile(EVENTS_PATH)
     
-    await callback.message.answer("✅ Файл categories.json скачан")
+        await bot.send_document(
+            callback.message.chat.id,
+            document=file
+        )
+    
+        await callback.message.answer("✅ Файл events.json скачан")
+    
+        await callback.answer()
 
 
     # ===== UPLOAD CATEGORIES =====
