@@ -66,7 +66,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
     # ===== ДОБАВЛЕНИЕ ПОСТА =====
 
     @dp.message(Command("add"))
-async def add_menu(message: Message):
+    async def add_menu(message: Message):
 
     if message.from_user.id not in ADMINS:
         return
@@ -170,55 +170,22 @@ async def add_menu(message: Message):
     # ===== EDIT =====
 
     @dp.message(Command("edit"))
-    async def edit_post(message: Message):
-    
+    async def edit_menu(message: Message):
+
         if message.from_user.id not in ADMINS:
             return
-    
-        args = message.text.split()
-    
-        if len(args) < 2:
-            await message.answer("Пример:\n/edit friday_toast")
-            return
-    
-        code = args[1]
-    
-        data = load_categories()
-    
-        if code not in data:
-            await message.answer("Нет такой рубрики")
-            return
-    
-        cat = data[code]
-    
-        index = cat.get("last_index", -1) + 1
-    
-        if index >= len(cat["posts"]):
-            await message.answer("⚠️ Постов больше нет")
-            return
-    
-        post = cat["posts"][index]
-    
-        user_states[message.from_user.id] = {
-            "action": "edit",
-            "code": code,
-            "index": index
-        }
-    
-        await bot.send_photo(
-            message.chat.id,
-            photo=post["file_id"],
-            caption=f"Редактируем пост:\n\n{post['text']}"
+
+        await message.answer(
+            "Выбери рубрику:",
+            reply_markup=categories_menu("edit")
         )
-    
-        await message.answer("✏️ Отправь новый текст")
     
     
     
     # ===== PREVIEW =====
     
     @dp.message(Command("preview"))
-async def preview_menu(message: Message):
+    async def preview_menu(message: Message):
 
     if message.from_user.id not in ADMINS:
         return
@@ -256,13 +223,13 @@ async def preview_menu(message: Message):
     @dp.message(Command("run"))
     async def run_menu(message: Message):
 
-    if message.from_user.id not in ADMINS:
-        return
+        if message.from_user.id not in ADMINS:
+            return
 
-    await message.answer(
-        "Выбери рубрику:",
-        reply_markup=categories_menu("run")
-    )
+        await message.answer(
+            "Выбери рубрику:",
+            reply_markup=categories_menu("run")
+        )
 
     # ===== RUN ALL CATS ===== 
     
@@ -279,7 +246,7 @@ async def preview_menu(message: Message):
 
         await message.answer("✅ Все рубрики опубликованы")
 
-    @dp.callback_query()
+    @dp.callback_query(lambda c: ":" in c.data)
     async def category_action(callback: CallbackQuery):
 
         action, code = callback.data.split(":")
@@ -290,6 +257,34 @@ async def preview_menu(message: Message):
     
             await callback.message.answer(f"✅ {code} опубликован")
     
+        elif action == "edit":
+
+            data = load_categories()
+        
+            cat = data[code]
+        
+            index = cat.get("last_index", -1) + 1
+        
+            if index >= len(cat["posts"]):
+                await callback.message.answer("⚠️ Постов больше нет")
+                return
+        
+            post = cat["posts"][index]
+        
+            user_states[callback.from_user.id] = {
+                "action": "edit",
+                "code": code,
+                "index": index
+            }
+        
+            await bot.send_photo(
+                callback.message.chat.id,
+                photo=post["file_id"],
+                caption=f"Редактируем пост:\n\n{post['text']}"
+            )
+    
+            await callback.message.answer("✏️ Отправь новый текст")
+            
         elif action == "preview":
     
             data = load_categories()
