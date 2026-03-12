@@ -154,7 +154,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
         # ===== CALLBACK HANDLER =====
 
-    @dp.callback_query()
+    @dp.callback_query(lambda c: not c.data.startswith("json_"))
     async def callback_router(callback: CallbackQuery):
     
         if callback.from_user.id not in ADMINS:
