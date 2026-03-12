@@ -161,6 +161,10 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
             return
     
         data = callback.data
+
+        # пропускаем JSON callbacks
+        if data.startswith("json_"):
+            return
     
         # ===== DELETE CONFIRM =====
     
