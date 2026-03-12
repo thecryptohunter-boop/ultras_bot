@@ -12,6 +12,8 @@ from aiogram.filters import Command
 
 from modules.config import ADMINS
 
+print("JSON MANAGER LOADED")
+
 router = Router()
 
 user_states = {}
