@@ -85,6 +85,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
         state["step"] = "text"
 
         await message.answer("✏️ Теперь отправь текст")
+        await message.reply(f"FILE_ID:\n{file_id}")
 
     # ===== ПОЛУЧЕНИЕ ТЕКСТА =====
 
@@ -112,7 +113,7 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
             user_states.pop(message.from_user.id)
 
             await message.answer("✅ Пост обновлён")
-
+            
             return
 
         # ===== SETINDEX =====
