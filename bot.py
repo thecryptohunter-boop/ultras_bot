@@ -11,6 +11,8 @@ from modules.scheduler import scheduler
 from modules.admin_commands import register_admin_handlers
 from modules.config import TOKEN, CHANNEL_ID, ADMINS
 from modules import json_manager
+from modules.quiz_engine import QuizEngine
+from modules.quiz_handlers import router as quiz_router, setup_quiz
 
 # ===== ИНИЦИАЛИЗАЦИЯ =====
 
@@ -22,6 +24,16 @@ dp = Dispatcher()
 dp.include_router(json_manager.router)
 
 register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID)
+
+# 🔽 ДОБАВЛЯЕМ QUIZ
+
+
+quiz_engine = QuizEngine(bot, GROUP_ID)
+
+setup_quiz(quiz_engine)
+
+dp.include_router(quiz_router)
+
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
 
