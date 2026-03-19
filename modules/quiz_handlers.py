@@ -1,0 +1,26 @@
+from aiogram import Router
+from aiogram.types import PollAnswer
+
+router = Router()
+
+quiz_engine = None
+
+
+def setup_quiz(engine):
+    global quiz_engine
+    quiz_engine = engine
+
+
+@router.poll_answer()
+async def handle_poll_answer(poll_answer: PollAnswer):
+
+    if poll_answer.poll_id != quiz_engine.state["poll_id"]:
+        return
+
+    user = poll_answer.user
+
+    await quiz_engine.register_answer(
+        user.id,
+        user.full_name,
+        poll_answer.option_ids[0]
+    )
