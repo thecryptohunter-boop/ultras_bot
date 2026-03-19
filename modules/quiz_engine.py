@@ -39,12 +39,18 @@ class QuizEngine:
         self.state["question_index"] = 0
         self.state["scoreboard"] = {}
 
-        await self.bot.send_message(
+        msg = await self.bot.send_message(
             self.group_id,
-            "⚽ QUIZBALL начинается!\n\n10 вопросов.\n30 секунд на каждый."
+            "⚽ QUIZBALL начинается!\n\n⏳ Старт через 10 секунд..."
         )
+        
+        for i in range(10, 0, -1):
+            await asyncio.sleep(1)
+            await msg.edit_text(
+                f"⚽ QUIZBALL начинается!\n\n⏳ Старт через {i} сек..."
+            )
 
-        await self.send_question()
+        await msg.edit_text("🔥 ПОЕХАЛИ!")
 
     async def send_question(self):
 
