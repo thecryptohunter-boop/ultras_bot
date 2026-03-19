@@ -9,7 +9,7 @@ from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 from modules.scheduler import scheduler
 from modules.admin_commands import register_admin_handlers
-from modules.config import TOKEN, CHANNEL_ID, ADMINS
+from modules.config import TOKEN, CHANNEL_ID, GROUP_ID, ADMINS
 from modules import json_manager
 from modules.quiz_engine import QuizEngine
 from modules.quiz_handlers import router as quiz_router, setup_quiz
