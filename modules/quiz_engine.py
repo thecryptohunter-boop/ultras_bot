@@ -25,12 +25,15 @@ class QuizEngine:
         self.questions = []
 
     async def start_quiz(self, date):
-
+        print("DATE:", date)
+        print("QUESTIONS:", self.questions)
         self.questions = load_questions(date)
 
         if not self.questions:
             return
-
+        if self.state["active"]:
+            return 
+            
         self.state["active"] = True
         self.state["date"] = date
         self.state["question_index"] = 0
@@ -91,6 +94,7 @@ class QuizEngine:
 
         if not self.state["active"]:
             return
+
 
         response_time = time.time() - self.state["start_time"]
 
