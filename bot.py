@@ -13,6 +13,8 @@ from modules.config import TOKEN, CHANNEL_ID, GROUP_ID, ADMINS
 from modules import json_manager
 from modules.quiz_engine import QuizEngine
 from modules.quiz_handlers import router as quiz_router, setup_quiz
+from modules.admin_commands import set_quiz_engine
+
 
 # ===== ИНИЦИАЛИЗАЦИЯ =====
 
@@ -33,6 +35,8 @@ quiz_engine = QuizEngine(bot, GROUP_ID)
 setup_quiz(quiz_engine)
 
 dp.include_router(quiz_router)
+
+set_quiz_engine(quiz_engine)
 
 
 # ===== ЗАГРУЖАЕМ КАРТИНКИ =====
