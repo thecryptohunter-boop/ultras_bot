@@ -7,6 +7,13 @@ from modules.storage import load_categories, save_categories
 
 user_states = {}
 
+quiz_engine = None
+
+def set_quiz_engine(engine):
+    global quiz_engine
+    quiz_engine = engine
+
+
 print("ADMIN MODULE LOADED")
 def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
 
@@ -33,6 +40,13 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
             ],
             [
                 InlineKeyboardButton(text="🔥 RUN ALL", callback_data="menu:runall")
+            ],
+            [
+                InlineKeyboardButton(text="⚽ QUIZ START", callback_data="quiz:start"),
+                InlineKeyboardButton(text="🛑 QUIZ STOP", callback_data="quiz:stop")
+            ],
+            [
+                InlineKeyboardButton(text="📊 QUIZ STATS", callback_data="quiz:stats")
             ]
         ]
 
@@ -192,6 +206,56 @@ def register_admin_handlers(dp, bot, ADMINS, CHANNEL_ID):
     
             await callback.answer()
     
+            return
+
+        # ===== QUIZ CONTROL =====
+
+        if data.startswith("quiz:"):
+        
+            action = data.split(":")[1]
+        
+            if not quiz_engine:
+                await callback.message.answer("❌ Quiz engine не подключен")
+                await callback.answer()
+                return
+        
+            from datetime import datetime
+        
+            if action == "start":
+        
+                date = datetime.now().strftime("%Y-%m-%d")
+        
+                await quiz_engine.start_quiz(date)
+        
+                await callback.message.answer("⚽ QUIZ запущен")
+        
+            elif action == "stop":
+        
+                quiz_engine.state["active"] = False
+        
+                await callback.message.answer("🛑 QUIZ остановлен")
+        
+            elif action == "stats":
+        
+                scores = quiz_engine.state["scoreboard"]
+        
+                if not scores:
+                    await callback.message.answer("📊 Пока нет данных")
+                else:
+                    text = "📊 QUIZ СТАТИСТИКА\n\n"
+        
+                    sorted_scores = sorted(
+                        scores.items(),
+                        key=lambda x: x[1],
+                        reverse=True
+                    )
+        
+                    for name, score in sorted_scores:
+                        text += f"{name} — {score}\n"
+        
+                    await callback.message.answer(text)
+        
+            await callback.answer()
             return
 
         # ===== ГЛАВНОЕ МЕНЮ =====
