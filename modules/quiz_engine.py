@@ -24,51 +24,64 @@ class QuizEngine:
 
         self.questions = []
 
+    # ===== START =====
+
     async def start_quiz(self, date):
-        print("DATE:", date)
-        print("QUESTIONS:", self.questions)
+
+        if self.state["active"]:
+            return
+
         self.questions = load_questions(date)
 
         if not self.questions:
+            await self.bot.send_message(self.group_id, "❌ Нет вопросов на эту дату")
             return
-        if self.state["active"]:
-            return 
-            
+
         self.state["active"] = True
         self.state["date"] = date
         self.state["question_index"] = 0
         self.state["scoreboard"] = {}
 
+        # ⏳ КРАСИВЫЙ СТАРТ
         msg = await self.bot.send_message(
             self.group_id,
-            "⚽ QUIZBALL начинается!\n\n⏳ Старт через 10 секунд..."
+            "⚽ <b>QUIZBALL</b>\n\n⏳ Старт через 10 секунд..."
         )
-        
+
         for i in range(10, 0, -1):
             await asyncio.sleep(1)
             await msg.edit_text(
-                f"⚽ QUIZBALL начинается!\n\n⏳ Старт через {i} сек..."
+                f"⚽ <b>QUIZBALL</b>\n\n⏳ Старт через {i} сек..."
             )
 
-        await msg.edit_text("🔥 ПОЕХАЛИ!")
+        await msg.edit_text("🔥 <b>ПОЕХАЛИ!</b>")
+
+        await asyncio.sleep(1)
+
+        await self.send_question()
+
+    # ===== QUESTION =====
 
     async def send_question(self):
 
         index = self.state["question_index"]
 
         if index >= len(self.questions):
-
             await self.finish_quiz()
             return
 
         q = self.questions[index]
 
+        await self.bot.send_message(
+            self.group_id,
+            f"❓ <b>Вопрос {index+1}/10</b>"
+        )
+
         poll = await self.bot.send_poll(
             chat_id=self.group_id,
-            question=f"Вопрос {index+1}/10\n\n{q['question']}",
+            question=q["question"],
             options=q["options"],
-            type="quiz",
-            correct_option_id=q["correct"],
+            type="regular",  # ❗ анти-чит
             is_anonymous=False
         )
 
@@ -81,14 +94,16 @@ class QuizEngine:
 
         await self.close_poll()
 
+    # ===== CLOSE POLL =====
+
     async def close_poll(self):
 
-        await self.bot.stop_poll(
+        poll = await self.bot.stop_poll(
             self.group_id,
             self.state["poll_message_id"]
         )
 
-        await self.calculate_results()
+        await self.calculate_results(poll)
 
         self.state["question_index"] += 1
 
@@ -96,11 +111,16 @@ class QuizEngine:
 
         await self.send_question()
 
+    # ===== REGISTER ANSWER =====
+
     async def register_answer(self, user_id, name, option):
 
         if not self.state["active"]:
             return
 
+        # ❗ защита от повторных ответов
+        if user_id in self.state["answer_times"]:
+            return
 
         response_time = time.time() - self.state["start_time"]
 
@@ -110,7 +130,9 @@ class QuizEngine:
             "time": response_time
         }
 
-    async def calculate_results(self):
+    # ===== RESULTS =====
+
+    async def calculate_results(self, poll):
 
         index = self.state["question_index"]
         correct = self.questions[index]["correct"]
@@ -118,30 +140,49 @@ class QuizEngine:
         correct_users = []
 
         for uid, data in self.state["answer_times"].items():
-
             if data["option"] == correct:
                 correct_users.append(data)
 
         sorted_users = sorted(correct_users, key=lambda x: x["time"])
-
         top3 = sorted_users[:3]
 
         points = [3, 2, 1]
+        medals = ["🥇", "🥈", "🥉"]
 
-        text = "📊 Результаты вопроса\n\n"
+        text = "📊 <b>Результаты вопроса</b>\n\n"
 
-        for i, user in enumerate(top3):
+        if not top3:
+            text += "😬 Никто не угадал\n"
+        else:
+            for i, user in enumerate(top3):
+                text += f"{medals[i]} {user['name']} (+{points[i]})\n"
+                self.state["scoreboard"].setdefault(user["name"], 0)
+                self.state["scoreboard"][user["name"]] += points[i]
 
-            name = user["name"]
-
-            text += f"{i+1}️⃣ {name}\n"
-
-            self.state["scoreboard"].setdefault(name, 0)
-            self.state["scoreboard"][name] += points[i]
+        total_answers = len(self.state["answer_times"])
+        text += f"\n👥 Ответило: {total_answers}"
 
         await self.bot.send_message(self.group_id, text)
 
+        # ✅ ПРАВИЛЬНЫЙ ОТВЕТ
+        correct_option = self.questions[index]["options"][correct]
+
+        await self.bot.send_message(
+            self.group_id,
+            f"✅ Правильный ответ: <b>{correct_option}</b>"
+        )
+
+        # 📊 ГОЛОСА
+        votes_text = "\n📊 Голоса:\n"
+
+        for opt in poll.options:
+            votes_text += f"{opt.text} — {opt.voter_count}\n"
+
+        await self.bot.send_message(self.group_id, votes_text)
+
         await self.send_scoreboard()
+
+    # ===== SCOREBOARD =====
 
     async def send_scoreboard(self):
 
@@ -151,13 +192,17 @@ class QuizEngine:
             reverse=True
         )
 
-        text = "🏆 Общий рейтинг\n\n"
+        if not scores:
+            return
 
-        for name, score in scores[:10]:
+        text = "🏆 <b>Общий рейтинг</b>\n\n"
 
-            text += f"{name} — {score}\n"
+        for i, (name, score) in enumerate(scores[:10]):
+            text += f"{i+1}. {name} — <b>{score}</b>\n"
 
         await self.bot.send_message(self.group_id, text)
+
+    # ===== FINISH =====
 
     async def finish_quiz(self):
 
@@ -167,20 +212,27 @@ class QuizEngine:
             reverse=True
         )
 
-        text = "🏆 Победители QUIZBALL\n\n"
+        await asyncio.sleep(2)
+
+        text = "🏁 <b>QUIZBALL ЗАВЕРШЁН!</b>\n\n"
+
+        if scores:
+            name, score = scores[0]
+            text += f"🏆 <b>ЧЕМПИОН:</b>\n🥇 {name} — {score} очков\n\n"
+
+        text += "🔥 <b>ТОП-3:</b>\n"
 
         medals = ["🥇", "🥈", "🥉"]
 
         for i, (name, score) in enumerate(scores[:3]):
-
             text += f"{medals[i]} {name} — {score}\n"
+
+        text += "\n👏 Спасибо за игру!"
 
         await self.bot.send_message(self.group_id, text)
 
         results = load_results()
-
         results[self.state["date"]] = self.state["scoreboard"]
-
         save_results(results)
 
         self.state["active"] = False
