@@ -64,6 +64,9 @@ class QuizEngine:
 
     async def send_question(self):
         print(f"➡️ QUESTION {index+1}") 
+        if not self.state["active"]:
+            return
+    
         index = self.state["question_index"]
 
         if index >= len(self.questions):
