@@ -78,7 +78,8 @@ class QuizEngine:
 
         await self.bot.send_message(
             self.group_id,
-            f"❓ <b>Вопрос {index+1}/10</b>"
+            "⚡ Побеждает самый быстрый — не жди чужих ответов!"
+            f"⁉️<b>Вопрос {index+1}/10</b>"
         )
 
         poll = await self.bot.send_poll(
@@ -175,8 +176,8 @@ class QuizEngine:
 
         # правильный ответ
         correct_option = self.questions[index]["options"][correct]
-        text += f"\n✅ <b>{correct_option}</b>\n"
-
+        text += f"\n✅ <b>{correct_option}</b>\n\n\n🤝 <i>Sponsored by Et Vivit</i>"
+        
         # рейтинг
         scores = sorted(
             self.state["scoreboard"].items(),
