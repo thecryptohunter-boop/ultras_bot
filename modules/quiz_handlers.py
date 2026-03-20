@@ -1,5 +1,5 @@
 from aiogram import Router
-from aiogram.types import PollAnswer
+from aiogram.types import PollAnswer, Message
 
 router = Router()
 
@@ -24,3 +24,17 @@ async def handle_poll_answer(poll_answer: PollAnswer):
         user.full_name,
         poll_answer.option_ids[0]
     )
+
+@router.message()
+async def anti_spam(message: Message):
+
+    if not quiz_engine.state["active"]:
+        return
+
+    if message.from_user.id in ADMINS:
+        return
+
+    try:
+        await message.delete()
+    except:
+        pass
