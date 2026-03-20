@@ -23,23 +23,7 @@ class QuizEngine:
 
         self.questions = []
   
-    # =====aNTI sPAM  =====
-    
-    @dp.message()
-    async def anti_spam(message: Message):
-    
-        if not quiz_engine.state["active"]:
-            return
-    
-        # не трогаем админов
-        if message.from_user.id in ADMINS:
-            return
-    
-        try:
-            await message.delete()
-        except:
-            pass
-            
+  
     # ===== START QUIZ =====
 
     async def start_quiz(self, date):
