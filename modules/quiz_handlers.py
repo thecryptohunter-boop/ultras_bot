@@ -1,5 +1,6 @@
 from aiogram import Router
 from aiogram.types import PollAnswer, Message
+from modules.config import ADMINS
 
 router = Router()
 
@@ -33,6 +34,15 @@ async def anti_spam(message: Message):
 
     if message.from_user.id in ADMINS:
         return
+
+    # не трогаем команды
+    if message.text and message.text.startswith("/"):
+        return
+
+    try:
+        await message.delete()
+    except:
+        pass
 
     try:
         await message.delete()
