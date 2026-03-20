@@ -7,7 +7,6 @@ from modules.quiz_storage import load_questions, load_results, save_results
 class QuizEngine:
 
     def __init__(self, bot: Bot, group_id: int):
-
         self.bot = bot
         self.group_id = group_id
 
@@ -24,7 +23,7 @@ class QuizEngine:
 
         self.questions = []
 
-    # ===== START =====
+    # ===== START QUIZ =====
 
     async def start_quiz(self, date):
 
@@ -42,7 +41,7 @@ class QuizEngine:
         self.state["question_index"] = 0
         self.state["scoreboard"] = {}
 
-        # ⏳ КРАСИВЫЙ СТАРТ
+        # ⏳ Обратный отсчёт
         msg = await self.bot.send_message(
             self.group_id,
             "⚽ <b>QUIZBALL</b>\n\n⏳ Старт через 10 секунд..."
@@ -60,16 +59,16 @@ class QuizEngine:
 
         asyncio.create_task(self.send_question())
 
-    # ===== QUESTION =====
+    # ===== SEND QUESTION =====
 
     async def send_question(self):
-    
+
         if not self.state["active"]:
             return
-    
+
         index = self.state["question_index"]
-    
-        print(f"➡️ QUESTION {index+1}")  # ✅ теперь тут
+
+        print(f"➡️ QUESTION {index+1}")
 
         if index >= len(self.questions):
             await self.finish_quiz()
@@ -86,7 +85,7 @@ class QuizEngine:
             chat_id=self.group_id,
             question=q["question"],
             options=q["options"],
-            type="regular",  # ❗ анти-чит
+            type="regular",
             is_anonymous=False
         )
 
@@ -102,7 +101,9 @@ class QuizEngine:
     # ===== CLOSE POLL =====
 
     async def close_poll(self):
+
         print("⛔ CLOSING POLL")
+
         try:
             poll = await self.bot.stop_poll(
                 self.group_id,
@@ -111,20 +112,17 @@ class QuizEngine:
         except Exception as e:
             print("STOP POLL ERROR:", e)
             poll = None
-    
+
         try:
-            await self.calculate_results(poll)
+            await self.calculate_results()
         except Exception as e:
             print("CALC ERROR:", e)
-    
+
         self.state["question_index"] += 1
-    
+
         await asyncio.sleep(3)
-    
-        try:
-            asyncio.create_task(self.send_question())
-        except Exception as e:
-            print("NEXT QUESTION ERROR:", e)
+
+        asyncio.create_task(self.send_question())
 
     # ===== REGISTER ANSWER =====
 
@@ -133,7 +131,6 @@ class QuizEngine:
         if not self.state["active"]:
             return
 
-        # ❗ защита от повторных ответов
         if user_id in self.state["answer_times"]:
             return
 
@@ -145,76 +142,53 @@ class QuizEngine:
             "time": response_time
         }
 
-    # ===== RESULTS =====
+    # ===== CALCULATE RESULTS =====
 
-    async def calculate_results(self, poll):
+    async def calculate_results(self):
 
         index = self.state["question_index"]
         correct = self.questions[index]["correct"]
-    
+
         correct_users = []
-    
+
         for uid, data in self.state["answer_times"].items():
             if data["option"] == correct:
                 correct_users.append(data)
 
         sorted_users = sorted(correct_users, key=lambda x: x["time"])
         top3 = sorted_users[:3]
-    
+
         points = [3, 2, 1]
         medals = ["🥇", "🥈", "🥉"]
 
-    # ===== РЕЗУЛЬТАТЫ + РЕЙТИНГ В ОДНОМ СООБЩЕНИИ =====
+        text = f"❓ <b>Вопрос {index+1} завершён</b>\n\n"
 
-    text = f"❓ <b>Вопрос {index+1} завершён</b>\n\n"
+        # ТОП игроков
+        if not top3:
+            text += "😬 Никто не угадал\n"
+        else:
+            for i, user in enumerate(top3):
+                text += f"{medals[i]} {user['name']} (+{points[i]})\n"
 
-    # ТОП по вопросу
-    if not top3:
-        text += "😬 Никто не угадал\n"
-    else:
-        for i, user in enumerate(top3):
-            text += f"{medals[i]} {user['name']} (+{points[i]})\n"
+                self.state["scoreboard"].setdefault(user["name"], 0)
+                self.state["scoreboard"][user["name"]] += points[i]
 
-            self.state["scoreboard"].setdefault(user["name"], 0)
-            self.state["scoreboard"][user["name"]] += points[i]
+        # правильный ответ
+        correct_option = self.questions[index]["options"][correct]
+        text += f"\n✅ <b>{correct_option}</b>\n"
 
-            # правильный ответ
-            correct_option = self.questions[index]["options"][correct]
-            text += f"\n✅ <b>{correct_option}</b>\n"
-        
-            # ===== ОБЩИЙ РЕЙТИНГ =====
-        
-            scores = sorted(
-                self.state["scoreboard"].items(),
-                key=lambda x: x[1],
-                reverse=True
-            )
-        
-            if scores:
-                text += "\n🏆 <b>Рейтинг:</b>\n"
-        
-                for i, (name, score) in enumerate(scores[:5]):
-                    text += f"{i+1}. {name} — <b>{score}</b>\n"
-        
-            await self.bot.send_message(self.group_id, text)
-                
-    # ===== SCOREBOARD =====
-
-    async def send_scoreboard(self):
-
+        # рейтинг
         scores = sorted(
             self.state["scoreboard"].items(),
             key=lambda x: x[1],
             reverse=True
         )
 
-        if not scores:
-            return
+        if scores:
+            text += "\n🏆 <b>Рейтинг:</b>\n"
 
-        text = "🏆 <b>Общий рейтинг</b>\n\n"
-
-        for i, (name, score) in enumerate(scores[:10]):
-            text += f"{i+1}. {name} — <b>{score}</b>\n"
+            for i, (name, score) in enumerate(scores[:5]):
+                text += f"{i+1}. {name} — <b>{score}</b>\n"
 
         await self.bot.send_message(self.group_id, text)
 
