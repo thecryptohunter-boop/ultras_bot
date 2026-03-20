@@ -178,26 +178,26 @@ class QuizEngine:
             self.state["scoreboard"].setdefault(user["name"], 0)
             self.state["scoreboard"][user["name"]] += points[i]
 
-    # правильный ответ
-    correct_option = self.questions[index]["options"][correct]
-    text += f"\n✅ <b>{correct_option}</b>\n"
-
-    # ===== ОБЩИЙ РЕЙТИНГ =====
-
-    scores = sorted(
-        self.state["scoreboard"].items(),
-        key=lambda x: x[1],
-        reverse=True
-    )
-
-    if scores:
-        text += "\n🏆 <b>Рейтинг:</b>\n"
-
-        for i, (name, score) in enumerate(scores[:5]):
-            text += f"{i+1}. {name} — <b>{score}</b>\n"
-
-    await self.bot.send_message(self.group_id, text)
+            # правильный ответ
+            correct_option = self.questions[index]["options"][correct]
+            text += f"\n✅ <b>{correct_option}</b>\n"
         
+            # ===== ОБЩИЙ РЕЙТИНГ =====
+        
+            scores = sorted(
+                self.state["scoreboard"].items(),
+                key=lambda x: x[1],
+                reverse=True
+            )
+        
+            if scores:
+                text += "\n🏆 <b>Рейтинг:</b>\n"
+        
+                for i, (name, score) in enumerate(scores[:5]):
+                    text += f"{i+1}. {name} — <b>{score}</b>\n"
+        
+            await self.bot.send_message(self.group_id, text)
+                
     # ===== SCOREBOARD =====
 
     async def send_scoreboard(self):
