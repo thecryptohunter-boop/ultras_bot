@@ -63,7 +63,7 @@ class QuizEngine:
     # ===== QUESTION =====
 
     async def send_question(self):
-
+        print(f"➡️ QUESTION {index+1}") 
         index = self.state["question_index"]
 
         if index >= len(self.questions):
@@ -97,19 +97,29 @@ class QuizEngine:
     # ===== CLOSE POLL =====
 
     async def close_poll(self):
-
-        poll = await self.bot.stop_poll(
-            self.group_id,
-            self.state["poll_message_id"]
-        )
-
-        await self.calculate_results(poll)
-
+        print("⛔ CLOSING POLL")
+        try:
+            poll = await self.bot.stop_poll(
+                self.group_id,
+                self.state["poll_message_id"]
+            )
+        except Exception as e:
+            print("STOP POLL ERROR:", e)
+            poll = None
+    
+        try:
+            await self.calculate_results(poll)
+        except Exception as e:
+            print("CALC ERROR:", e)
+    
         self.state["question_index"] += 1
-
-        await asyncio.sleep(5)
-
-        await self.send_question()
+    
+        await asyncio.sleep(3)
+    
+        try:
+            await self.send_question()
+        except Exception as e:
+            print("NEXT QUESTION ERROR:", e)
 
     # ===== REGISTER ANSWER =====
 
@@ -172,13 +182,15 @@ class QuizEngine:
             f"✅ Правильный ответ: <b>{correct_option}</b>"
         )
 
-        # 📊 ГОЛОСА
-        votes_text = "\n📊 Голоса:\n"
-
-        for opt in poll.options:
-            votes_text += f"{opt.text} — {opt.voter_count}\n"
-
-        await self.bot.send_message(self.group_id, votes_text)
+        # 📊 ГОЛОСА (без падения)
+        if poll and poll.options:
+        
+            votes_text = "\n📊 Голоса:\n"
+        
+            for opt in poll.options:
+                votes_text += f"{opt.text} — {opt.voter_count}\n"
+        
+            await self.bot.send_message(self.group_id, votes_text)
 
         await self.send_scoreboard()
 
