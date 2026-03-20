@@ -149,14 +149,14 @@ class QuizEngine:
 
     async def calculate_results(self, poll):
 
-    index = self.state["question_index"]
-    correct = self.questions[index]["correct"]
-
-    correct_users = []
-
-    for uid, data in self.state["answer_times"].items():
-        if data["option"] == correct:
-            correct_users.append(data)
+        index = self.state["question_index"]
+        correct = self.questions[index]["correct"]
+    
+        correct_users = []
+    
+        for uid, data in self.state["answer_times"].items():
+            if data["option"] == correct:
+                correct_users.append(data)
 
     sorted_users = sorted(correct_users, key=lambda x: x["time"])
     top3 = sorted_users[:3]
