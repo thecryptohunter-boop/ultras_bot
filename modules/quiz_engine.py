@@ -158,11 +158,11 @@ class QuizEngine:
             if data["option"] == correct:
                 correct_users.append(data)
 
-    sorted_users = sorted(correct_users, key=lambda x: x["time"])
-    top3 = sorted_users[:3]
-
-    points = [3, 2, 1]
-    medals = ["🥇", "🥈", "🥉"]
+        sorted_users = sorted(correct_users, key=lambda x: x["time"])
+        top3 = sorted_users[:3]
+    
+        points = [3, 2, 1]
+        medals = ["🥇", "🥈", "🥉"]
 
     # ===== РЕЗУЛЬТАТЫ + РЕЙТИНГ В ОДНОМ СООБЩЕНИИ =====
 
