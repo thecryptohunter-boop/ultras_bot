@@ -2,7 +2,7 @@
   "friday_toast": {
     "title": "🥃 <b>ПЯТНИЧНЫЙ ТОСТ</b>",
     "tag": "#Тост",
-    "day": 4,
+    "day": ,
     "hour": 13,
     "minute": 40,
     "last_index": -1,
@@ -49,7 +49,7 @@
   "portrait_fan": {
     "title": "✊🧨 <b>ПОРТРЕТ ФАНАТА</b>",
     "tag": "#PortraitFan",
-    "day": 6,
+    "day": ,
     "hour": 14,
     "minute": 58,
     "last_index": -1,
@@ -68,7 +68,7 @@
   "father_son": {
     "title": "👨‍👦 <b>ОТ ОТЦА К СЫНУ</b>",
     "tag": "#FatherToSon",
-    "day": 6,
+    "day": ,
     "hour": 14,
     "minute": 59,
     "last_index": -1,
@@ -87,7 +87,7 @@
   "retro_fans": {
     "title": "📼 <b>RETRO FANS</b>",
     "tag": "#RetroFans",
-    "day": 6,
+    "day": ,
     "hour": 15,
     "minute": 0,
     "last_index": -1,
@@ -106,7 +106,7 @@
   "back_in_ussr": {
     "title": "🚩 <b>BACK IN USSR</b>",
     "tag": "#BackInUSSR",
-    "day": 6,
+    "day": ,
     "hour": 15,
     "minute": 0,
     "last_index": -1,
@@ -125,7 +125,7 @@
   "old_album": {
     "title": "📷 <b>СТАРЫЙ АЛЬБОМ</b>",
     "tag": "#OldAlbum",
-    "day": 6,
+    "day": ,
     "hour": 15,
     "minute": 0,
     "last_index": -1,
@@ -144,7 +144,7 @@
   "graffiti_day": {
     "title": "🎨 <b>ГРАФФИТИ ДНЯ</b>",
     "tag": "#Graffiti",
-    "day": [6,5],
+    "day": [,],
     "hour": 19,
     "minute": 59,
     "last_index": -1,
@@ -163,7 +163,7 @@
   "legends": {
     "title": "👑 <b>Легенды футбола</b>",
     "tag": "#legends",
-    "day": [6,5],
+    "day": [,],
     "hour": 10,
     "minute": 20,
     "last_index": -1,
@@ -182,7 +182,7 @@
   "stadiums": {
     "title": "🏟 <b>Стадионы Мира</b>",
     "tag": "#stadiums",
-    "day": [6,5],
+    "day": [,],
     "hour": 10,
     "minute": 21,
     "last_index": -1,
