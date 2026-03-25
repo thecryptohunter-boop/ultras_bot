@@ -13,13 +13,6 @@ from aiogram.filters import Command
 from modules.config import ADMINS
 import json
 
-try:
-    with open(path, "r", encoding="utf-8") as f:
-        json.load(f)
-except:
-    await message.answer("❌ JSON битый!")
-    return
-
 print("JSON MANAGER LOADED")
 
 router = Router()
@@ -229,14 +222,24 @@ async def handle_quiz_upload(message: Message):
 
     path = QUIZ_FILE
 
+    # 📥 скачиваем файл
     await message.bot.download(file, destination=path)
+
+    # ✅ ПРОВЕРКА JSON (ВОТ ТУТ!)
+    import json
+
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            json.load(f)
+    except:
+        await message.answer("❌ JSON битый!")
+        return
 
     user_states.pop(message.from_user.id)
 
     await message.answer("✅ quiz_questions.json обновлён")
 
 # ===== FILE CATEGORIES UPLOAD =====
-
 @router.message(F.document)
 async def upload_json(message: Message, bot):
 
