@@ -79,7 +79,7 @@ class QuizEngine:
 
         await self.bot.send_message(
             self.group_id,
-            "⚡ Побеждает самый быстрый — не жди чужих ответов!"
+            "⚡ Побеждает самый быстрый — не жди чужих ответов!\n\n"
             f"⁉️<b>Вопрос {index+1}/10</b>"
         )
 
