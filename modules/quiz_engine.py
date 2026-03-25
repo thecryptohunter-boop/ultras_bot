@@ -177,7 +177,7 @@ class QuizEngine:
 
         # правильный ответ
         correct_option = self.questions[index]["options"][correct]
-        text += f"\n✅ <b>{correct_option}</b>\n\n\n🤝 <i>Sponsored by Et Vivit</i>"
+        text += f"\n✅ <b>{correct_option}</b>\n🤝 <i><b>Sponsored by Et Vivit</b></i>"
         
         # рейтинг
         scores = sorted(
@@ -187,7 +187,7 @@ class QuizEngine:
         )
 
         if scores:
-            text += "\n🏆 <b>Рейтинг:</b>\n"
+            text += "\n\n\n🏆 <b>Рейтинг:</b>\n"
 
             for i, (name, score) in enumerate(scores[:5]):
                 text += f"{i+1}. {name} — <b>{score}</b>\n"
