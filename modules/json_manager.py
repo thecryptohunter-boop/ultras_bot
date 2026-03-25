@@ -11,6 +11,14 @@ from aiogram.types import (
 from aiogram.filters import Command
 
 from modules.config import ADMINS
+import json
+
+try:
+    with open(path, "r", encoding="utf-8") as f:
+        json.load(f)
+except:
+    await message.answer("❌ JSON битый!")
+    return
 
 print("JSON MANAGER LOADED")
 
@@ -20,7 +28,7 @@ user_states = {}
 
 CATEGORIES_PATH = "data/categories.json"
 EVENTS_PATH = "events.json"
-
+QUIZ_FILE = "data/quiz_questions.json"
 
 # ===== JSON MENU =====
 
@@ -59,8 +67,21 @@ async def json_menu(message: Message):
                     text="⬆️ Загрузить events.json",
                     callback_data="json_upload_events"
                 )
-            ]
+            ],
 
+            [
+                InlineKeyboardButton(
+                    text="⚽ Скачать QUIZ",
+                    callback_data="json_quiz_download"
+                )
+            ],
+
+            [
+                InlineKeyboardButton(
+                    text="⚽ Загрузить QUIZ",
+                    callback_data="json_quiz_upload"
+                )
+            ]
         ]
     )
 
@@ -71,6 +92,37 @@ async def json_menu(message: Message):
 
 
 # ===== CALLBACK HANDLER =====
+@router.callback_query(lambda c: c.data.startswith("json_quiz_"))
+async def quiz_json_handler(callback: CallbackQuery):
+
+    if callback.from_user.id not in ADMINS:
+        return
+
+    action = callback.data.split("_")[-1]
+
+    # ===== СКАЧАТЬ =====
+    if action == "download":
+
+        try:
+            await callback.message.answer_document(
+                document=FSInputFile(QUIZ_FILE),
+                caption="⚽ quiz_questions.json"
+            )
+        except Exception as e:
+            await callback.message.answer(f"❌ Ошибка: {e}")
+
+    # ===== ЗАГРУЗИТЬ =====
+    elif action == "upload":
+
+        user_states[callback.from_user.id] = {
+            "action": "upload_quiz"
+        }
+
+        await callback.message.answer(
+            "📤 Отправь файл quiz_questions.json"
+        )
+
+    await callback.answer()
 
 @router.callback_query(F.data.startswith("json_"))
 async def json_callbacks(callback: CallbackQuery, bot):
@@ -157,8 +209,33 @@ async def json_callbacks(callback: CallbackQuery, bot):
 
         return
 
+# ===== FILE QUIZ UPLOAD =====
+@router.message(lambda m: m.document)
+async def handle_quiz_upload(message: Message):
 
-# ===== FILE UPLOAD =====
+    if message.from_user.id not in ADMINS:
+        return
+
+    state = user_states.get(message.from_user.id)
+
+    if not state or state.get("action") != "upload_quiz":
+        return
+
+    file = message.document
+
+    if not file.file_name.endswith(".json"):
+        await message.answer("❌ Нужен JSON файл")
+        return
+
+    path = QUIZ_FILE
+
+    await message.bot.download(file, destination=path)
+
+    user_states.pop(message.from_user.id)
+
+    await message.answer("✅ quiz_questions.json обновлён")
+
+# ===== FILE CATEGORIES UPLOAD =====
 
 @router.message(F.document)
 async def upload_json(message: Message, bot):
