@@ -1,11 +1,11 @@
 import asyncio
 import time
 from aiogram import Bot
-from modules.quiz_storage import load_questions, load_results, save_results, create_scoreboard_image
+from modules.quiz_storage import load_questions, load_results, save_results
 from PIL import Image, ImageDraw, ImageFont
 import requests
 from io import BytesIO
-
+from modules.quiz_image import create_scoreboard_image
 
 
 class QuizEngine:
