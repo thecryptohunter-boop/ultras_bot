@@ -16,7 +16,7 @@ def create_placeholder(name):
     img = Image.new("RGB", (90, 90), (120, 0, 80))
     draw = ImageDraw.Draw(img)
 
-    font = ImageFont.truetype("assets/font.ttf", 36)
+    font = ImageFont.truetype("assets/ARIALBI.TTF", 36)
 
     initials = name[:2].upper()
 
