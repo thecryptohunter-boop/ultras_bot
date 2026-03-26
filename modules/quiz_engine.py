@@ -196,53 +196,57 @@ class QuizEngine:
 
         await self.bot.send_message(self.group_id, text)
 
-    # ===== FINISH =====
+    # ===== FINISH QUIZ =====
 
     async def finish_quiz(self):
-        self.state["scoreboard"][user_id] = {
-            "name": name,
-            "score": score
-        } 
-        scores = sorted(
-            self.state["scoreboard"].items(),
-            key=lambda x: x[1]["score"],
-            reverse=True
-        )
 
-        top_players = [
-            (uid, name, score)
-            for uid, (name, score) in enumerate(scores[:3])
-        ]
-        
+    scores = sorted(
+        self.state["scoreboard"].items(),
+        key=lambda x: x[1]["score"],
+        reverse=True
+    )
+
+    # 🏆 ТОП-3 для картинки
+    top_players = [
+        (uid, data["name"], data["score"])
+        for uid, data in scores[:3]
+    ]
+
+    # 🎨 картинка
+    try:
         image = await create_scoreboard_image(self.bot, top_players)
-        
+
         await self.bot.send_photo(
             self.group_id,
             photo=image,
             caption="🏆 Финальный рейтинг"
         )
-        
-        await asyncio.sleep(2)
-        
-        text = "🏁 <b>QUIZBALL ЗАВЕРШЁН!</b>\n\n"
+    except Exception as e:
+        print("IMAGE ERROR:", e)
 
-        if scores:
-            name, score = scores[0]
-            text += f"🏆 <b>ЧЕМПИОН:</b>\n🥇 {name} — {score} очков\n\n"
+    await asyncio.sleep(2)
 
-        text += "🔥 <b>ТОП-3:</b>\n"
+    # 📝 текст
+    text = "🏁 <b>QUIZBALL ЗАВЕРШЁН!</b>\n\n"
 
-        medals = ["🥇", "🥈", "🥉"]
+    if scores:
+        uid, data = scores[0]
+        text += f"🏆 <b>ЧЕМПИОН:</b>\n🥇 {data['name']} — {data['score']} очков\n\n"
 
-        for i, (name, score) in enumerate(scores[:3]):
-            text += f"{medals[i]} {name} — {score}\n"
+    text += "🔥 <b>ТОП-3:</b>\n"
 
-        text += "\n👏 Спасибо за игру!"
+    medals = ["🥇", "🥈", "🥉"]
 
-        await self.bot.send_message(self.group_id, text)
+    for i, (uid, data) in enumerate(scores[:3]):
+        text += f"{medals[i]} {data['name']} — {data['score']}\n"
 
-        results = load_results()
-        results[self.state["date"]] = self.state["scoreboard"]
-        save_results(results)
+    text += "\n👏 Спасибо за игру!"
 
-        self.state["active"] = False
+    await self.bot.send_message(self.group_id, text)
+
+    # 💾 сохранение
+    results = load_results()
+    results[self.state["date"]] = self.state["scoreboard"]
+    save_results(results)
+
+    self.state["active"] = False
