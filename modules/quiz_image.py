@@ -3,26 +3,44 @@ from io import BytesIO
 from aiogram.types import BufferedInputFile
 
 
+def make_circle(img):
+    mask = Image.new("L", img.size, 0)
+    draw = ImageDraw.Draw(mask)
+    draw.ellipse((0, 0, img.size[0], img.size[1]), fill=255)
+    result = Image.new("RGBA", img.size)
+    result.paste(img, (0, 0), mask)
+    return result
+
+
 async def create_scoreboard_image(bot, top_players):
 
     width = 900
     height = 500
 
-    # 🎨 светлый фон
-    img = Image.new("RGB", (width, height), color=(245, 245, 245))
+    # 🌌 ГРАДИЕНТ ФОН
+    img = Image.new("RGB", (width, height), "#0f172a")
     draw = ImageDraw.Draw(img)
 
-    # 🅰️ шрифты
-    title_font = ImageFont.truetype("assets/ARIALBD.TTF", 40)
+    for i in range(height):
+        color = int(20 + (i / height) * 40)
+        draw.line([(0, i), (width, i)], fill=(10, color, 40))
+
+    # 🅰️ ШРИФТЫ
+    title_font = ImageFont.truetype("assets/ARIALBD.TTF", 42)
     name_font = ImageFont.truetype("assets/ARIAL.TTF", 28)
     score_font = ImageFont.truetype("assets/ARIAL.TTF", 32)
 
-    # 🏆 заголовок
-    draw.text((width // 2 - 150, 30), "QUIZBALL", fill=(20, 20, 20), font=title_font)
+    # 🏆 Заголовок
+    draw.text((width//2 - 140, 30), "QUIZBALL", font=title_font, fill=(0, 200, 255))
 
-    y = 120
+    y = 130
 
-    medals = ["🥇", "🥈", "🥉"]
+    # 🎨 цвета мест
+    colors = [
+        (255, 215, 0),   # золото
+        (180, 180, 180), # серебро
+        (205, 127, 50)   # бронза
+    ]
 
     for i, (user_id, name, score) in enumerate(top_players[:3]):
 
@@ -35,28 +53,51 @@ async def create_scoreboard_image(bot, top_players):
                 file = await bot.get_file(file_id)
                 file_bytes = await bot.download_file(file.file_path)
 
-                avatar = Image.open(file_bytes).resize((90, 90))
+                avatar = Image.open(file_bytes).resize((90, 90)).convert("RGB")
             else:
                 raise Exception()
 
         except:
-            # fallback (если нет аватара)
-            avatar = Image.new("RGB", (90, 90), (200, 200, 200))
+            avatar = Image.new("RGB", (90, 90), (80, 80, 80))
 
-        img.paste(avatar, (80, y))
+        avatar = make_circle(avatar)
 
-        # 🥇 медаль
-        draw.text((200, y + 20), medals[i], font=score_font, fill=(0, 0, 0))
+        img.paste(avatar, (80, y), avatar)
 
-        # 👤 имя
-        draw.text((260, y + 20), name, font=name_font, fill=(0, 0, 0))
+        # ===== КАРТОЧКА =====
+        draw.rounded_rectangle(
+            [(180, y), (800, y + 90)],
+            radius=20,
+            fill=(15, 23, 42)
+        )
 
-        # 🔢 очки
-        draw.text((700, y + 20), f"{score}", font=score_font, fill=(0, 120, 255))
+        # ===== МЕСТО =====
+        draw.text(
+            (200, y + 25),
+            f"{i+1}",
+            font=score_font,
+            fill=colors[i]
+        )
+
+        # ===== ИМЯ =====
+        draw.text(
+            (260, y + 25),
+            name,
+            font=name_font,
+            fill=(255, 255, 255)
+        )
+
+        # ===== ОЧКИ =====
+        draw.text(
+            (720, y + 25),
+            str(score),
+            font=score_font,
+            fill=(0, 200, 255)
+        )
 
         y += 110
 
-    # 📦 сохраняем
+    # 📦 OUTPUT
     output = BytesIO()
     img.save(output, format="PNG")
     output.seek(0)
