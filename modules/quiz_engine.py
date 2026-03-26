@@ -207,7 +207,7 @@ class QuizEngine:
                 text += f"{i+1}. {data['name']} — <b>{data['score']}</b>\n"
     
         await self.bot.send_message(self.group_id, text)
-
+        print(self.state["scoreboard"])
     # ===== FINISH QUIZ =====
 
     async def finish_quiz(self):
