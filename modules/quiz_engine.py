@@ -205,11 +205,9 @@ class QuizEngine:
         } 
         scores = sorted(
             self.state["scoreboard"].items(),
-            key=lambda x: x[1],
+            key=lambda x: x[1]["score"],
             reverse=True
         )
-
-        await asyncio.sleep(2)
 
         top_players = [
             (uid, name, score)
@@ -223,7 +221,9 @@ class QuizEngine:
             photo=image,
             caption="🏆 Финальный рейтинг"
         )
-
+        
+        await asyncio.sleep(2)
+        
         text = "🏁 <b>QUIZBALL ЗАВЕРШЁН!</b>\n\n"
 
         if scores:
