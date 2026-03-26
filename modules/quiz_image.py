@@ -13,7 +13,7 @@ async def create_scoreboard_image(bot, top_players):
     draw = ImageDraw.Draw(img)
 
     # 🅰️ шрифты
-    title_font = ImageFont.truetype("assets/ARIAL.TTF", 40)
+    title_font = ImageFont.truetype("assets/ARIALBD.TTF", 40)
     name_font = ImageFont.truetype("assets/ARIAL.TTF", 28)
     score_font = ImageFont.truetype("assets/ARIAL.TTF", 32)
 
