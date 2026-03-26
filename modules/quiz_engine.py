@@ -221,9 +221,16 @@ class QuizEngine:
         try:
             image = await create_scoreboard_image(self.bot, top_players)
         
+            from aiogram.types import BufferedInputFile
+
+            photo = BufferedInputFile(
+                image.getvalue(),
+                filename="scoreboard.png"
+            )
+
             await self.bot.send_photo(
                 self.group_id,
-                photo=image,
+                photo=photo,
                 caption="🔥 Тест рейтинга"
             )
         except Exception as e:
