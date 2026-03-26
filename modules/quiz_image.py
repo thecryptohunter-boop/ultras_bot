@@ -115,4 +115,4 @@ async def create_scoreboard_image(bot, top_players):
     img.save(output, format="PNG")
     output.seek(0)
 
-    return BufferedInputFile(output.getvalue(), filename="score.png")from PIL import Image, ImageDraw, ImageFont
+    return BufferedInputFile(output.getvalue(), filename="score.png")
