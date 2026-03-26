@@ -157,7 +157,11 @@ class QuizEngine:
 
         for uid, data in self.state["answer_times"].items():
             if data["option"] == correct:
-                correct_users.append(data)
+                correct_users.append({
+                    "uid": uid,
+                    "name": data["name"],
+                    "time": data["time"]
+                })
 
         sorted_users = sorted(correct_users, key=lambda x: x["time"])
         top3 = sorted_users[:3]
@@ -174,8 +178,15 @@ class QuizEngine:
             for i, user in enumerate(top3):
                 text += f"{medals[i]} {user['name']} (+{points[i]})\n"
 
-                self.state["scoreboard"].setdefault(user["name"], 0)
-                self.state["scoreboard"][user["name"]] += points[i]
+                uid = user["uid"]
+
+                if uid not in self.state["scoreboard"]:
+                    self.state["scoreboard"][uid] = {
+                        "name": user["name"],
+                        "score": 0
+                    }
+                
+                self.state["scoreboard"][uid]["score"] += points[i]
 
         # правильный ответ
         correct_option = self.questions[index]["options"][correct]
@@ -184,15 +195,15 @@ class QuizEngine:
         # рейтинг
         scores = sorted(
             self.state["scoreboard"].items(),
-            key=lambda x: x[1],
+            key=lambda x: x[1]["score"],
             reverse=True
         )
 
         if scores:
             text += "\n\n\n🏆 <b>Рейтинг:</b>\n"
 
-            for i, (name, score) in enumerate(scores[:5]):
-                text += f"{i+1}. {name} — <b>{score}</b>\n"
+            for i, (uid, data) in enumerate(scores[:5]):
+                text += f"{i+1}. {data['name']} — <b>{data['score']}</b>\n"
 
         await self.bot.send_message(self.group_id, text)
 
