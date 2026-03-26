@@ -1,11 +1,10 @@
 import asyncio
 import time
 from aiogram import Bot
-from modules.quiz_storage import load_questions, load_results, save_results
+from modules.quiz_storage import load_questions, load_results, save_results, create_scoreboard_image
 from PIL import Image, ImageDraw, ImageFont
 import requests
 from io import BytesIO
-
 
 
 
@@ -251,7 +250,10 @@ class QuizEngine:
     # ===== FINISH =====
 
     async def finish_quiz(self):
-
+        self.state["scoreboard"][user_id] = {
+            "name": name,
+            "score": score
+        } 
         scores = sorted(
             self.state["scoreboard"].items(),
             key=lambda x: x[1],
@@ -259,6 +261,19 @@ class QuizEngine:
         )
 
         await asyncio.sleep(2)
+
+        top_players = [
+            (uid, name, score)
+            for uid, (name, score) in enumerate(scores[:3])
+        ]
+        
+        image = await create_scoreboard_image(self.bot, top_players)
+        
+        await self.bot.send_photo(
+            self.group_id,
+            photo=image,
+            caption="🏆 Финальный рейтинг"
+        )
 
         text = "🏁 <b>QUIZBALL ЗАВЕРШЁН!</b>\n\n"
 
