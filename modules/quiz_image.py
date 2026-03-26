@@ -41,7 +41,12 @@ async def create_scoreboard_image(bot, top_players):
         (180, 180, 180), # серебро
         (205, 127, 50)   # бронза
     ]
-
+     # 🎨 цвета медалей
+    medal_colors = [
+        (255, 215, 0),    # gold
+        (180, 180, 180),  # silver
+        (205, 127, 50)    # bronze
+    ]
     for i, (user_id, name, score) in enumerate(top_players[:3]):
 
         # ===== АВАТАР =====
