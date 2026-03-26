@@ -41,9 +41,9 @@ async def create_scoreboard_image(bot, top_players):
         draw.line([(0, i), (width, i)], fill=(r, g, b))
 
     # 🅰️ ШРИФТЫ
-    title_font = ImageFont.truetype("assets/font.ttf", 44)
-    name_font = ImageFont.truetype("assets/font.ttf", 28)
-    score_font = ImageFont.truetype("assets/font.ttf", 34)
+    title_font = ImageFont.truetype("assets/ARIALBD.TTF", 44)
+    name_font = ImageFont.truetype("assets/ARIAL.TTF", 28)
+    score_font = ImageFont.truetype("assets/ARIAL.TTF", 32)
 
     # 🏆 Заголовок
     draw.text((width//2 - 150, 30), "QUIZBALL", font=title_font, fill=(255, 100, 255))
