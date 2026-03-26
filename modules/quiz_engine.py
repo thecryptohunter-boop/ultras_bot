@@ -205,9 +205,31 @@ class QuizEngine:
     
             for i, (uid, data) in enumerate(scores[:5]):
                 text += f"{i+1}. {data['name']} — <b>{data['score']}</b>\n"
-    
+
+        # ===== ТЕСТ КАРТИНКИ =====
+        scores = sorted(
+            self.state["scoreboard"].items(),
+            key=lambda x: x[1]["score"],
+            reverse=True
+        )
+        
+        top_players = [
+            (uid, data["name"], data["score"])
+            for uid, data in scores[:3]
+        ]
+        
+        try:
+            image = await create_scoreboard_image(self.bot, top_players)
+        
+            await self.bot.send_photo(
+                self.group_id,
+                photo=image,
+                caption="🔥 Тест рейтинга"
+            )
+        except Exception as e:
+            print("IMAGE TEST ERROR:", e)
         await self.bot.send_message(self.group_id, text)
-        print(self.state["scoreboard"])
+       
     # ===== FINISH QUIZ =====
 
     async def finish_quiz(self):
