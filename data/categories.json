@@ -196,5 +196,138 @@
         "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
         "text": "Верно!"
       }]
-  }
+  },
+
+  "world_cup": {
+    "title": "⚽🏆 <b>Road to World Cup</b>",
+    "tag": "#RoadToWorldCup",
+    "day": ,
+    "hour": 14,
+    "minute": 58,
+    "last_index": -1,
+    "finished_notified": false,
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
+  },
+
+  "next_generation": {
+    "title": "🦾🧑 <b>NEXT GENERATION</b>",
+    "tag": "#NextGeneration",
+    "day": ,
+    "hour": 14,
+    "minute": 58,
+    "last_index": -1,
+    "finished_notified": false,
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
+  },
+  
+  "girls": {
+    "title": "👩✌️  <b>Girls, Girls, Girls!</b>",
+    "tag": "#Girls",
+    "day": ,
+    "hour": 14,
+    "minute": 58,
+    "last_index": -1,
+    "finished_notified": false,
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
+  },
+
+  "no_pyro": {
+    "title": "✊🧨 <b>No Pyro - No Party!</b>",
+    "tag": "#Pyro",
+    "day": ,
+    "hour": 14,
+    "minute": 58,
+    "last_index": -1,
+    "finished_notified": false,
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
+  },
+
+  "in_style": {
+    "title": "🕶👕👟 <b>IN STYLE!</b>",
+    "tag": "#InStyle",
+    "day": ,
+    "hour": 14,
+    "minute": 58,
+    "last_index": -1,
+    "finished_notified": false,
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
+  },
+
+  "away_days": {
+    "title": "💥 <b>AWAY DAYS</b>",
+    "tag": "#AwayDays",
+    "day": ,
+    "hour": 14,
+    "minute": 58,
+    "last_index": -1,
+    "finished_notified": false,
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
+  },
+
+  "epic": {
+    "title": "🌟 <b>Эпичные Перфы</b>",
+    "tag": "#Epic",
+    "day": ,
+    "hour": 14,
+    "minute": 58,
+    "last_index": -1,
+    "finished_notified": false,
+    "posts": [
+      {
+        "file_id": "AgACAgIAAxkBAAIB52mlaczl8dDOb1uhGAGB6GpCrU6iAAJTFmsb1kooSZnRpWvt-Sn7AQADAgADeAADOgQ",
+        "text": "1 За тех, кто не спрашивает — зачем.\n За тех, кто всегда рядом, когда трудно.\n За тех, с кем можно молчать и всё понимать.\n\n <b>Пьём за своих! Остальные подождут</b>."
+      },
+      {
+        "file_id": "AgACAgIAAxkBAAICF2mlgsM0_U6vX3tjbh4ZzqGa6szmAAJPFmsb1kooSd5057GqcLQwAQADAgADeQADOgQ",
+        "text": "2 За нас!\n За вас!\n\n За всех!"
+      }]
+  }       
 }
