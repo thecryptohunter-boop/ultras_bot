@@ -2,7 +2,7 @@
   "friday_toast": {
     "title": "🥃 <b>ПЯТНИЧНЫЙ ТОСТ</b>",
     "tag": "#Тост",
-    "day": ,
+    "day": 0,
     "hour": 13,
     "minute": 40,
     "last_index": -1,
