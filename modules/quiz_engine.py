@@ -3,7 +3,7 @@ import time
 from aiogram import Bot
 from modules.quiz_storage import load_questions, load_results, save_results
 from modules.quiz_image import create_scoreboard_image
-
+from modules.quiz_image import create_champion_card
 
 class QuizEngine:
 
@@ -267,8 +267,19 @@ class QuizEngine:
     
         if scores:
             uid, data = scores[0]
-            text += f"🏆 <b>ЧЕМПИОН:</b>\n🥇 {data['name']} — {data['score']} очков\n\n"
-    
+
+            card = await create_champion_card(
+                self.bot,
+                uid,
+                data["name"],
+                data["score"]
+            )
+            
+            await self.bot.send_photo(
+                self.group_id,
+                photo=card,
+                caption="🏆 ПОБЕДИТЕЛЬ QUIZBALL"
+            )
         text += "🔥 <b>ТОП-3:</b>\n"
     
         medals = ["🥇", "🥈", "🥉"]
