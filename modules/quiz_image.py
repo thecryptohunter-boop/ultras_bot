@@ -65,7 +65,7 @@ async def create_champion_card(bot, user_id, name, score):
     draw.text((140, 40), "CHAMPION", font=title_font, fill=(255, 120, 255))
 
     # 👤 ИМЯ
-    draw.text((width//2 - 100, 470), name[:12] str(score), font=name_font, fill=(255, 255, 255))
+    draw.text((width//2 - 100, 470), [name[:12], str(score)], font=name_font, fill=(255, 255, 255))
 
     # ⭐ ОЧКИ (как rating)
     # draw.text((width//2 - 40, 550), str(score), font=score_font, fill=(255, 200, 0))
