@@ -38,7 +38,7 @@ def create_placeholder(name):
 
 async def create_scoreboard_image(bot, top_players):
 
-    width = 900
+    width = 800
     height = 500
 
     # 🌈 ГРАДИЕНТ (фиолет → вишня)
