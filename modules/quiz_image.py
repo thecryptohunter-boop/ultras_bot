@@ -59,16 +59,16 @@ async def create_champion_card(bot, user_id, name, score):
     img.paste(avatar, (175, 180), avatar)
 
     # 👑 КОРОНА
-    draw.text((260, 120), "👑", font=title_font, fill=(255, 215, 0))
+    draw.text((260, 120), "__________________", font=title_font, fill=(255, 215, 0))
 
     # 🏆 ЗАГОЛОВОК
     draw.text((140, 40), "CHAMPION", font=title_font, fill=(255, 120, 255))
 
     # 👤 ИМЯ
-    draw.text((width//2 - 100, 470), name[:12], font=name_font, fill=(255, 255, 255))
+    draw.text((width//2 - 100, 470), name[:12] str(score), font=name_font, fill=(255, 255, 255))
 
     # ⭐ ОЧКИ (как rating)
-    draw.text((width//2 - 40, 550), str(score), font=score_font, fill=(255, 200, 0))
+    # draw.text((width//2 - 40, 550), str(score), font=score_font, fill=(255, 200, 0))
 
     # 💎 рамка
     draw.rectangle([(20, 20), (width-20, height-20)], outline=(255, 120, 255), width=4)
