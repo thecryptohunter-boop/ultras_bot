@@ -3,11 +3,6 @@ from io import BytesIO
 from aiogram.types import BufferedInputFile
 
 
-from PIL import Image, ImageDraw, ImageFont
-from io import BytesIO
-from aiogram.types import BufferedInputFile
-
-
 def make_circle(img):
     mask = Image.new("L", img.size, 0)
     draw = ImageDraw.Draw(mask)
@@ -135,64 +130,82 @@ async def create_scoreboard_image(bot, top_players):
 
 
 # ===== CHAMPION CARD =======
+
+
 async def create_champion_card(bot, user_id, name, score):
 
-    width = 600
-    height = 600
+    WIDTH, HEIGHT = 800, 1000
 
-    img = Image.new("RGB", (width, height))
+    # ===== ФОН (фиолетово-вишнёвый градиент) =====
+    img = Image.new("RGB", (WIDTH, HEIGHT), "#1a002b")
     draw = ImageDraw.Draw(img)
 
-    # 🌈 ГРАДИЕНТ (фиолет → вишня)
-    for y in range(height):
-        r = int(80 + (y / height) * 150)
+    for y in range(HEIGHT):
+        r = int(40 + y * 0.1)
         g = 0
-        b = int(120 + (y / height) * 100)
-        draw.line([(0, y), (width, y)], fill=(r, g, b))
+        b = int(80 + y * 0.15)
+        draw.line([(0, y), (WIDTH, y)], fill=(r, g, b))
 
-    # 🅰️ ШРИФТЫ
-    title_font = ImageFont.truetype("assets/ARIBLK.TTF", 48)
-    name_font = ImageFont.truetype("assets/ARIAL.TTF", 36)
-    score_font = ImageFont.truetype("assets/ARIAL.TTF", 80)
+    # ===== РАМКА =====
+    draw.rectangle([20, 20, WIDTH-20, HEIGHT-20], outline="white", width=3)
 
-    # 👤 АВАТАР
+    # ===== ШРИФТЫ =====
+    font_big = ImageFont.truetype("fonts/arialbd.ttf", 60)
+    font_mid = ImageFont.truetype("fonts/arialbd.ttf", 40)
+
+    # ===== CHAMPION =====
+    title = "CHAMPION"
+    w = draw.textlength(title, font=font_big)
+    draw.text(((WIDTH - w) / 2, 60), title, fill="white", font=font_big)
+
+    # ===== ЛИНИЯ =====
+    line_width = int(w * 1.8)
+    draw.line(
+        [
+            (WIDTH//2 - line_width//2, 140),
+            (WIDTH//2 + line_width//2, 140)
+        ],
+        fill="white",
+        width=4
+    )
+
+    # ===== АВАТАР =====
     try:
-        photos = await bot.get_user_profile_photos(user_id)
+        photos = await bot.get_user_profile_photos(user_id, limit=1)
 
         if photos.total_count > 0:
-            file_id = photos.photos[0][0].file_id
-            file = await bot.get_file(file_id)
-            file_bytes = await bot.download_file(file.file_path)
+            file = await bot.get_file(photos.photos[0][-1].file_id)
+            avatar_bytes = await bot.download_file(file.file_path)
 
-            avatar = Image.open(file_bytes).resize((250, 250)).convert("RGB")
+            avatar = Image.open(BytesIO(avatar_bytes.read())).resize((200, 200))
         else:
-            raise Exception()
+            avatar = Image.new("RGB", (200, 200), "gray")
 
     except:
-        avatar = Image.new("RGB", (250, 250), (120, 0, 80))
+        avatar = Image.new("RGB", (200, 200), "gray")
 
-    avatar = make_circle(avatar)
+    img.paste(avatar, (WIDTH//2 - 100, 180))
 
-    # вставка аватара
-    img.paste(avatar, (175, 180), avatar)
+    # ===== ИМЯ =====
+    name_text = name.upper()
+    w = draw.textlength(name_text, font=font_mid)
+    draw.text(((WIDTH - w) / 2, 420), name_text, fill="white", font=font_mid)
 
-    # 👑 КОРОНА
-    #draw.text((260, 120), "👑", font=title_font, fill=(255, 215, 0))
+    # ===== ОЧКИ =====
+    score_text = f"{score} ОЧКОВ!"
+    w = draw.textlength(score_text, font=font_big)
+    draw.text(((WIDTH - w) / 2, 480), score_text, fill="white", font=font_big)
 
-    # 🏆 ЗАГОЛОВОК
-    draw.text((140, 40), "CHAMPION!\n\n______________", font=title_font, fill=(255, 120, 255))
+    # ===== КАРТИНКА СНИЗУ =====
+    try:
+        bottom = Image.open("images/champion.png").resize((600, 250))
+        img.paste(bottom, (WIDTH//2 - 300, 650))
+    except:
+        pass  # если нет — просто пропускаем
 
-    # 👤 ИМЯ
-    draw.text((width//2 - 100, 470), [name[:12], str(score)], font=name_font, fill=(255, 200, 0))
+    # ===== OUTPUT =====
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)
 
-    # ⭐ ОЧКИ (как rating)
-    #draw.text((width//2 - 40, 550), str(score), font=score_font, fill=(255, 200, 0))
-
-    # 💎 рамка
-    draw.rectangle([(20, 20), (width-20, height-20)], outline=(255, 120, 255), width=4)
-
-    output = BytesIO()
-    img.save(output, format="PNG")
-    output.seek(0)
-
-    return BufferedInputFile(output.getvalue(), filename="champion.png")
+    return BufferedInputFile(buffer.read(), filename="champion.png")
