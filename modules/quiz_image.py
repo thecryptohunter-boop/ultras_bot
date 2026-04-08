@@ -33,9 +33,9 @@ async def create_champion_card(bot, user_id, name, score):
         draw.line([(0, y), (width, y)], fill=(r, g, b))
 
     # 🅰️ ШРИФТЫ
-    title_font = ImageFont.truetype("assets/font.ttf", 48)
-    name_font = ImageFont.truetype("assets/font.ttf", 36)
-    score_font = ImageFont.truetype("assets/font.ttf", 80)
+    title_font = ImageFont.truetype("assets/arialbd.ttf", 48)
+    name_font = ImageFont.truetype("assets/arialnb.ttf", 36)
+    score_font = ImageFont.truetype("assets/arialni.ttf", 80)
 
     # 👤 АВАТАР
     try:
