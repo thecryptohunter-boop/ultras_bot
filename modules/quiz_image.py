@@ -20,7 +20,7 @@ def make_circle(img):
 async def create_champion_card(bot, user_id, name, score):
 
     width = 600
-    height = 800
+    height = 600
 
     img = Image.new("RGB", (width, height))
     draw = ImageDraw.Draw(img)
@@ -59,7 +59,7 @@ async def create_champion_card(bot, user_id, name, score):
     img.paste(avatar, (175, 180), avatar)
 
     # 👑 КОРОНА
-    draw.text((260, 120), "__________________", font=title_font, fill=(255, 215, 0))
+    #draw.text((260, 120), "__________________", font=title_font, fill=(255, 215, 0))
 
     # 🏆 ЗАГОЛОВОК
     draw.text((140, 40), "CHAMPION", font=title_font, fill=(255, 120, 255))
