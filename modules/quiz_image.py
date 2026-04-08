@@ -17,67 +17,7 @@ def make_circle(img):
     return result
 
 
-async def create_champion_card(bot, user_id, name, score):
 
-    width = 600
-    height = 600
-
-    img = Image.new("RGB", (width, height))
-    draw = ImageDraw.Draw(img)
-
-    # 🌈 ГРАДИЕНТ (фиолет → вишня)
-    for y in range(height):
-        r = int(80 + (y / height) * 150)
-        g = 0
-        b = int(120 + (y / height) * 100)
-        draw.line([(0, y), (width, y)], fill=(r, g, b))
-
-    # 🅰️ ШРИФТЫ
-    title_font = ImageFont.truetype("assets/arialbd.ttf", 48)
-    name_font = ImageFont.truetype("assets/arialnb.ttf", 36)
-    score_font = ImageFont.truetype("assets/arialni.ttf", 80)
-
-    # 👤 АВАТАР
-    try:
-        photos = await bot.get_user_profile_photos(user_id)
-
-        if photos.total_count > 0:
-            file_id = photos.photos[0][0].file_id
-            file = await bot.get_file(file_id)
-            file_bytes = await bot.download_file(file.file_path)
-
-            avatar = Image.open(file_bytes).resize((250, 250)).convert("RGB")
-        else:
-            raise Exception()
-
-    except:
-        avatar = Image.new("RGB", (250, 250), (120, 0, 80))
-
-    avatar = make_circle(avatar)
-
-    # вставка аватара
-    img.paste(avatar, (175, 180), avatar)
-
-    # 👑 КОРОНА
-    #draw.text((260, 120), "__________________", font=title_font, fill=(255, 215, 0))
-
-    # 🏆 ЗАГОЛОВОК
-    draw.text((140, 40), "CHAMPION", font=title_font, fill=(255, 120, 255))
-
-    # 👤 ИМЯ
-    draw.text((width//2 - 100, 470), [name[:12], str(score)], font=name_font, fill=(255, 255, 255))
-
-    # ⭐ ОЧКИ (как rating)
-    # draw.text((width//2 - 40, 550), str(score), font=score_font, fill=(255, 200, 0))
-
-    # 💎 рамка
-    draw.rectangle([(20, 20), (width-20, height-20)], outline=(255, 120, 255), width=4)
-
-    output = BytesIO()
-    img.save(output, format="PNG")
-    output.seek(0)
-
-    return BufferedInputFile(output.getvalue(), filename="champion.png")
 
 def make_circle(img):
     mask = Image.new("L", img.size, 0)
@@ -198,7 +138,7 @@ async def create_scoreboard_image(bot, top_players):
 async def create_champion_card(bot, user_id, name, score):
 
     width = 600
-    height = 800
+    height = 600
 
     img = Image.new("RGB", (width, height))
     draw = ImageDraw.Draw(img)
@@ -237,16 +177,16 @@ async def create_champion_card(bot, user_id, name, score):
     img.paste(avatar, (175, 180), avatar)
 
     # 👑 КОРОНА
-    draw.text((260, 120), "👑", font=title_font, fill=(255, 215, 0))
+    #draw.text((260, 120), "👑", font=title_font, fill=(255, 215, 0))
 
     # 🏆 ЗАГОЛОВОК
-    draw.text((140, 40), "CHAMPION", font=title_font, fill=(255, 120, 255))
+    draw.text((140, 40), "CHAMPION!\n\n______________", font=title_font, fill=(255, 120, 255))
 
     # 👤 ИМЯ
-    draw.text((width//2 - 100, 470), name[:12], font=name_font, fill=(255, 255, 255))
+    draw.text((width//2 - 100, 470), [name[:12], str(score)], font=name_font, fill=(255, 200, 0))
 
     # ⭐ ОЧКИ (как rating)
-    draw.text((width//2 - 40, 550), str(score), font=score_font, fill=(255, 200, 0))
+    #draw.text((width//2 - 40, 550), str(score), font=score_font, fill=(255, 200, 0))
 
     # 💎 рамка
     draw.rectangle([(20, 20), (width-20, height-20)], outline=(255, 120, 255), width=4)
