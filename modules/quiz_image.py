@@ -150,8 +150,8 @@ async def create_champion_card(bot, user_id, name, score):
     draw.rectangle([20, 20, WIDTH-20, HEIGHT-20], outline="white", width=3)
 
     # ===== ШРИФТЫ =====
-    font_big = ImageFont.truetype("fonts/arialbd.ttf", 60)
-    font_mid = ImageFont.truetype("fonts/arialbd.ttf", 40)
+    font_big = ImageFont.truetype("fonts/ARIALBD.TTF", 60)
+    font_mid = ImageFont.truetype("fonts/ARIAL.TTF", 40)
 
     # ===== CHAMPION =====
     title = "CHAMPION"
