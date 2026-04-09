@@ -38,19 +38,22 @@ def create_placeholder(name):
 
 async def create_scoreboard_image(bot, top_players):
 
-    width = 800
+    width = 900
     height = 500
 
     # 🌈 ГРАДИЕНТ (фиолет → вишня)
     img = Image.new("RGB", (width, height), "#1a0033")
     draw = ImageDraw.Draw(img)
-
+     
     for i in range(height):
         r = int(50 + (i / height) * 120)
         g = 0
         b = int(80 + (i / height) * 60)
         draw.line([(0, i), (width, i)], fill=(r, g, b))
 
+    # ===== РАМКА =====
+    draw.rectangle([20, 20, WIDTH-20, HEIGHT-20], outline="white", width=3) 
+    
     # 🅰️ ШРИФТЫ
     title_font = ImageFont.truetype("assets/ARIALBD.TTF", 44)
     name_font = ImageFont.truetype("assets/ARIAL.TTF", 28)
