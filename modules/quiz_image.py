@@ -51,8 +51,6 @@ async def create_scoreboard_image(bot, top_players):
         b = int(80 + (i / height) * 60)
         draw.line([(0, i), (width, i)], fill=(r, g, b))
 
-    # ===== РАМКА =====
-    draw.rectangle([20, 20, WIDTH-20, HEIGHT-20], outline="white", width=3) 
     
     # 🅰️ ШРИФТЫ
     title_font = ImageFont.truetype("assets/ARIALBD.TTF", 44)
