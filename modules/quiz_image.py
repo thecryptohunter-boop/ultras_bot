@@ -149,8 +149,6 @@ async def create_champion_card(bot, user_id, name, score):
         b = int(80 + y * 0.15)
         draw.line([(0, y), (WIDTH, y)], fill=(r, g, b))
 
-    # ===== РАМКА =====
-    draw.rectangle([20, 20, WIDTH-20, HEIGHT-20], outline="white", width=3)
 
     # ===== ШРИФТЫ =====
     font_big = ImageFont.truetype("assets/ARIALBD.TTF", 60)
