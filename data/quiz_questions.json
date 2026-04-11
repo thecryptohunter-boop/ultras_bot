@@ -1,22 +1,27 @@
 {
-  "2026-04-09": [
-    {
-      "question": "Кто выиграл ЧМ 1998?",
-      "options": ["Бразилия", "Франция", "Италия", "Германия"],
-      "correct": 1
-    }
-  ],
-  "2026-04-10": [
-    {
-      "question": "Кто выиграл ЧМ 1998?",
-      "options": ["Бразилия", "Франция", "Италия", "Германия"],
-      "correct": 1
-    }
-  ],
   "2026-04-11": [
     {
-      "question": "Кто выиграл ЧМ 1998?",
-      "options": ["Бразилия", "Франция", "Италия", "Германия"],
+      "question": "Кто на фото?",
+      "options": ["Месси", "Роналду", "Неймар", "Мбаппе"],
+      "correct": 1,
+      "image": "AgACAgIAAxkBAAIFqmnXnMSG1kbP8kBWE7WsfM_R_4_HAAJQF2sbuuLBSs0B9n1jXYdEAQADAgADeAADOwQ" 
+    },
+    {
+      "question": "Кто выиграл ЧМ 2014?",
+      "options": ["Бразилия", "Германия", "Аргентина", "Испания"],
+      "correct": 1
+    }
+  ],
+  "2026-04-12": [
+    {
+      "question": "Кто на фото?",
+      "options": ["Месси", "Роналду", "Неймар", "Мбаппе"],
+      "correct": 1,
+      "image": "AgACAgIAAxkBAAIFqmnXnMSG1kbP8kBWE7WsfM_R_4_HAAJQF2sbuuLBSs0B9n1jXYdEAQADAgADeAADOwQ" 
+    },
+    {
+      "question": "Кто выиграл ЧМ 2014?",
+      "options": ["Бразилия", "Германия", "Аргентина", "Испания"],
       "correct": 1
     }
   ]
