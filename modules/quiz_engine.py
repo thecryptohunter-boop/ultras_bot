@@ -79,6 +79,14 @@ class QuizEngine:
 
         q = self.questions[index]
 
+        # ===== КАРТИНКА =====
+        if q.get("image"):
+            await self.bot.send_photo(
+                self.group_id,
+                photo=q["image"],
+                caption="🖼 Вопрос с изображением"
+            )
+
         await self.bot.send_message(
             self.group_id,
             "⚡ Побеждает самый быстрый — не жди чужих ответов!\n\n"
