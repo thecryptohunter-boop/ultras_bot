@@ -79,13 +79,6 @@ class QuizEngine:
 
         q = self.questions[index]
 
-        # ===== КАРТИНКА =====
-        if q.get("image"):
-            await self.bot.send_photo(
-                self.group_id,
-                photo=q["image"],
-                caption="🖼 Вопрос с изображением"
-            )
 
         await self.bot.send_message(
             self.group_id,
@@ -93,6 +86,14 @@ class QuizEngine:
             f"⁉️<b>Вопрос {index+1}/10</b>"
         )
 
+        # ===== КАРТИНКА =====
+        if q.get("image"):
+            await self.bot.send_photo(
+                self.group_id,
+                photo=q["image"],
+                caption="🖼 Вопрос с изображением"
+            )
+            
         poll = await self.bot.send_poll(
             chat_id=self.group_id,
             question=q["question"],
