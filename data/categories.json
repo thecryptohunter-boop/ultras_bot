@@ -2,7 +2,7 @@
   "friday_toast": {
     "title": "🥃 <b>ПЯТНИЧНЫЙ ТОСТ</b>",
     "tag": "#Тост",
-    "day": 0,
+    "day": ,
     "hour": 13,
     "minute": 40,
     "last_index": -1,
@@ -49,7 +49,7 @@
   "portrait_fan": {
     "title": "✊🧨 <b>ПОРТРЕТ ФАНАТА</b>",
     "tag": "#PortraitFan",
-    "day": 0,
+    "day": ,
     "hour": 14,
     "minute": 58,
     "last_index": -1,
@@ -68,7 +68,7 @@
   "father_son": {
     "title": "👨‍👦 <b>ОТ ОТЦА К СЫНУ</b>",
     "tag": "#FatherToSon",
-    "day": 0,
+    "day": ,
     "hour": 14,
     "minute": 59,
     "last_index": -1,
@@ -87,7 +87,7 @@
   "retro_fans": {
     "title": "📼 <b>RETRO FANS</b>",
     "tag": "#RetroFans",
-    "day": 0,
+    "day": ,
     "hour": 15,
     "minute": 0,
     "last_index": -1,
@@ -106,7 +106,7 @@
   "back_in_ussr": {
     "title": "🚩 <b>BACK IN USSR</b>",
     "tag": "#BackInUSSR",
-    "day": 0,
+    "day": ,
     "hour": 15,
     "minute": 0,
     "last_index": -1,
@@ -125,7 +125,7 @@
   "old_album": {
     "title": "📷 <b>СТАРЫЙ АЛЬБОМ</b>",
     "tag": "#OldAlbum",
-    "day": 0,
+    "day": ,
     "hour": 15,
     "minute": 0,
     "last_index": -1,
@@ -144,7 +144,7 @@
   "graffiti_day": {
     "title": "🎨 <b>ГРАФФИТИ ДНЯ</b>",
     "tag": "#Graffiti",
-    "day": [0,1],
+    "day": [,],
     "hour": 19,
     "minute": 59,
     "last_index": -1,
@@ -163,7 +163,7 @@
   "legends": {
     "title": "👑 <b>Легенды футбола</b>",
     "tag": "#legends",
-    "day": 0,
+    "day": ,
     "hour": 10,
     "minute": 20,
     "last_index": -1,
@@ -182,7 +182,7 @@
   "stadiums": {
     "title": "🏟 <b>Стадионы Мира</b>",
     "tag": "#stadiums",
-    "day": 0,
+    "day": ,
     "hour": 10,
     "minute": 21,
     "last_index": -1,
@@ -201,7 +201,7 @@
   "world_cup": {
     "title": "⚽🏆 <b>Road to World Cup</b>",
     "tag": "#RoadToWorldCup",
-    "day": 0,
+    "day": ,
     "hour": 14,
     "minute": 58,
     "last_index": -1,
@@ -220,7 +220,7 @@
   "next_generation": {
     "title": "🦾🧑 <b>NEXT GENERATION</b>",
     "tag": "#NextGeneration",
-    "day": 0,
+    "day": ,
     "hour": 14,
     "minute": 58,
     "last_index": -1,
@@ -239,7 +239,7 @@
   "girls": {
     "title": "👩✌️  <b>Girls, Girls, Girls!</b>",
     "tag": "#Girls",
-    "day": 0,
+    "day": ,
     "hour": 14,
     "minute": 58,
     "last_index": -1,
@@ -258,7 +258,7 @@
   "no_pyro": {
     "title": "✊🧨 <b>No Pyro - No Party!</b>",
     "tag": "#Pyro",
-    "day": 0,
+    "day": ,
     "hour": 14,
     "minute": 58,
     "last_index": -1,
@@ -275,9 +275,9 @@
   },
 
   "in_style": {
-    "title": "🕶👕👟 <b>IN STYLE!</b>",
+    "title": "🕶👟 <b>IN STYLE!</b>",
     "tag": "#InStyle",
-    "day": 0,
+    "day": ,
     "hour": 14,
     "minute": 58,
     "last_index": -1,
@@ -296,7 +296,7 @@
   "away_days": {
     "title": "💥 <b>AWAY DAYS</b>",
     "tag": "#AwayDays",
-    "day": 0,
+    "day": ,
     "hour": 14,
     "minute": 58,
     "last_index": -1,
@@ -315,7 +315,7 @@
   "epic": {
     "title": "🌟 <b>Эпичные Перфы</b>",
     "tag": "#Epic",
-    "day": 0,
+    "day": ,
     "hour": 14,
     "minute": 58,
     "last_index": -1,
